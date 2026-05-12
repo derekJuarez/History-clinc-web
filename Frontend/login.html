@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <!-- Librería de íconos -->
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'>
+    <!-- tipografía -->
+    <link rel='stylesheet'
+        href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&amp;display=swap'>
+    <!-- hoja de estilos -->
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+    <!-- formulario de inicio de sesión -->
+     <main class="mainContainer">
+        <div class="flip-card">
+            <input type="checkbox" id="flip-toggle" style="display:none;">
+            <div class="flip-card-inner">
+                <section class="flip-front">
+                    <h2>Bienvenido</h2>
+                    <form id="loginForm">
+                        <div class="input-box">
+                            <label for="matricula">Matrícula</label>
+                            <input type="text" id="matricula" placeholder="Matrícula" required />
+                        </div>
+                        <div class="input-box">
+                            <label for="password">Contraseña</label>
+                            <input type="password" id="password" placeholder="Contraseña" required/>
+                        </div>
+                        <div class="remember">
+                            <label><input type="checkbox" />Recordarme</label>
+                        </div>
+
+                        <button id="submit" type="submit" class="btn-submit">Iniciar Sesión</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+     </main>
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
