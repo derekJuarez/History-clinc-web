@@ -1,0 +1,262 @@
+/* ========== RESET Y BASE (mismo estilo del login) ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style-type: none;
+    border: none;
+    outline: none;
+    font-family: Poppins, sans-serif;
+    color: #fff;
+}
+
+body {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    background-image: url("../../Image/bg1.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Botón de menú (hamburguesa) */
+.menu-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    z-index: 101;
+    transition: all 0.25s ease;
+}
+
+.menu-btn i {
+    font-size: 24px;
+    color: #fff;
+}
+
+.menu-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
+
+/* ========== SIDEBAR IZQUIERDO ========== */
+.sidebar {
+    width: 220px;
+    background: transparent;
+    border-right: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(13px);
+    -webkit-backdrop-filter: blur(13px);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+/* Imagen de perfil */
+.sidebar-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 20px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.profile-img-wrapper {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.profile-img-wrapper i {
+    font-size: 32px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.profile-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    min-height: 18px;
+}
+
+/* Navegación del sidebar */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    flex: 1;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 22px;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    transition: all 0.25s ease;
+    border-left: 3px solid transparent;
+}
+
+.nav-item span,
+.nav-item i {
+    color: inherit;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.nav-item.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border-left-color: #fff;
+    font-weight: 600;
+}
+
+.nav-item i {
+    font-size: 20px;
+}
+
+/* ========== CONTENIDO CENTRAL ========== */
+.main-content {
+    margin-left: 220px;
+    margin-right: 280px;
+    flex: 1;
+    min-height: 100vh;
+    padding: 32px;
+}
+
+/* ========== BARRA LATERAL DERECHA ========== */
+.right-panel {
+    width: 280px;
+    background: transparent;
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(13px);
+    -webkit-backdrop-filter: blur(13px);
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    overflow-y: auto;
+}
+
+/* Secciones del panel derecho */
+.panel-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.panel-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+}
+
+/* Botones del panel derecho */
+.panel-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.panel-btn i {
+    font-size: 18px;
+    color: #fff;
+}
+
+.panel-btn span {
+    color: #fff;
+}
+
+.panel-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateX(-3px);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+    .right-panel {
+        width: 240px;
+    }
+
+    .main-content {
+        margin-right: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .right-panel {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-left: none;
+        border-top: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .main-content {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    body {
+        flex-direction: column;
+    }
+}
