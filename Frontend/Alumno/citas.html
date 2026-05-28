@@ -11,6 +11,53 @@
 <body>
     <!-- Sidebar Dinámico -->
     <div id="sidebar-container" data-menu="alumno"></div>
+        <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <button class="toggle-btn">
+                <i class="ri-layout-right-line"></i>
+            </button>
+            <div class="header-title">
+                <h1>Agendar citas</h1>
+            </div>
+        </header>
+                <!-- Content Area -->
+        <section class="content-area">
+            <div class="glass-form-container">
+                <form id="FormCitas">
+                    <div class="input-box">
+                        <label for="nombre">Nombre Completo</label>
+                        <input type="text" id="nombre" placeholder="Nombre Completo" required />
+                    </div>
+                    <div class="input-box">
+                        <label for="edad">Edad</label>
+                        <input type="number" id="edad" placeholder="Edad" required />
+                    </div>
+                    <div class="input-box">
+                        <label for="genero">Género</label>
+                        <select id="genero" required>
+                            <option value="">Selecciona Género</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="femenino">Femenino</option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" placeholder="Teléfono" required />
+                    </div>
+                    <div class="input-box">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" placeholder="Correo Electrónico" required />
+                    </div>
+                    <div class="input-box">
+                        <label for="direccion">Dirección</label>
+                        <input type="text" id="direccion" placeholder="Dirección" required />
+                    </div>
+                    <button id="submitRegistro" type="submit" class="btn-submit">Confirmar Registro</button>
+                </form>
+            </div>
+        </section>
+    </main>
     <script src="../script_menu.js"></script>
 </body>
 </html>
