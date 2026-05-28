@@ -10,18 +10,24 @@
 
 body {
     background-color: #0b1a30; /* Very dark navy from the new image */
+    background-image: url('../Image/fondo_completo.png');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     display: flex;
     min-height: 100vh;
 }
 
 /* Sidebar */
 .sidebar {
-    width: 250px;
-    background: #0f2240; /* Sidebar dark blue */
-    border-right: none;
+    width: 280px;
+    background: #0b1a30; /* Fondo azul marino oscuro sólido */
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     flex-direction: column;
-    padding: 20px 0;
+    padding: 40px 20px 40px 20px;
+    z-index: 10;
 }
 
 .sidebar-header {
@@ -36,7 +42,7 @@ body {
     margin-right: 12px;
     background: transparent;
     border: none;
-    color: #cbb26a; /* Gold icon */
+    color: #fff; /* White icon */
     width: auto;
     height: auto;
     display: flex;
@@ -65,7 +71,7 @@ body {
     font-size: 11px;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.5);
-    margin: 20px 20px 10px;
+    margin: 20px 0 10px 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -79,43 +85,42 @@ body {
 }
 
 .sidebar-menu li {
-    padding: 4px 15px;
+    padding: 0;
+    margin-bottom: 12px;
 }
 
 .sidebar-menu a {
     display: flex;
     align-items: center;
-    padding: 12px 15px;
+    padding: 12px 20px;
     text-decoration: none;
-    color: #cbb26a; /* All text gold */
-    border-radius: 0;
+    color: #fff;
     font-size: 15px;
     font-weight: 400;
     transition: all 0.3s ease;
-    border-left: 4px solid transparent;
+    border-left: 3px solid transparent;
 }
 
 .sidebar-menu a i {
     font-size: 20px;
     margin-right: 12px;
-    color: #cbb26a;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .sidebar-menu a:hover {
     background-color: rgba(255, 255, 255, 0.05); 
-    color: #cbb26a;
+    color: #fff;
 }
 
 .sidebar-menu a:hover i {
-    color: #cbb26a;
+    color: #fff;
 }
 
 .sidebar-menu a.active {
     background: transparent;
-    border: none;
-    border-left: 4px solid #cbb26a; /* Gold left border */
-    font-weight: 500;
-    color: #cbb26a;
+    border-left: 3px solid #cbb26a;
+    font-weight: 600;
+    color: #fff;
     box-shadow: none;
 }
 
@@ -162,8 +167,8 @@ body {
 }
 
 .sidebar-footer {
-    padding: 20px;
-    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 20px 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .sidebar-footer a {
@@ -194,12 +199,13 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
+    background: transparent; /* Fondo transparente, el body tiene la imagen */
 }
 
 .top-header {
     height: 80px;
     background: transparent;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: none; /* Quitamos el borde para que no corte el diseño dorado del fondo */
     display: flex;
     align-items: center;
     padding: 0 30px;
@@ -254,13 +260,16 @@ body {
 
 /* Dark Navy & Gold Form Styles */
 .glass-form-container {
-    background: transparent; 
-    border: 1px solid #a68b44; /* Thin gold border */
-    border-radius: 8px;
-    padding: 30px;
+    background: rgba(11, 26, 48, 0.65); 
+    border: 1px solid rgba(203, 178, 106, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 40px;
     width: 100%;
+    max-width: 800px;
     margin: 0 auto;
-    box-shadow: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 .glass-form-container form {
@@ -271,11 +280,10 @@ body {
 
 .glass-form-container h2 {
     font-size: 26px;
-    font-weight: 400;
+    font-weight: 500;
     margin-bottom: 30px;
     text-align: center;
     color: #cbb26a;
-    font-family: 'Times New Roman', Times, serif;
     letter-spacing: 1px;
     text-transform: uppercase;
 }
@@ -300,7 +308,7 @@ body {
     border-radius: 6px;
     padding: 0 15px;
     font-size: 14px;
-    color: #809bbd; /* Light blue/gray text */
+    color: #cbb26a; /* Gold text */
     background: #091b3e; /* Flat dark blue */
     transition: 0.3s ease;
 }
@@ -313,31 +321,38 @@ body {
 }
 
 .input-box select option {
-    color: #000; /* For visibility in dropdown */
+    color: #cbb26a; /* Gold text */
+    background: #0b1a30; /* Dark background */
 }
 
 .input-box input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+    color: #cbb26a; /* Solid gold for maximum visibility */
 }
 
 .btn-submit {
-    background: linear-gradient(90deg, #b88a44 0%, #e8d085 50%, #b88a44 100%);
-    color: #000;
+    background: linear-gradient(135deg, #a68b44, #e8d085);
+    color: #0b1a30;
     width: 100%;
-    height: 40px;
-    border-radius: 20px; /* Pill shape */
-    font-size: 14px;
-    font-weight: 600;
+    height: 50px;
+    border-radius: 25px; /* Pill shape */
+    font-size: 15px;
+    font-weight: 700;
     cursor: pointer;
-    border: none;
-    transition: 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    border: 2px solid transparent;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 15px rgba(203, 178, 106, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.4);
     grid-column: span 2;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
 }
 
 .btn-submit:hover {
-    background: linear-gradient(90deg, #e8d085 0%, #b88a44 50%, #e8d085 100%);
-    transform: translateY(-2px);
+    background: transparent;
+    color: #e8d085;
+    border-color: #e8d085;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(203, 178, 106, 0.5);
 }
 
 .btn-cancel {
@@ -352,14 +367,14 @@ body {
 
 /* Glassmorphism Table Styles */
 .glass-table-container {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-radius: 12px;
+    background: rgba(11, 26, 48, 0.65);
+    border: 1px solid rgba(203, 178, 106, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
     padding: 30px;
     width: 100%;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     overflow-x: auto;
 }
 
