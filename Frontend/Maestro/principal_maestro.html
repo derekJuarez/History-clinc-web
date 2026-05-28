@@ -17,68 +17,8 @@
 <body>
 
     <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="icon">
-                <i class="ri-user-fill"></i>
-            </div>
-            <div class="title-text">
-                <h2>Bienvenido</h2>
-                <span>Panel de Maestro</span>
-            </div>
-        </div>
-
-        <div class="menu-label">Menú Principal</div>
-
-        <nav class="sidebar-menu">
-            <ul>
-                <li>
-                    <a href="#" class="active">
-                        <i class="ri-bar-chart-box-fill"></i>
-                        Conteo de pacientes
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="ri-user-add-fill"></i>
-                        Agregar alumno
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="ri-list-check-2"></i>
-                        Lista de alumnos
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="ri-add-circle-fill"></i>
-                        Nueva Clinica
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="ri-layout-grid-fill"></i>
-                        Ver Clinicas
-                    </a>
-                </li>
-               
-                <li>
-                    <a href="#">
-                        <i class="ri-file-list-3-fill"></i>
-                        Ver historias
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <div class="sidebar-footer">
-            <a href="#">
-                <i class="ri-settings-3-fill"></i>
-                Configuración
-            </a>
-        </div>
-    </aside>
+    <!-- Sidebar Dinámico -->
+    <div id="sidebar-container" data-menu="maestro"></div>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -94,6 +34,8 @@
 
    
     <script src="./maestro_script.js"></script>
+    <!-- Script para cargar el menú dinámico -->
+    <script src="../../script_menu.js"></script>
 </body>
 
 </html>

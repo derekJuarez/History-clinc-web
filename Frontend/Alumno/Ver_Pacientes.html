@@ -10,66 +10,13 @@
     <link rel='stylesheet'
         href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>  
     <!-- Hoja de estilos del dashboard de alumno-->
-    <link rel="stylesheet" href="../../css/alumno.css">
+    <link rel="stylesheet" href="../css/alumno.css">
 </head>
 <body>
 
     <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <div class="icon">
-                <i class="ri-user-fill"></i>
-            </div>
-            <div class="title-text">
-                <h2>Bienvenido</h2>
-                <span>Panel de control</span>
-            </div>
-        </div>
-
-        <div class="menu-label">Menú Principal</div>
-
-        <nav class="sidebar-menu">
-            <ul>
-
-                <li>
-                    <a href="#">
-                        <i class="ri-bar-chart-fill"></i>
-                        Historial clinico
-                    </a>
-                </li>
-                <li class="has-submenu">
-                    <a href="#" class="submenu-toggle">
-                        <i class="ri-group-fill"></i>
-                        Paciente
-                        <i class="ri-arrow-down-s-line dropdown-icon" style="margin-left: auto; margin-right: 0; font-size: 18px;"></i>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="Registro_Paciente.html">Registrar Paciente</a></li>
-                        <li><a href="Ver_Pacientes.html" class="active">Ver Pacientes</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="ri-shopping-cart-fill"></i>
-                        Citas
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="ri-file-list-3-fill"></i>
-                        Reportes
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <div class="sidebar-footer">
-            <a href="#">
-                <i class="ri-settings-3-fill"></i>
-                Configuración
-            </a>
-        </div>
-    </aside>
+    <!-- Sidebar Dinámico -->
+    <div id="sidebar-container" data-menu="alumno"></div>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -99,18 +46,6 @@
         </section>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const submenuToggles = document.querySelectorAll('.submenu-toggle');
-            
-            submenuToggles.forEach(toggle => {
-                toggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const parentLi = this.parentElement;
-                    parentLi.classList.toggle('active');
-                });
-            });
-        });
-    </script>
+    <script src="../script_menu.js"></script>
 </body>
 </html>
