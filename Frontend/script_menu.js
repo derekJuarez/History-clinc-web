@@ -46,7 +46,7 @@ const menuAlumnoHTML = `
             <li>
                 <a href="#">
                     <i class="ri-file-list-3-fill"></i>
-                    Reportes
+                    Informes
                 </a>
             </li>
         </ul>
@@ -69,7 +69,7 @@ const menuMaestroHTML = `
         </div>
         <div class="title-text">
             <h2>Bienvenido</h2>
-            <span>Panel de control</span>
+            <span>Panel de Maestro</span>
         </div>
     </div>
 
