@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Clínicas</title>
+    <!-- Librería de íconos -->
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'>
+    <!-- Tipografía -->
+    <link rel='stylesheet'
+        href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>
+    <!-- Hoja de estilos del dashboard -->
+    <link rel="stylesheet" href="../css/alumno.css">
+</head>
+
+<body>
+
+    <!-- Sidebar Dinámico -->
+    <div id="sidebar-container" data-menu="maestro"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Lista de Clínicas</h1>
+                <p>Panel de administración y Lista de Clínicas</p>
+            </div>
+        </header>
+
+        <section class="content-area">
+            <!-- Contenedor con fondo negro -->
+            <div class="conteo-pacientes-wrapper">
+                <!-- Título principal tipo banner -->
+                <div class="conteo-header-pill main-title-pill">LISTA DE CLÍNICAS</div>
+
+                <div class="conteo-grid">
+                    <!-- Columna: Nombre de Clinica-->
+                    <div class="conteo-column">
+                        <div class="conteo-header-pill">Nombre de Clínica</div>
+                        <div class="conteo-body-box" id="lista-nombres-clinicas">
+                            <!-- Las clínicas se cargarán aquí -->
+                        </div>
+                    </div>
+                    <!-- Columna: Encargados -->
+                    <div class="conteo-column">
+                        <div class="conteo-header-pill">Encargados</div>
+                        <div class="conteo-body-box" id="lista-encargados-clinicas">
+                            <!-- Los encargados se cargarán aquí -->
+                        </div>
+                    </div>
+                    <!-- Columna: Ubicación -->
+                    <div class="conteo-column">
+                        <div class="conteo-header-pill">Ubicación</div>
+                        <div class="conteo-body-box" id="lista-ubicacion-clinicas">
+                            <!-- Las ubicaciones se cargarán aquí -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Script para cargar el menú dinámico -->
+    <script src="../script_menu.js"></script>
+</body>
+
+</html>

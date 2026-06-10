@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Clínicas</title>
+    <!-- Librería de íconos -->
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'>
+    <!-- Tipografía -->
+    <link rel='stylesheet'
+        href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>
+    <!-- Hoja de estilos del dashboard (que tiene el diseño deseado) -->
+    <link rel="stylesheet" href="../css/alumno.css">
+</head>
+
+<body>
+
+    <!-- Sidebar Dinámico -->
+    <div id="sidebar-container" data-menu="maestro"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Registro de Unidades Clínicas</h1>
+                <p>Panel de administración y control de clínicas</p>
+            </div>
+        </header>
+
+        <section class="content-area">
+            <!-- Contenedor con fondo negro y borde morado brillante -->
+            <div class="conteo-pacientes-wrapper">
+                <!-- Título principal tipo banner -->
+                <div class="conteo-header-pill main-title-pill">REGISTRO DE UNIDADES CLINICAS</div>
+
+                <form id="registro-clinica-form" style="margin-top: 24px;">
+                    <!-- Distribución en 3 columnas iguales -->
+                    <div class="conteo-grid">
+                        <!-- Columna: Nombre de Clínica -->
+                        <div class="conteo-column">
+                            <div class="conteo-header-pill">Nombre de Clinica</div>
+                            <input type="text" id="nombre-clinica" class="clinica-input" required>
+                        </div>
+                        <!-- Columna: Encargado -->
+                        <div class="conteo-column">
+                            <div class="conteo-header-pill">Encargado</div>
+                            <input type="text" id="encargado-clinica" class="clinica-input" required>
+                        </div>
+                        <!-- Columna: Ubicación -->
+                        <div class="conteo-column">
+                            <div class="conteo-header-pill">Ubicación</div>
+                            <input type="text" id="ubicacion-clinica" class="clinica-input" required>
+                        </div>
+                    </div>
+
+                    <!-- Botón Confirmar centrado -->
+                    <div class="submit-container"
+                        style="display: flex; justify-content: center; margin-top: 35px; width: 100%;">
+                        <button type="submit" class="btn-submit"
+                            style="width: auto; padding: 0 50px; grid-column: auto;">Confirmar Registro</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Script para cargar el menú dinámico (debe ir primero) -->
+    <script src="../script_menu.js"></script>
+    <!-- Script para comportamiento específico -->
+    <script src="./nueva_clinica.js"></script>
+</body>
+
+</html>

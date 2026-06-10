@@ -4,19 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Maestro</title>
+    <title>Lista de Alumnos</title>
     <!-- Librería de íconos -->
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'>
     <!-- Tipografía -->
     <link rel='stylesheet'
         href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>
-    <!-- Hoja de estilos del dashboard de alumno (que tiene el diseño deseado) -->
+    <!-- Hoja de estilos del dashboard -->
     <link rel="stylesheet" href="../css/alumno.css">
 </head>
 
 <body>
 
-    <!-- Sidebar -->
     <!-- Sidebar Dinámico -->
     <div id="sidebar-container" data-menu="maestro"></div>
 
@@ -24,40 +23,47 @@
     <main class="main-content">
         <!-- Top Header -->
         <header class="top-header">
-            <div class="conteo de pacientes ">
-
-                <p>Monitoreo y Conteo de Pacientes por Alumno</p>
+            <div class="header-title">
+                <h1>Lista de Alumnos</h1>
+                <p>Panel de control y Lista de Alumnos</p>
             </div>
         </header>
 
-
         <section class="content-area">
-            <div class="conteo-pacientes">
+            <!-- Contenedor con fondo negro -->
+            <div class="conteo-pacientes-wrapper">
+                <!-- Título principal tipo banner -->
+                <div class="conteo-header-pill main-title-pill">LISTA DE ALUMNOS</div>
+
                 <div class="conteo-grid">
-                    <!-- Columna: Nombre del Alumno -->
+                    <!-- Columna: Nombre -->
                     <div class="conteo-column">
                         <div class="conteo-header-pill">Nombre del Alumno</div>
-
+                        <div class="conteo-body-box" id="lista-nombres">
+                            <!-- Los alumnos se cargarán aquí -->
+                        </div>
                     </div>
-                    <!-- Columna: Clinica -->
+                    <!-- Columna: Matrícula -->
                     <div class="conteo-column">
-                        <div class="conteo-header-pill">Clinica</div>
-
+                        <div class="conteo-header-pill">Matrícula</div>
+                        <div class="conteo-body-box" id="lista-matriculas">
+                            <!-- Las matrículas se cargarán aquí -->
+                        </div>
                     </div>
-                    <!-- Columna: Pacientes -->
+                    <!-- Columna: Clínica -->
                     <div class="conteo-column">
-                        <div class="conteo-header-pill">Pacientes</div>
-
+                        <div class="conteo-header-pill">Unidad Clínica</div>
+                        <div class="conteo-body-box" id="lista-clinicas">
+                            <!-- Las clínicas se cargarán aquí -->
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-
     <!-- Script para cargar el menú dinámico (debe ir primero) -->
     <script src="../script_menu.js"></script>
-    <script src="./maestro_script.js"></script>
 </body>
 
 </html>

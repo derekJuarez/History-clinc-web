@@ -194,6 +194,24 @@ body {
     color: rgba(255, 255, 255, 0.7);
 }
 
+/* Botón de Cerrar Sesión */
+.logout-btn {
+    margin-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 14px !important;
+    color: rgba(255, 100, 100, 0.85) !important;
+    transition: all 0.3s ease;
+}
+
+.logout-btn i {
+    color: rgba(255, 100, 100, 0.85) !important;
+}
+
+.logout-btn:hover {
+    background-color: rgba(220, 38, 38, 0.15) !important;
+    color: #ff6b6b !important;
+}
+
 /* Main Content */
 .main-content {
     flex: 1;
@@ -416,4 +434,110 @@ body {
 
 .pacientes-table tbody tr:last-child td {
     border-bottom: none;
+}
+
+/* ==========================================================================
+   ESTILOS PERSONALIZADOS PARA EL CONTEO DE PACIENTES (MAESTRO)
+   ========================================================================== */
+
+/* Contenedor con fondo negro sin borde */
+.conteo-pacientes-wrapper {
+    background-color: #000000;
+    border-radius: 16px;
+    padding: 35px 25px;
+    max-width: 950px;
+    margin: 20px auto;
+}
+
+/* Distribución en 3 columnas iguales */
+.conteo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+/* Columnas */
+.conteo-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Cabeceras tipo píldora (gris oscuro y bordes redondeados) */
+.conteo-header-pill {
+    background-color: #4b5563; /* Gris medio/oscuro */
+    color: #ffffff;
+    font-weight: 500;
+    text-align: center;
+    padding: 12px 20px;
+    border-radius: 14px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+/* Bloques contenedores grises redondeados para los datos */
+.conteo-body-box {
+    background-color: #374151; /* Gris oscuro para el cuerpo */
+    border-radius: 18px;
+    padding: 18px;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Filas/ítems de datos individuales */
+.conteo-data-item {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 14px;
+    color: #f3f4f6;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+}
+
+/* Efecto hover interactivo */
+.conteo-data-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Estilos para el Registro de Clínicas */
+.clinica-input {
+    background-color: #4b5563; /* Mismo color gris que el conteo-header-pill */
+    border: none;
+    border-radius: 14px;
+    height: 48px;
+    padding: 0 20px;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: center;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.clinica-input:focus {
+    background-color: #374151; /* Un tono más oscuro */
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
+    outline: none;
+}
+
+.clinica-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.main-title-pill {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 16px !important;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
 }
