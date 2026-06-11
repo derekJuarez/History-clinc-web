@@ -39,7 +39,7 @@ const menuAlumnoHTML = `
             </li>
             <li>
                 <a href="citas.html">
-                    <i class="ri-shopping-cart-fill"></i>
+                    <i class="ri-calendar-event-fill"></i>
                     Citas
                 </a>
             </li>
@@ -52,11 +52,19 @@ const menuAlumnoHTML = `
         </ul>
     </nav>
 
-    <div class="sidebar-footer">
-        <a href="#">
-            <i class="ri-settings-3-fill"></i>
+    <div class="sidebar-footer has-submenu">
+        <a href="#" class="submenu-toggle">
+            <i class="ri-settings-fill"></i>
             Configuración
+            <i class="ri-arrow-up-s-line dropdown-icon" style="margin-left: auto; margin-right: 0; font-size: 18px;"></i>
         </a>
+        <ul class="submenu">
+            <li>
+                <a href="#" onclick="localStorage.removeItem('token'); window.location.href='../login.html';">
+                    <i class="ri-logout-box-r-line"></i> Cerrar Sesión
+                </a>
+            </li>
+        </ul>
     </div>
 </aside>
 `;
@@ -122,11 +130,19 @@ const menuMaestroHTML = `
         </ul>
     </nav>
 
-    <div class="sidebar-footer">
-        <a href="#">
-            <i class="ri-settings-3-fill"></i>
+<div class="sidebar-footer has-submenu">
+        <a href="#" class="submenu-toggle">
+            <i class="ri-settings-fill"></i>
             Configuración
+            <i class="ri-arrow-up-s-line dropdown-icon" style="margin-left: auto; margin-right: 0; font-size: 18px;"></i>
         </a>
+        <ul class="submenu">
+            <li>
+                <a href="#" onclick="localStorage.removeItem('token'); window.location.href='../login.html';">
+                    <i class="ri-logout-box-r-line"></i> Cerrar Sesión
+                </a>
+            </li>
+        </ul>
     </div>
 </aside>
 `;
@@ -149,17 +165,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const newSidebar = document.getElementById('sidebar');
         
         if (newSidebar) {
-            // Lógica para el submenú del alumno
-            if (menuType === 'alumno') {
-                const submenuToggles = newSidebar.querySelectorAll('.submenu-toggle');
-                submenuToggles.forEach(toggle => {
-                    toggle.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const parentLi = this.parentElement;
-                        parentLi.classList.toggle('active');
-                    });
+            // Lógica para los submenús
+            const submenuToggles = newSidebar.querySelectorAll('.submenu-toggle');
+            submenuToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const parentLi = this.parentElement;
+                    parentLi.classList.toggle('active');
                 });
-            }
+            });
 
             // Resaltar la página actual automáticamente
             const currentUrl = window.location.pathname.split('/').pop();
