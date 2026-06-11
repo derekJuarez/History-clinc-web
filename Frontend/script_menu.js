@@ -86,33 +86,33 @@ const menuMaestroHTML = `
     <nav class="sidebar-menu">
         <ul>
             <li>
-                <a href="#" class="active">
+                <a href="principal_maestro.html">
                     <i class="ri-bar-chart-box-fill"></i>
                     Conteo de pacientes
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="agregar_alumno.html">
                     <i class="ri-user-add-fill"></i>
                     Agregar alumno
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="lista_alumnos.html">
                     <i class="ri-list-check-2"></i>
                     Lista de alumnos
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="nueva_clinica.html">
                     <i class="ri-add-circle-fill"></i>
-                    Nueva sección
+                    Nueva CLinica
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="lista_clinicas.html">
                     <i class="ri-layout-grid-fill"></i>
-                    Ver secciones
+                    Ver clínicas
                 </a>
             </li>
             <li>
@@ -147,13 +147,13 @@ const menuMaestroHTML = `
 </aside>
 `;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('sidebar-container');
-    
+
     if (container) {
         // Obtenemos qué menú cargar según el atributo data-menu
         const menuType = container.getAttribute('data-menu');
-        
+
         // Inyectamos el HTML correspondiente directamente (sin usar fetch)
         if (menuType === 'alumno') {
             container.outerHTML = menuAlumnoHTML;
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Buscamos el nuevo sidebar en el DOM
         const newSidebar = document.getElementById('sidebar');
-        
+
         if (newSidebar) {
             // Lógica para los submenús
             const submenuToggles = newSidebar.querySelectorAll('.submenu-toggle');
@@ -178,10 +178,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Resaltar la página actual automáticamente
             const currentUrl = window.location.pathname.split('/').pop();
             const links = newSidebar.querySelectorAll('a');
-            
+
             links.forEach(link => {
                 link.classList.remove('active');
-                
+
                 const href = link.getAttribute('href');
                 if (href === currentUrl || (currentUrl === '' && href === 'dashboard.html')) {
                     link.classList.add('active');
@@ -195,3 +195,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+// Función de logout global
+function logout() {
+    localStorage.removeItem('token');
+    window.location.href = '/'; // Redirige a la página de inicio (Registro/Login)
+}

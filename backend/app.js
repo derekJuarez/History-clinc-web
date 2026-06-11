@@ -30,7 +30,7 @@ app.use(express.static(join(__dirname, '../Frontend'))); // Servir archivos est√
 
 //ruta base
 app.get('/', (req, res) => {
-    res.sendFile(join(__dirname, '../Frontend/login.html'));
+    res.sendFile(join(__dirname, '../Frontend/Registro.html'));
 });
 
 app.use('/api/auth', authRoutes); // Rutas de autenticaci√≥n

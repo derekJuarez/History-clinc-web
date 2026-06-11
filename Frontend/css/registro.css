@@ -1,0 +1,149 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style-type: none;
+    border: none;
+    outline: none;
+    font-family: Poppins, sans-serif;
+    color: #fff;
+}
+
+body {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("../Image/bg.png"); /* Mismo fondo que el login */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Tarjeta contenedora con el mismo diseño glassmorphism del login */
+.register-container {
+    width: 450px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(13px);
+    -webkit-backdrop-filter: blur(13px);
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 40px 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Título de la tarjeta (si decides agregar un h2) */
+.register-container h2 {
+    font-size: 38px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Fila doble de campos (Nombre y Apellido) */
+.row-names {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+
+.row-names .input-field {
+    width: 50%;
+}
+
+/* Contenedor de inputs con icono */
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+/* Iconos de entrada posicionados de forma absoluta dentro del input */
+.input-group .input-icon {
+    position: absolute;
+    top: 50%;
+    left: 18px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #fff;
+    pointer-events: none;
+}
+
+/* Espaciado del texto en los inputs que tienen icono en la izquierda */
+.input-group .input-field {
+    padding-left: 50px;
+}
+
+/* Inputs de estilo glassmorphic (iguales al login) */
+.input-field {
+    background: transparent;
+    width: 100%;
+    height: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    padding: 0 20px;
+    font-size: 16px;
+    color: #fff;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-field::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+}
+
+.input-field:focus {
+    border-color: #fff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+/* Contenedor del botón alineado al centro */
+.submit-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 5px;
+}
+
+/* Botón Submit del estilo del login (fondo blanco, texto azul oscuro) */
+.btn-submit {
+    background: #fff;
+    color: #0a2862; /* Azul marino del login */
+    padding: 0 45px;
+    border-radius: 30px;
+    font-size: 16px;
+    height: 45px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+    background: #e6e6e6;
+    transform: translateY(-1px);
+}
+
+/* Redirección a Login */
+.Login-box {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.Login-box a {
+    font-weight: 600;
+    color: #fff;
+}
+
+.Login-box a:hover {
+    text-decoration: underline;
+}
