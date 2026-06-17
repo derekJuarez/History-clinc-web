@@ -15,17 +15,26 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
             body: JSON.stringify({ matricula, contraseña }),
         });
 
-    const { data } = await response.json();
+    const result = await response.json();
+    const errorContainer = document.getElementById("error-message");
 
     if (response.ok) {
-        localStorage.setItem('token', data.token);
+        // Ocultar mensaje de error si existía
+        errorContainer.style.display = "none";
+        
+        localStorage.setItem('token', result.data.token);
 
-        if (data.rol === 1) {
+        if (result.data.rol === 1) {
             window.location.href = 'Maestro/principal_maestro.html';
-        } else if (data.rol === 2) {
+        } else if (result.data.rol === 2) {
             window.location.href = 'Alumno/dashboard.html';
         } else {
-            alert('Rol desconocido');
+            errorContainer.textContent = 'Rol desconocido';
+            errorContainer.style.display = "block";
         }
-    } 
+    } else {
+        // Si hay error (contraseña incorrecta, no encontrado, validación)
+        errorContainer.textContent = result.message || "Error al iniciar sesión";
+        errorContainer.style.display = "block";
+    }
 });

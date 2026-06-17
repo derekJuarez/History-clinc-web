@@ -9,6 +9,7 @@ import { join } from 'path';
 import authRoutes from './routes/auth.routes.js';
 import alumnoRoutes from './routes/alumno.routes.js';
 import clinicaRoutes from './routes/clinica.routes.js';
+import pacienteRoutes from './routes/paciente.routes.js';
 
 
 //archivos frontend
@@ -37,5 +38,17 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);     // Rutas de autenticación
 app.use('/api/alumnos', alumnoRoutes); // Rutas de alumnos
 app.use('/api/clinicas', clinicaRoutes); // Rutas de clínicas
+app.use('/api/paciente', pacienteRoutes); // Rutas de paciente
+
+// Middleware para manejar rutas no encontradas
+app.use((req, res) => {
+    res.status(404).json({ message: 'Ruta no encontrada' });
+});
+
+// Middleware para manejar errores
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Error interno del servidor' });
+});
 
 export default app;

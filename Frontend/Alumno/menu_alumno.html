@@ -52,9 +52,17 @@
     </nav>
 
     <div class="sidebar-footer">
-        <a href="#">
+        <a href="#" class="submenu-toggle">
             <i class="ri-settings-3-fill"></i>
             Configuración
+            <i class="ri-arrow-up-s-line dropdown-icon" style="margin-left: auto; margin-right: 0; font-size: 18px;"></i>
         </a>
+        <ul class="submenu">
+            <li>
+                <a href="#" onclick="localStorage.removeItem('token'); window.location.href='../login.html';">
+                    <i class="ri-logout-box-r-line"></i> Cerrar Sesión
+                </a>
+            </li>
+        </ul>
     </div>
 </aside>

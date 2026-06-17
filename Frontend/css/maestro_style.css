@@ -1,224 +1,421 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    text-decoration: none;
-    list-style-type: none;
-    border: none;
-    outline: none;
-    font-family: Poppins, sans-serif;
+    font-family: 'Poppins', sans-serif;
     color: #fff;
 }
 
 body {
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    background-image: url("../../Image/bg1.png");
-    background-size: cover;
+    background-color: #0b1a30; /* Very dark navy from the new image */
+    background-image: url('../Image/fondo_completo.png');
+    background-size: 100% 100%;
     background-position: center;
+    background-repeat: no-repeat;
     background-attachment: fixed;
+    display: flex;
+    min-height: 100vh;
 }
 
-/* Botón de menú (hamburguesa) */
-.menu-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border-radius: 8px;
-    padding: 8px 12px;
-    cursor: pointer;
-    z-index: 101;
-    transition: all 0.25s ease;
-}
-
-.menu-btn i {
-    font-size: 24px;
-    color: #fff;
-}
-
-.menu-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: scale(1.05);
-}
-
-/* ========== SIDEBAR IZQUIERDO ========== */
+/* Sidebar */
 .sidebar {
-    width: 220px;
-    background: transparent;
-    border-right: 2px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(13px);
-    -webkit-backdrop-filter: blur(13px);
+    width: 280px;
+    background: #0b1a30; /* Fondo azul marino oscuro sólido */
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     flex-direction: column;
-    padding: 24px 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    z-index: 100;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    padding: 40px 20px 40px 20px;
+    z-index: 10;
 }
 
-.sidebar.active {
-    transform: translateX(0);
-}
-
-/* Imagen de perfil */
-.sidebar-profile {
+.sidebar-header {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    padding: 10px 20px 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0 20px 20px;
+    border-bottom: none;
 }
 
-.profile-img-wrapper {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.1);
+.sidebar-header .icon {
+    font-size: 24px;
+    margin-right: 12px;
+    background: transparent;
+    border: none;
+    color: #fff; /* White icon */
+    width: auto;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
 }
 
-.profile-img-wrapper i {
-    font-size: 32px;
-    color: rgba(255, 255, 255, 0.5);
-}
-
-.profile-name {
-    font-size: 13px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.7);
-    min-height: 18px;
-}
-
-/* Navegación del sidebar */
-.sidebar-nav {
+.sidebar-header .title-text {
     display: flex;
     flex-direction: column;
-    padding: 20px 0;
+}
+
+.sidebar-header h2 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #cbb26a; /* Gold text */
+    line-height: 1.2;
+}
+
+.sidebar-header span {
+    font-size: 12px;
+    color: #fff; /* White */
+}
+
+.menu-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 20px 0 10px 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sidebar-menu {
     flex: 1;
 }
 
-.nav-item {
+.sidebar-menu ul {
+    list-style: none;
+}
+
+.sidebar-menu li {
+    padding: 0;
+    margin-bottom: 12px;
+}
+
+.sidebar-menu a {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 14px 22px;
-    color: rgba(255, 255, 255, 0.6);
+    padding: 12px 20px;
     text-decoration: none;
-    font-size: 14px;
+    color: #fff;
+    font-size: 15px;
     font-weight: 400;
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
     border-left: 3px solid transparent;
 }
 
-.nav-item span,
-.nav-item i {
-    color: inherit;
-}
-
-.nav-item:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
-}
-
-.nav-item.active {
-    background: rgba(255, 255, 255, 0.12);
-    color: #fff;
-    border-left-color: #fff;
-    font-weight: 600;
-}
-
-.nav-item i {
+.sidebar-menu a i {
     font-size: 20px;
+    margin-right: 12px;
+    color: rgba(255, 255, 255, 0.7);
 }
 
-/* ========== CONTENIDO CENTRAL ========== */
-.main-content {
-    margin-left: 220px;
-    margin-right: 280px;
-    flex: 1;
-    min-height: 100vh;
-    padding: 32px;
+.sidebar-menu a:hover {
+    background-color: rgba(255, 255, 255, 0.05); 
+    color: #fff;
 }
 
-/* ========== BARRA LATERAL DERECHA ========== */
-.right-panel {
-    width: 280px;
+.sidebar-menu a:hover i {
+    color: #fff;
+}
+
+.sidebar-menu a.active {
     background: transparent;
-    border-left: 2px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(13px);
-    -webkit-backdrop-filter: blur(13px);
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100vh;
-    padding: 28px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-    overflow-y: auto;
-}
-
-/* Secciones del panel derecho */
-.panel-section {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.panel-title {
-    font-size: 13px;
+    border-left: 3px solid #cbb26a;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.5);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 4px;
+    color: #fff;
+    box-shadow: none;
 }
 
-/* Botones del panel derecho */
-.panel-btn {
+.sidebar-menu a.active i {
+    color: #cbb26a; /* Gold icon */
+}
+
+/* Submenu Styles */
+.submenu {
+    display: none;
+    list-style: none;
+    padding-left: 20px; /* Indent submenu */
+    margin-top: 5px;
+}
+
+.submenu li {
+    padding: 0;
+}
+
+.submenu a {
+    font-size: 13px;
+    padding: 8px 15px 8px 10px;
+    color: rgba(255, 255, 255, 0.7);
+    background-color: transparent;
+}
+
+.submenu a:hover {
+    color: #D4AF37;
+    background-color: rgba(212, 175, 55, 0.1); /* Gold hover for submenu */
+}
+
+/* Toggle Submenu visibility */
+.has-submenu.active .submenu {
+    display: block;
+}
+
+/* Rotate icon when active */
+.has-submenu.active > a > .dropdown-icon {
+    transform: rotate(180deg);
+}
+
+.dropdown-icon {
+    transition: transform 0.3s ease;
+}
+
+.sidebar-footer {
+    padding: 20px 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-footer a {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 12px 18px;
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 30px;
-    color: #fff;
     text-decoration: none;
+    color: #fff;
     font-size: 14px;
     font-weight: 400;
-    transition: all 0.25s ease;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
-.panel-btn i {
+.sidebar-footer a:hover {
+    background-color: rgba(0, 45, 98, 0.3); /* Dark blue hover on gold background */
+    color: #fff;
+}
+
+.sidebar-footer a i {
     font-size: 18px;
+    margin-right: 12px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: transparent; /* Fondo transparente, el body tiene la imagen */
+}
+
+.top-header {
+    height: 80px;
+    background: transparent;
+    border-bottom: none; /* Quitamos el borde para que no corte el diseño dorado del fondo */
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.toggle-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 18px;
+    cursor: pointer;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    margin-right: 20px;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background: rgba(212, 175, 55, 0.15);
+    color: #D4AF37;
+    border-color: rgba(212, 175, 55, 0.4);
+}
+
+.header-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-title h1 {
+    font-size: 22px;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.2;
+}
+
+.header-title p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 4px;
+}
+
+.content-area {
+    padding: 30px;
+    flex: 1;
+    background: transparent;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+/* Dark Navy & Gold Form Styles */
+.glass-form-container {
+    background: rgba(11, 26, 48, 0.65); 
+    border: 1px solid rgba(203, 178, 106, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 40px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.glass-form-container form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.glass-form-container h2 {
+    font-size: 26px;
+    font-weight: 500;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #cbb26a;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.input-box {
+    margin-bottom: 0; /* Remove margin since grid gap handles spacing */
+}
+
+.input-box label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #fff; /* White labels */
+    margin-left: 0;
+}
+
+.input-box input, 
+.input-box select {
+    width: 100%;
+    height: 45px; 
+    border: 1px solid #a68b44; /* Gold border */
+    border-radius: 6px;
+    padding: 0 15px;
+    font-size: 14px;
+    color: #cbb26a; /* Gold text */
+    background: #091b3e; /* Flat dark blue */
+    transition: 0.3s ease;
+}
+
+.input-box input:focus, 
+.input-box select:focus {
+    border-color: #cbb26a;
+    outline: none;
+    box-shadow: 0 0 5px rgba(203, 178, 106, 0.5);
+}
+
+.input-box select option {
+    color: #cbb26a; /* Gold text */
+    background: #0b1a30; /* Dark background */
+}
+
+.input-box input::placeholder {
+    color: #cbb26a; /* Solid gold for maximum visibility */
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, #a68b44, #e8d085);
+    color: #0b1a30;
+    width: 100%;
+    height: 50px;
+    border-radius: 25px; /* Pill shape */
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 15px rgba(203, 178, 106, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.4);
+    grid-column: span 2;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    background: transparent;
+    color: #e8d085;
+    border-color: #e8d085;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(203, 178, 106, 0.5);
+}
+
+.btn-cancel {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #cbb26a;
+    border-radius: 20px;
+    height: 40px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Glassmorphism Table Styles */
+.glass-table-container {
+    background: rgba(11, 26, 48, 0.65);
+    border: 1px solid rgba(203, 178, 106, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 30px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    overflow-x: auto;
+}
+
+.glass-table-container h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 25px;
     color: #fff;
 }
 
-.panel-btn span {
+.pacientes-table {
+    width: 100%;
+    border-collapse: collapse;
     color: #fff;
+    text-align: left;
 }
 
-.panel-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.4);
-    transform: translateX(-3px);
+.pacientes-table th, 
+.pacientes-table td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pacientes-table th {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.pacientes-table tbody tr {
+    transition: background 0.3s ease;
+}
+
+.pacientes-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.pacientes-table tbody tr:last-child td {
+    border-bottom: none;
 }
 
 /* ========== RESPONSIVE ========== */
