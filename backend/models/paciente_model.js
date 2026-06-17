@@ -22,3 +22,20 @@ export async function registrarPaciente(pacienteData) {
         throw error;
     }
 }
+
+export async function obtenerPacientes() {
+    const [rows] = await db.query(`
+        SELECT 
+            u.ID_Matricula AS curp, 
+            u.Name AS nombre, 
+            p.Fecha_Nacimiento AS fecha_nacimiento, 
+            p.Sexo AS sexo, 
+            u.Telefono AS telefono, 
+            u.Correo AS correo
+        FROM usuarios u
+        INNER JOIN paciente p ON u.ID_Matricula = p.Id_Usuario
+        WHERE u.Id_Rol = 3
+    `);
+
+    return rows;
+}

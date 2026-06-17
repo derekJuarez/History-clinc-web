@@ -1,8 +1,11 @@
 import { Router } from 'express';
-import { registrar } from '../controllers/paciente.controller.js';
+import { registrar, obtenerTodos } from '../controllers/paciente.controller.js';
 
 const pacienteRouter = Router();
 
 pacienteRouter.post('/registrar', registrar);
+pacienteRouter.get('/Todos', obtenerTodos);
+
 
 export default pacienteRouter;
+
