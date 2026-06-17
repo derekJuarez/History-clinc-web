@@ -40,9 +40,9 @@ body {
 .flip-front, .flip-back {
     width: 100%;
     backface-visibility: hidden;
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(13px);
+    background: rgba(0, 0, 0, 0.15); /* Tintado muy sutil para leer el texto */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 30px 35px;
@@ -58,6 +58,22 @@ body {
     font-size: 38px;
     font-weight: 700;
     text-align: center;
+}
+
+#error-message {
+    color: #ff4d4d;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 15px;
+    display: none;
+    background: rgba(255, 77, 77, 0.1);
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 77, 77, 0.3);
+}
+
+#flip-toggle {
+    display: none;
 }
 
 .input-box, .form-group, .from-group {
