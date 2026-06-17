@@ -186,9 +186,76 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             });
+
+            // ========== RESPONSIVE: Botón hamburguesa y overlay para móvil ==========
+            setupMobileToggle(newSidebar);
         }
     }
 });
+
+/**
+ * Configura el botón hamburguesa y overlay para pantallas pequeñas.
+ * Se inyecta dinámicamente un botón de menú y un overlay oscuro.
+ */
+function setupMobileToggle(sidebar) {
+    // Crear botón hamburguesa
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'sidebar-toggle-btn';
+    toggleBtn.id = 'sidebar-toggle-btn';
+    toggleBtn.setAttribute('aria-label', 'Abrir menú');
+    toggleBtn.innerHTML = '<i class="ri-menu-line"></i>';
+    document.body.appendChild(toggleBtn);
+
+    // Crear overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    overlay.id = 'sidebar-overlay';
+    document.body.appendChild(overlay);
+
+    // Función para abrir sidebar
+    function openSidebar() {
+        sidebar.classList.add('mobile-open');
+        overlay.classList.add('active');
+        toggleBtn.innerHTML = '<i class="ri-close-line"></i>';
+        toggleBtn.setAttribute('aria-label', 'Cerrar menú');
+    }
+
+    // Función para cerrar sidebar
+    function closeSidebar() {
+        sidebar.classList.remove('mobile-open');
+        overlay.classList.remove('active');
+        toggleBtn.innerHTML = '<i class="ri-menu-line"></i>';
+        toggleBtn.setAttribute('aria-label', 'Abrir menú');
+    }
+
+    // Evento: click en hamburguesa
+    toggleBtn.addEventListener('click', function () {
+        if (sidebar.classList.contains('mobile-open')) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    });
+
+    // Evento: click en overlay cierra sidebar
+    overlay.addEventListener('click', closeSidebar);
+
+    // Evento: cerrar sidebar al hacer click en un enlace del menú (en móvil)
+    sidebar.querySelectorAll('a:not(.submenu-toggle)').forEach(link => {
+        link.addEventListener('click', function () {
+            if (window.innerWidth <= 768) {
+                closeSidebar();
+            }
+        });
+    });
+
+    // Cerrar sidebar si se redimensiona a desktop
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) {
+            closeSidebar();
+        }
+    });
+}
 
 // Función de logout global
 function logout() {

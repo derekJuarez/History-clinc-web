@@ -9,10 +9,11 @@ export const findUserByMatricula = async (matricula) => {
 
 // Insertar un nuevo usuario en la base de datos
 export const createUser = async ({ nombre, apellido, matricula, email, telefono, contraseña, id_rol }) => {
-    const [result] = await db.query(
-        'INSERT INTO usuarios (NOMBRE, APELLIDO, ID_MATRICULA, EMAIL, TELEFONO, CONTRASEÑA, Id_Rol) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [nombre, apellido, matricula, email, telefono, contraseña, id_rol]
+    const fullName = `${nombre} ${apellido}`.trim();
+    await db.query(
+        'INSERT INTO usuarios (ID_MATRICULA, NAME, TELEFONO, CONTRASEÑA, CORREO, Id_Rol) VALUES (?, ?, ?, ?, ?, ?)',
+        [matricula, fullName, telefono, contraseña, email, id_rol]
     );
-    return result.insertId;
+    return matricula;
 };
 

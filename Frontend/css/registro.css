@@ -38,6 +38,13 @@ body {
     gap: 20px;
 }
 
+#registerForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
 /* Título de la tarjeta (si decides agregar un h2) */
 .register-container h2 {
     font-size: 38px;
@@ -93,6 +100,11 @@ body {
     transition: all 0.3s ease;
 }
 
+.input-field option {
+    color: #000;
+    background: #fff;
+}
+
 .input-field::placeholder {
     color: rgba(255, 255, 255, 0.8);
     font-size: 16px;
@@ -146,4 +158,83 @@ body {
 
 .Login-box a:hover {
     text-decoration: underline;
+}
+
+/* ========== RESPONSIVE - TABLET ========== */
+@media (max-width: 768px) {
+    .register-container {
+        width: 90%;
+        max-width: 450px;
+        padding: 30px 28px;
+    }
+
+    .register-container h2 {
+        font-size: 32px;
+    }
+
+    body {
+        padding: 20px;
+    }
+}
+
+/* ========== RESPONSIVE - MÓVIL ========== */
+@media (max-width: 480px) {
+    .register-container {
+        width: 95%;
+        max-width: 100%;
+        padding: 28px 18px;
+        gap: 16px;
+    }
+
+    #registerForm {
+        gap: 16px;
+    }
+
+    .register-container h2 {
+        font-size: 26px;
+        margin-bottom: 5px;
+    }
+
+    /* Apilar nombre y apellido en columna en móvil */
+    .row-names {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .row-names .input-field {
+        width: 100%;
+    }
+
+    .input-field {
+        height: 46px;
+        font-size: 14px;
+        padding: 0 16px;
+    }
+
+    .input-field::placeholder {
+        font-size: 14px;
+    }
+
+    .input-group .input-field {
+        padding-left: 44px;
+    }
+
+    .input-group .input-icon {
+        left: 14px;
+        font-size: 16px;
+    }
+
+    .btn-submit {
+        height: 42px;
+        font-size: 15px;
+        padding: 0 35px;
+    }
+
+    .Login-box {
+        font-size: 13px;
+    }
+
+    body {
+        padding: 16px;
+    }
 }

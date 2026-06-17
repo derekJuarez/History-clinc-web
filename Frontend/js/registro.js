@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:3001/api/auth/register';
+const apiUrl = '/api/auth/register';
 
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -8,6 +8,7 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
     const matricula = document.getElementById('matricula').value.trim();
     const email = document.getElementById('email').value.trim();
     const telefono = document.getElementById('telefono').value.trim();
+    const id_rol = parseInt(document.getElementById('rol').value, 10);
     const contraseña = document.getElementById('contraseña').value;
     const confirmarContraseña = document.getElementById('confirmarContraseña').value;
 
@@ -30,7 +31,7 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
                 email,
                 telefono,
                 contraseña,
-                id_rol: 2  // Rol por defecto: Alumno (2). Maestro = 1
+                id_rol
             }),
         });
 

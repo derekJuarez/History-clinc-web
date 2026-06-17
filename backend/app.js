@@ -7,6 +7,8 @@ import { dirname } from 'path';
 import { join } from 'path';
 // Importar rutas
 import authRoutes from './routes/auth.routes.js';
+import alumnoRoutes from './routes/alumno.routes.js';
+import clinicaRoutes from './routes/clinica.routes.js';
 
 
 //archivos frontend
@@ -32,6 +34,8 @@ app.get('/', (req, res) => {
     res.sendFile(join(__dirname, '../Frontend/Registro.html'));
 });
 
-app.use('/api/auth', authRoutes); // Rutas de autenticación
+app.use('/api/auth', authRoutes);     // Rutas de autenticación
+app.use('/api/alumnos', alumnoRoutes); // Rutas de alumnos
+app.use('/api/clinicas', clinicaRoutes); // Rutas de clínicas
 
 export default app;

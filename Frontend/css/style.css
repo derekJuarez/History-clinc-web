@@ -210,3 +210,78 @@ input::-webkit-contacts-auto-fill-button {
     margin: 0;
     padding: 0;
 }
+
+/* ========== RESPONSIVE - TABLET ========== */
+@media (max-width: 768px) {
+    .flip-card {
+        width: 350px;
+    }
+
+    .flip-front, .flip-back {
+        padding: 25px 28px;
+    }
+
+    .flip-front h2, .flip-back h2 {
+        font-size: 32px;
+    }
+
+    .input-box, .form-group, .from-group {
+        margin: 22px 0;
+    }
+
+    body {
+        padding: 20px;
+    }
+}
+
+/* ========== RESPONSIVE - MÓVIL ========== */
+@media (max-width: 480px) {
+    .flip-card {
+        width: 100%;
+        max-width: 340px;
+    }
+
+    .flip-front, .flip-back {
+        padding: 24px 20px;
+    }
+
+    .flip-front h2, .flip-back h2 {
+        font-size: 26px;
+    }
+
+    .input-box input, .input-box select,
+    .form-group input, .form-group select,
+    .from-group input, .from-group select {
+        height: 48px;
+        font-size: 14px;
+        padding: 0 16px;
+    }
+
+    input::placeholder {
+        font-size: 14px;
+    }
+
+    .input-box, .form-group, .from-group {
+        margin: 18px 0;
+    }
+
+    .btn-submit {
+        height: 42px;
+        font-size: 15px;
+    }
+
+    .remember {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .button {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    body {
+        padding: 16px;
+    }
+}

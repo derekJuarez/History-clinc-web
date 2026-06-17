@@ -3,7 +3,7 @@ import { successResponse, errorResponse } from '../utils/helpers.util.js';
 
 // Controlador: La lógica real que se ejecuta al llamar al endpoint
 export const login = async (req, res) => {
-    const { matricula, password } = req.body;
+    const { matricula, contraseña } = req.body;
 
     try {
         // 1. Buscar en la base de datos
@@ -14,7 +14,7 @@ export const login = async (req, res) => {
         }
 
         // 2. Aquí verificarías la contraseña (ej. usando bcrypt, omitido por simplicidad)
-        if (password !== user.contraseña) { 
+        if (contraseña !== user.CONTRASEÑA) { 
             return errorResponse(res, 401, 'Contraseña incorrecta');
         }
 
@@ -22,10 +22,10 @@ export const login = async (req, res) => {
         return successResponse(res, 200, 'Inicio de sesión exitoso', {
 
             matricula: user.ID_MATRICULA,
-            nombre: user.NOMBRE,
+            nombre: user.NAME,
             rol: user.Id_Rol,
             telefono: user.TELEFONO,
-            email: user.EMAIL
+            email: user.CORREO
             // Aquí enviarías también tu JWT
         });
 

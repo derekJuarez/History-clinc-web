@@ -4,62 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Registro</title>
+    <!--Librería de iconos-->
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'>
+    <!--Tipografía-->
+    <link rel='stylesheet'
+        href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>
+    <!--Hoja de estilos-->
+    <link rel='stylesheet' href='./css/registro.css'>
 </head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width initial-scale=1.0">
-
-<title>Registro</title>
-<!--Librería de iconos-->
-<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'>
-<!--Tipografía-->
-<link rel='stylesheet'
-    href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>
-<!--Hoja de estilos-->
-<link rel='stylesheet' href='./css/registro.css'>
 
 <body>
     <div class="register-container">
         <form id="registerForm">
-        <!-- Nombre Y Apellido (Fila Doble) -->
-        <div class="row-names">
-            <input type="text" id="nombre" class="input-field" placeholder="Nombre" required>
-            <input type="text" id="apellido" class="input-field" placeholder="Apellido" required>
-        </div>
-        <!-- Matricula -->
-        <div class="input-group">
-            <i class="ri-user-line input-icon"></i>
-            <input type="text" id="matricula" class="input-field" placeholder="Matricula" required>
-        </div>
-        <!-- Email -->
-        <div class="input-group">
-            <i class="ri-mail-line input-icon"></i>
-            <input type="email" id="email" class="input-field" placeholder="Email" required>
-        </div>
-        <!--Telefono de usuario-->
-        <div class="input-group">
-            <i class="ri-phone-line input-icon"></i>
-            <input type="tel" id="telefono" class="input-field" placeholder="Telefono" required>
-        </div>
-        <!-- Contraseña -->
-        <div class="input-group">
-            <i class="ri-lock-line input-icon"></i>
-            <input type="password" id="contraseña" class="input-field" placeholder="Contraseña" required>
-        </div>
-        <!-- Confirmar contraseña -->
-        <div class="input-group">
-            <i class="ri-lock-unlock-line input-icon"></i>
-            <input type="password" id="confirmarContraseña" class="input-field" placeholder="Confirmar Contraseña" required>
-        </div>
+            <!-- Nombre Y Apellido (Fila Doble) -->
+            <div class="row-names">
+                <input type="text" id="nombre" class="input-field" placeholder="Nombre" required>
+                <input type="text" id="apellido" class="input-field" placeholder="Apellido" required>
+            </div>
+            <!-- Matricula -->
+            <div class="input-group">
+                <i class="ri-user-line input-icon"></i>
+                <input type="text" id="matricula" class="input-field" placeholder="Matricula" required>
+            </div>
+            <!-- Email -->
+            <div class="input-group">
+                <i class="ri-mail-line input-icon"></i>
+                <input type="email" id="email" class="input-field" placeholder="Email" required>
+            </div>
+            <!--Telefono de usuario-->
+            <div class="input-group">
+                <i class="ri-phone-line input-icon"></i>
+                <input type="tel" id="telefono" class="input-field" placeholder="Telefono" required>
+            </div>
+            <!-- Rol (Alumno / Maestro) -->
+            <div class="input-group">
+                <i class="ri-shield-user-line input-icon"></i>
+                <select id="rol" class="input-field" required>
+                    <option value="" disabled selected hidden>Selecciona tu Rol</option>
+                    <option value="2">Alumno</option>
+                    <option value="1">Maestro</option>
+                </select>
+            </div>
+            <!-- Contraseña -->
+            <div class="input-group">
+                <i class="ri-lock-line input-icon"></i>
+                <input type="password" id="contraseña" class="input-field" placeholder="Contraseña" required>
+            </div>
+            <!-- Confirmar contraseña -->
+            <div class="input-group">
+                <i class="ri-lock-unlock-line input-icon"></i>
+                <input type="password" id="confirmarContraseña" class="input-field" placeholder="Confirmar Contraseña"
+                    required>
+            </div>
 
-        <!-- Botón Confirmar (Para finalizar el registro) -->
-        <div class="submit-container">
-            <button type="submit" class="btn-submit">Confirmar</button>
-        </div>
-        <!-- Botón Para redireccionar a Login-->
-        <div class="Login-box">
-            <p>¿Ya tienes una cuenta?<a href="login.html"> Iniciar Sesión</a></p>
-        </div>
+            <!-- Botón Confirmar (Para finalizar el registro) -->
+            <div class="submit-container">
+                <button type="submit" class="btn-submit">Confirmar</button>
+            </div>
+            <!-- Botón Para redireccionar a Login-->
+            <div class="Login-box">
+                <p>¿Ya tienes una cuenta?<a href="login.html"> Iniciar Sesión</a></p>
+            </div>
         </form>
 
 
