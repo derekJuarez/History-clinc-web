@@ -23,6 +23,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
         errorContainer.style.display = "none";
         
         localStorage.setItem('token', result.data.token);
+        localStorage.setItem('matricula', result.data.matricula);
 
         if (result.data.rol === 1) {
             window.location.href = 'Maestro/principal_maestro.html';

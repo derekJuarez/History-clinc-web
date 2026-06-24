@@ -14,18 +14,18 @@ export const login = async (req, res) => {
         }
 
         // 2. Aquí verificarías la contraseña (ej. usando bcrypt, omitido por simplicidad)
-        if (contraseña !== user.CONTRASEÑA) { 
+        if (contraseña !== user.Contraseña) { 
             return errorResponse(res, 401, 'Contraseña incorrecta');
         }
 
         // 3. Responder exitosamente
         return successResponse(res, 200, 'Inicio de sesión exitoso', {
 
-            matricula: user.ID_MATRICULA,
-            nombre: user.NAME,
+            matricula: user.ID_Matricula,
+            nombre: user.Name,
             rol: user.Id_Rol,
-            telefono: user.TELEFONO,
-            email: user.CORREO
+            telefono: user.Telefono,
+            email: user.Correo
             // Aquí enviarías también tu JWT
         });
 

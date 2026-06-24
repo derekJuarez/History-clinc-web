@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario de Citas</title>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>
+    <link rel="stylesheet" href="../css/alumno.css">
+</head>
+<body>
+        <div id="sidebar-container" data-menu="alumno"></div>
+        <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <button class="toggle-btn">
+                <i class="ri-layout-right-line"></i>
+            </button>
+            <div class="header-title">
+                <h1>Calendario de Citas</h1>
+            </div>
+        </header>
+        <!-- Content Area -->
+        <section class="content-area">
+            <div class="glass-form-container">
+                <table id="citasTable">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Tipo de Cita</th>
+                            <th>Ubicación</th>
+                            <th>Paciente</th>
+                            <th>Motivo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Las citas se agregarán dinámicamente aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+            
+        <script src="../script_menu.js"></script>
+</body>
+
+</html>

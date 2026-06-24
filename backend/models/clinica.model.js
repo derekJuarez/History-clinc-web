@@ -2,7 +2,7 @@ import db from '../config/db.js';
 
 // Obtener todas las clínicas
 export const getAllClinicas = async () => {
-    const [rows] = await db.query('SELECT * FROM clinicas ORDER BY ID_CLINICA DESC');
+    const [rows] = await db.query('SELECT * FROM clinicas');
     return rows;
 };
 

@@ -1,10 +1,10 @@
 import db from '../config/db.js';
 
 export async function registrarPaciente(pacienteData) {
-    const { curp, nombre, telefono, email, fecha_nacimiento, sexo, estado_civil, 
+    const { curp, nombre, telefono, email, fecha_nacimiento, sexo, estado_civil,
         ocupacion, residencia, tel_emergencia, contacto_familiar } = pacienteData;
-        // Se toma las primeras 4 letras de la CURP y se concatena con la fecha de nacimiento para generar la contraseña
-        const passwordGenerada = curp.substring(0, 4) + fecha_nacimiento; 
+    // Se toma las primeras 4 letras de la CURP y se concatena con la fecha de nacimiento para generar la contraseña
+    const passwordGenerada = curp.substring(0, 4) + fecha_nacimiento;
     try {
         // Insertar en tabla usuarios
         const [userResult] = await db.query(
@@ -25,7 +25,8 @@ export async function registrarPaciente(pacienteData) {
 
 export async function obtenerPacientes() {
     const [rows] = await db.query(`
-        SELECT 
+        SELECT
+            p.Id_Paciente AS id_paciente, 
             u.ID_Matricula AS curp, 
             u.Name AS nombre, 
             p.Fecha_Nacimiento AS fecha_nacimiento, 

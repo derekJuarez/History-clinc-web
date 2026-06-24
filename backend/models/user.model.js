@@ -17,3 +17,7 @@ export const createUser = async ({ nombre, apellido, matricula, email, telefono,
     return matricula;
 };
 
+export const obtenerTodosMaestros = async () => {
+    const [rows] = await db.query('SELECT ID_Matricula, Name FROM usuarios WHERE Id_Rol = 1');
+    return rows;
+};

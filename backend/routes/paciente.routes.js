@@ -6,7 +6,7 @@ const pacienteRouter = Router();
 //post para registrar paciente
 pacienteRouter.post('/registrar', registrar);
 //get para obtener todos los pacientes
-pacienteRouter.get('/Todos', obtenerTodos);
+pacienteRouter.get('/todos', obtenerTodos);
 
 
 export default pacienteRouter;

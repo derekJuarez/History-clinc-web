@@ -1,7 +1,7 @@
 import { registrarCita } from '../models/citas.model.js';
 import { successResponse, errorResponse } from '../utils/helpers.util.js';
 
-export async function registrarCita(req, res) {
+export async function registrar(req, res) {
     try {
         const citaData = req.body;
         const result = await registrarCita(citaData);
