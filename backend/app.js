@@ -43,6 +43,7 @@ app.use('/api/clinicas', clinicaRoutes); // Rutas de clínicas
 app.use('/api/paciente', pacienteRoutes); // Rutas de paciente
 app.use('/api/citas', citasRoutes); // Rutas de citas
 app.use('/api/maestros', maestroRoutes); // Rutas de maestros
+
 // Middleware para manejar rutas no encontradas
 app.use((req, res) => {
     res.status(404).json({ message: 'Ruta no encontrada' });

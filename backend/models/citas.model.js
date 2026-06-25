@@ -14,3 +14,32 @@ export async function registrarCita(citaData) {
         throw error;
     }
 }
+
+
+export async function obtenerCitas() {
+    try {
+        const [ rows ] = await db.query( `
+            SELECT c.*, u.Name AS Nombre_Paciente From citas c
+            INNER JOIN paciente p ON c.Id_Paciente = p.Id_Paciente
+            INNER JOIN usuarios u ON p.Id_Usuario = u.Id_Matricula
+            `);
+        return rows;
+    } catch (error) {
+        console.error('Error al obtener citas:', error);
+        throw error;
+    }
+}
+
+export async function modificarCita(Id_cita, nuevosDatos) {
+    const {fecha,hora,estatus} = nuevosDatos;
+    try {
+        const [result] = await db.query(
+            `UPDATE citas SET Fecha = ?, Hora = ?, Estatus = ? WHERE Id_Cita = ?`,
+            [fecha, hora, estatus, Id_cita]
+        );
+        return result.affectedRows > 0;
+    } catch (error) {
+        console.error('Error al modificar cita:', error);
+        throw error;
+    }
+}
