@@ -7,10 +7,12 @@
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'>
     <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>
     <link rel="stylesheet" href="../css/alumno.css">
+    <link rel="stylesheet" href="../css/calendario.css">
 </head>
 <body>
         <div id="sidebar-container" data-menu="alumno"></div>
         <main class="main-content">
+
         <!-- Top Header -->
         <header class="top-header">
             <button class="toggle-btn">
@@ -22,26 +24,90 @@
         </header>
         <!-- Content Area -->
         <section class="content-area">
-            <div class="glass-form-container">
-                <table id="citasTable">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Hora</th>
-                            <th>Tipo de Cita</th>
-                            <th>Ubicación</th>
-                            <th>Paciente</th>
-                            <th>Motivo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Las citas se agregarán dinámicamente aquí -->
-                    </tbody>
-                </table>
+            <div class="glass-calendar-container">
+                <div class="calendar-header">
+                    <button class="btn-nav" id="prev-month"><i class="ri-arrow-left-s-line"></i></button>
+                    <h2 id="month-year">Cargando...</h2>
+                    <button class="btn-nav" id="next-month"><i class="ri-arrow-right-s-line"></i></button>
+                </div>
+                <div class="calendar-weekdays">
+                    <div>Dom</div>
+                    <div>Lun</div>
+                    <div>Mar</div>
+                    <div>Mie</div>
+                    <div>Jue</div>
+                    <div>Vie</div>
+                    <div>Sab</div>
+                </div>
+                <div class="calendar-days" id="calendar-days">
+                    <!-- Los días se generarán dinámicamente con JS -->
+                </div>
             </div>
         </section>
+
+                <!-- Modal para editar cita -->
+        <div id="modal-editar-cita" class="modal-calendario">
+            <div class="modal-content-calendario glass-form-container" style="max-width: 600px;">
+                <span class="close-btn-calendario" id="cerrar-modal">&times;</span>
+                <h2>Detalles de la Cita</h2>
+                
+                <!-- Vista de Tabla -->
+                <div id="vista-tabla-cita">
+                    <table class="cita-table" style="width: 100%; text-align: left; margin-bottom: 20px; border-collapse: collapse; color: #fff;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid rgba(203, 178, 106, 0.4);">
+                                <th style="padding: 10px;">Paciente</th>
+                                <th style="padding: 10px;">Fecha</th>
+                                <th style="padding: 10px;">Hora</th>
+                                <th style="padding: 10px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="td-paciente" style="padding: 10px;">-</td>
+                                <td id="td-fecha" style="padding: 10px;">-</td>
+                                <td id="td-hora" style="padding: 10px;">-</td>
+                                <td style="padding: 10px; display: flex; gap: 8px;">
+                                    <button id="btn-modificar" class="btn-action btn-edit" title="Modificar Fecha/Hora"><i class="ri-edit-line"></i></button>
+                                    <button id="btn-completar" class="btn-action btn-complete" title="Marcar como Completa"><i class="ri-check-line"></i></button>
+                                    <button id="btn-cancelar" class="btn-action btn-delete" title="Cancelar Cita"><i class="ri-close-line"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Formulario oculto para Modificar Fecha y Hora -->
+                <form id="FormEditarCita" style="display: none;">
+                    <h3 style="color: #cbb26a; margin-bottom: 15px; text-align: center; font-size: 18px;">Reprogramar Cita</h3>
+                    <input type="hidden" id="edit-id-cita">
+                    <input type="hidden" id="edit-estatus"> <!-- Guardamos el estatus actual invisiblemente -->
+                    
+                    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                        <div class="input-box" style="flex: 1;">
+                            <label for="edit-fecha">Nueva Fecha</label>
+                            <input type="date" id="edit-fecha" required style="width: 100%;" />
+                        </div>
+                        
+                        <div class="input-box" style="flex: 1;">
+                            <label for="edit-hora">Nueva Hora</label>
+                            <input type="time" id="edit-hora" required style="width: 100%;" />
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" id="btn-volver-tabla" class="btn-submit" style="background: #4b5563; flex: 1;">Volver</button>
+                        <button type="submit" class="btn-submit" style="flex: 1;">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        </main>
             
         <script src="../script_menu.js"></script>
+        <script src="calendario.js"></script>
 </body>
 
 </html>
