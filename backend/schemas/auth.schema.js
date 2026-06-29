@@ -17,7 +17,8 @@ export const registerSchema = z.object({
         email: z.string().email('El email no es válido'),
         telefono: z.string().min(10, 'El teléfono debe tener al menos 10 dígitos'),
         contraseña: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
-        id_rol: z.number().int().positive('El rol es requerido')
+        id_rol: z.number().int().positive('El rol es requerido'),
+        id_maestro: z.string().nullable().optional()
     })
 });
 

@@ -6,19 +6,13 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "nodemon backend/server.js",
+    "ngrok": "node start-ngrok.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
 
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "11.2.2",
-      "onFail": "download"
-    }
-  },
   "type": "module",
   "dependencies": {
     "cors": "^2.8.6",

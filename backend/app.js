@@ -12,6 +12,7 @@ import clinicaRoutes from './routes/clinica.routes.js';
 import pacienteRoutes from './routes/paciente.routes.js';
 import citasRoutes from './routes/citas.routes.js';
 import maestroRoutes from './routes/maestro.routes.js';
+import docenteRoutes from './routes/docente.routes.js';
 
 
 //archivos frontend
@@ -43,6 +44,7 @@ app.use('/api/clinicas', clinicaRoutes); // Rutas de clínicas
 app.use('/api/paciente', pacienteRoutes); // Rutas de paciente
 app.use('/api/citas', citasRoutes); // Rutas de citas
 app.use('/api/maestros', maestroRoutes); // Rutas de maestros
+app.use('/api/docentes', docenteRoutes); // Rutas de docentes asesores
 // Middleware para manejar rutas no encontradas
 app.use((req, res) => {
     res.status(404).json({ message: 'Ruta no encontrada' });

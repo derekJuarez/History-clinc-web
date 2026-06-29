@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Docente Asesor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="../css/alumno.css">
+</head>
+<body>
+    <div id="sidebar-container" data-menu="admin"></div>
+    <main class="main-content">
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Registrar Docente Asesor</h1>
+                <p>Agregar un nuevo docente supervisor al sistema</p>
+            </div>
+        </header>
+        <section class="content-area">
+            <div class="glass-form-container">
+                <h2>Registro de Docente Asesor</h2>
+                <form id="registro-docente-form">
+                    <fieldset class="form-section">
+                        <legend><span class="step-number">1</span> DATOS PERSONALES</legend>
+                        <div class="form-section-content">
+                            <div class="input-box">
+                                <label for="nombre-docente">Nombre(s)</label>
+                                <input type="text" id="nombre-docente" placeholder="Nombre(s)" required>
+                            </div>
+                            <div class="input-box">
+                                <label for="apellido-docente">Apellido(s)</label>
+                                <input type="text" id="apellido-docente" placeholder="Apellido(s)" required>
+                            </div>
+                            <div class="input-box" style="grid-column: span 2;">
+                                <label for="matricula-docente">Matricula (ID)</label>
+                                <input type="text" id="matricula-docente" placeholder="Matricula (ID) - Ej. M-12345" required>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-section">
+                        <legend><span class="step-number">2</span> DATOS DE CONTACTO Y ACCESO</legend>
+                        <div class="form-section-content">
+                            <div class="input-box">
+                                <label for="email-docente">Correo Electronico</label>
+                                <input type="email" id="email-docente" placeholder="Correo Electronico" required>
+                            </div>
+                            <div class="input-box">
+                                <label for="telefono-docente">Telefono</label>
+                                <input type="tel" id="telefono-docente" placeholder="Telefono (10 digitos)" minlength="10" maxlength="15" required>
+                            </div>
+                            <div class="input-box" style="grid-column: span 2;">
+                                <label for="contrasena-docente">Contrasena</label>
+                                <input type="password" id="contrasena-docente" placeholder="Contrasena" minlength="6" required>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <button type="submit" class="btn-submit">Registrar Docente</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <script src="../script_menu.js"></script>
+    <script src="./agregar_docente.js"></script>
+</body>
+</html>

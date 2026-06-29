@@ -1,17 +1,11 @@
-// ========== Cargar alumnos del maestro en el dashboard ==========
 document.addEventListener('DOMContentLoaded', async () => {
-    const listaNombres = document.getElementById('lista-nombres-alumnos');
-    const listaClinicas = document.getElementById('lista-clinicas-alumnos');
-    const listaPacientes = document.getElementById('lista-pacientes-alumnos');
+    const listaNombres = document.getElementById('lista-nombres');
+    const listaMatriculas = document.getElementById('lista-matriculas');
+    const listaClinicas = document.getElementById('lista-clinicas');
     const teacherMatricula = localStorage.getItem('matricula');
 
     if (!teacherMatricula) {
         console.error('No se encontró la matrícula del maestro en localStorage');
-        return;
-    }
-
-    // Si no estamos en la página del dashboard, no ejecutar
-    if (!listaNombres || !listaClinicas || !listaPacientes) {
         return;
     }
 
@@ -21,20 +15,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (response.ok && result.success) {
             listaNombres.innerHTML = '';
+            listaMatriculas.innerHTML = '';
             listaClinicas.innerHTML = '';
-            listaPacientes.innerHTML = '';
 
             if (result.data.length === 0) {
                 listaNombres.innerHTML = '<div class="conteo-body-box-item">No tienes alumnos asignados</div>';
+                listaMatriculas.innerHTML = '<div class="conteo-body-box-item">-</div>';
                 listaClinicas.innerHTML = '<div class="conteo-body-box-item">-</div>';
-                listaPacientes.innerHTML = '<div class="conteo-body-box-item">-</div>';
                 return;
             }
 
             result.data.forEach(alumno => {
                 listaNombres.innerHTML += `<div class="conteo-body-box-item">${alumno.nombre}</div>`;
-                listaClinicas.innerHTML += `<div class="conteo-body-box-item">${alumno.clinica || 'Sin clínica'}</div>`;
-                listaPacientes.innerHTML += `<div class="conteo-body-box-item">${alumno.pacientes || 0}</div>`;
+                listaMatriculas.innerHTML += `<div class="conteo-body-box-item">${alumno.matricula}</div>`;
+                listaClinicas.innerHTML += `<div class="conteo-body-box-item">${alumno.clinica || 'Sin clínica registrada'}</div>`;
             });
         } else {
             console.error('Error al obtener alumnos:', result.message);

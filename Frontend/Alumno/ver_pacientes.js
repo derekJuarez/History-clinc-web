@@ -14,7 +14,7 @@ function calcular_edad(fecha_nacimiento) {
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         // Realizar la solicitud al backend para obtener los pacientes
-        const response = await fetch('http://localhost:3001/api/paciente/todos');
+        const response = await fetch('/api/paciente/todos');
         const result = await response.json();
 
         const tablaPacientes = document.getElementById('TablaPacientes');

@@ -1,15 +1,29 @@
-document.getElementById('registro-alumno-form').addEventListener('submit', function (e) {
+document.getElementById('registro-alumno-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const nombre = document.getElementById('nombre-alumno').value;
-    const matricula = document.getElementById('matricula-alumno').value;
-    const unidad_clinica = document.getElementById('unidad-clinica-alumno').value;
+    const nombre = document.getElementById('nombre-alumno').value.trim();
+    const matricula = document.getElementById('matricula-alumno').value.trim();
+    const unidad_clinica = document.getElementById('unidad-clinica-alumno').value.trim();
 
-    console.log('Registrando alumno:', { nombre, matricula, unidad_clinica });
+    try {
+        const response = await fetch('/api/alumnos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ nombre, matricula, unidad_clinica })
+        });
 
-    // Alerta de confirmación
-    alert(`¡Alumno registrado con éxito!\n\nNombre: ${nombre}\nMatricula: ${matricula}\nUnidad Clinica: ${unidad_clinica}`);
+        const result = await response.json();
 
-    // Limpiar formulario
-    this.reset();
+        if (response.ok) {
+            alert('¡Alumno registrado con éxito!');
+            this.reset();
+        } else {
+            alert(`Error: ${result.message}`);
+        }
+    } catch (error) {
+        console.error('Error al registrar alumno:', error);
+        alert('No se pudo conectar con el servidor.');
+    }
 });

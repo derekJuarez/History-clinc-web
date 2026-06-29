@@ -1,10 +1,13 @@
 import { Router } from 'express';
-import { getAlumnos, registrarAlumno, eliminarAlumno } from '../controllers/alumno.controller.js';
+import { getAlumnos, registrarAlumno, eliminarAlumno, getAlumnosPorMaestro } from '../controllers/alumno.controller.js';
 
 const router = Router();
 
 // GET /api/alumnos - Obtener todos los alumnos
 router.get('/', getAlumnos);
+
+// GET /api/alumnos/maestro/:matricula - Obtener alumnos de un maestro
+router.get('/maestro/:matricula', getAlumnosPorMaestro);
 
 // POST /api/alumnos - Registrar un nuevo alumno
 router.post('/', registrarAlumno);

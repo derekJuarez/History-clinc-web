@@ -4,7 +4,7 @@ const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'clinica_odontologia',
+    database: 'clinica_odontologica',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0

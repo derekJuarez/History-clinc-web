@@ -1,4 +1,4 @@
-import { getAllAlumnos, findAlumnoByMatricula, createAlumno, deleteAlumno } from '../models/alumno.model.js';
+import { getAllAlumnos, findAlumnoByMatricula, createAlumno, deleteAlumno, obtenerAlumnosDeMaestro } from '../models/alumno.model.js';
 import { successResponse, errorResponse } from '../utils/helpers.util.js';
 
 // Obtener todos los alumnos
@@ -49,5 +49,22 @@ export const eliminarAlumno = async (req, res) => {
     } catch (error) {
         console.error(error);
         return errorResponse(res, 500, 'Error interno del servidor');
+    }
+};
+
+// Obtener los alumnos de un maestro
+export const getAlumnosPorMaestro = async (req, res) => {
+    const { matricula } = req.params;
+
+    if (!matricula) {
+        return errorResponse(res, 400, 'La matrícula del maestro es requerida');
+    }
+
+    try {
+        const alumnos = await obtenerAlumnosDeMaestro(matricula);
+        return successResponse(res, 200, 'Alumnos del maestro obtenidos exitosamente', alumnos);
+    } catch (error) {
+        console.error('Error al obtener alumnos del maestro:', error);
+        return errorResponse(res, 500, 'Error interno del servidor al obtener alumnos');
     }
 };

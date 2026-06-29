@@ -8,16 +8,24 @@ export const findUserByMatricula = async (matricula) => {
 };
 
 // Insertar un nuevo usuario en la base de datos
-export const createUser = async ({ nombre, apellido, matricula, email, telefono, contraseña, id_rol }) => {
+export const createUser = async ({ nombre, apellido, matricula, email, telefono, contraseña, id_rol, id_maestro = null }) => {
     const fullName = `${nombre} ${apellido}`.trim();
     await db.query(
-        'INSERT INTO usuarios (ID_MATRICULA, NAME, TELEFONO, CONTRASEÑA, CORREO, Id_Rol) VALUES (?, ?, ?, ?, ?, ?)',
-        [matricula, fullName, telefono, contraseña, email, id_rol]
+        'INSERT INTO usuarios (ID_MATRICULA, NAME, TELEFONO, CONTRASEÑA, CORREO, Id_Rol, ID_MAESTRO) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [matricula, fullName, telefono, contraseña, email, id_rol, id_maestro]
     );
     return matricula;
 };
 
 export const obtenerTodosMaestros = async () => {
-    const [rows] = await db.query('SELECT ID_Matricula, Name FROM usuarios WHERE Id_Rol = 1');
+    const query = `
+        SELECT DISTINCT 
+            u.ID_MATRICULA AS ID_Matricula, 
+            u.NAME AS Name 
+        FROM usuarios u
+        JOIN clinicas c ON c.ENCARGADO = u.NAME
+        WHERE u.Id_Rol = 1
+    `;
+    const [rows] = await db.query(query);
     return rows;
 };

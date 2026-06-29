@@ -29,6 +29,8 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
             window.location.href = 'Maestro/principal_maestro.html';
         } else if (result.data.rol === 2) {
             window.location.href = 'Alumno/dashboard.html';
+        } else if (result.data.rol === 3) {
+            window.location.href = 'Admin/principal_admin.html';
         } else {
             errorContainer.textContent = 'Rol desconocido';
             errorContainer.style.display = "block";

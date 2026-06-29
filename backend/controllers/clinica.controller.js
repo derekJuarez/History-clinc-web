@@ -1,4 +1,4 @@
-import { getAllClinicas, findClinicaByNombre, createClinica, deleteClinica } from '../models/clinica.model.js';
+import { getAllClinicas, getSolicitudesClinicas, findClinicaByNombre, createClinica, deleteClinica, updateEstadoClinica } from '../models/clinica.model.js';
 import { successResponse, errorResponse } from '../utils/helpers.util.js';
 
 // Obtener todas las clínicas
@@ -46,6 +46,41 @@ export const eliminarClinica = async (req, res) => {
     try {
         await deleteClinica(id);
         return successResponse(res, 200, 'Clínica eliminada exitosamente');
+    } catch (error) {
+        console.error(error);
+        return errorResponse(res, 500, 'Error interno del servidor');
+    }
+};
+
+// Obtener solicitudes pendientes
+export const getSolicitudes = async (req, res) => {
+    try {
+        const solicitudes = await getSolicitudesClinicas();
+        return successResponse(res, 200, 'Solicitudes obtenidas', solicitudes);
+    } catch (error) {
+        console.error(error);
+        return errorResponse(res, 500, 'Error interno del servidor');
+    }
+};
+
+// Actualizar estado de clínica (Aceptar/Rechazar)
+export const actualizarEstado = async (req, res) => {
+    const { id } = req.params;
+    const { estado } = req.body;
+
+    if (!estado || !['APROBADO', 'RECHAZADO'].includes(estado.toUpperCase())) {
+        return errorResponse(res, 400, 'Estado inválido');
+    }
+
+    try {
+        if (estado.toUpperCase() === 'RECHAZADO') {
+            // Si se rechaza, eliminar de la BD para que el maestro pueda volver a registrarla
+            await deleteClinica(id);
+            return successResponse(res, 200, 'Clínica rechazada y eliminada exitosamente');
+        } else {
+            await updateEstadoClinica(id, estado.toUpperCase());
+            return successResponse(res, 200, 'Clínica aprobada exitosamente');
+        }
     } catch (error) {
         console.error(error);
         return errorResponse(res, 500, 'Error interno del servidor');

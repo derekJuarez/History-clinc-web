@@ -44,7 +44,14 @@
                     <option value="" disabled selected hidden>Selecciona tu Rol</option>
                     <option value="2">Alumno</option>
                     <option value="1">Maestro</option>
+                    <option value="3">Administrador</option>
                 </select>
+            </div>
+            <!-- Selector de Maestro (Solo visible para Alumnos) -->
+            <div id="maestro-group" class="input-group" style="display: none;">
+                <i class="ri-user-star-line input-icon"></i>
+                <input type="text" id="maestro-search" class="input-field" placeholder="Escribe el nombre de tu Maestro encargado" list="maestros-list" autocomplete="off">
+                <datalist id="maestros-list"></datalist>
             </div>
             <!-- Contraseña -->
             <div class="input-group">

@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitudes de Clinicas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="../css/alumno.css">
+    <style>
+        .glass-table-container h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #cbb26a;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .btn-action {
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0 4px;
+        }
+        .btn-accept { background-color: #10b981; }
+        .btn-accept:hover { background-color: #059669; transform: scale(1.02); }
+        .btn-reject { background-color: #ef4444; }
+        .btn-reject:hover { background-color: #dc2626; transform: scale(1.02); }
+        .btn-action:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+    <div id="sidebar-container" data-menu="admin"></div>
+    <main class="main-content">
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Solicitudes de Registro de Clinicas</h1>
+                <p>Aprobar o rechazar solicitudes enviadas por los maestros</p>
+            </div>
+        </header>
+        <section class="content-area">
+            <div class="glass-table-container">
+                <h2>Solicitudes Pendientes</h2>
+                <table class="pacientes-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre de Clinica</th>
+                            <th>Encargado</th>
+                            <th>Ubicacion</th>
+                            <th style="text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="TablaSolicitudes">
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: #cbb26a; padding: 20px;">
+                                Cargando solicitudes...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <script src="../script_menu.js"></script>
+    <script src="solicitudes_clinicas.js"></script>
+</body>
+</html>

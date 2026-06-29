@@ -57,19 +57,10 @@ const menuAlumnoHTML = `
         </ul>
     </nav>
 
-    <div class="sidebar-footer has-submenu">
-        <a href="#" class="submenu-toggle">
-            <i class="ri-settings-fill"></i>
-            Configuración
-            <i class="ri-arrow-up-s-line dropdown-icon" style="margin-left: auto; margin-right: 0; font-size: 18px;"></i>
+    <div class="sidebar-footer">
+        <a href="#" onclick="logout()" class="logout-btn">
+            <i class="ri-logout-box-r-line"></i> Cerrar Sesión
         </a>
-        <ul class="submenu">
-            <li>
-                <a href="#" onclick="localStorage.removeItem('token'); window.location.href='../login.html';">
-                    <i class="ri-logout-box-r-line"></i> Cerrar Sesión
-                </a>
-            </li>
-        </ul>
     </div>
 </aside>
 `;
@@ -97,12 +88,6 @@ const menuMaestroHTML = `
                 </a>
             </li>
             <li>
-                <a href="agregar_alumno.html">
-                    <i class="ri-user-add-fill"></i>
-                    Agregar alumno
-                </a>
-            </li>
-            <li>
                 <a href="lista_alumnos.html">
                     <i class="ri-list-check-2"></i>
                     Lista de alumnos
@@ -114,18 +99,7 @@ const menuMaestroHTML = `
                     Nueva CLinica
                 </a>
             </li>
-            <li>
-                <a href="lista_clinicas.html">
-                    <i class="ri-layout-grid-fill"></i>
-                    Ver clínicas
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="ri-file-add-fill"></i>
-                    Nueva historia
-                </a>
-            </li>
+
             <li>
                 <a href="#">
                     <i class="ri-file-list-3-fill"></i>
@@ -135,19 +109,67 @@ const menuMaestroHTML = `
         </ul>
     </nav>
 
-<div class="sidebar-footer has-submenu">
-        <a href="#" class="submenu-toggle">
-            <i class="ri-settings-fill"></i>
-            Configuración
-            <i class="ri-arrow-up-s-line dropdown-icon" style="margin-left: auto; margin-right: 0; font-size: 18px;"></i>
+    <div class="sidebar-footer">
+        <a href="#" onclick="logout()" class="logout-btn">
+            <i class="ri-logout-box-r-line"></i> Cerrar Sesión
         </a>
-        <ul class="submenu">
+    </div>
+</aside>
+`;
+
+const menuAdminHTML = `
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="icon">
+            <i class="ri-user-fill"></i>
+        </div>
+        <div class="title-text">
+            <h2>Bienvenido</h2>
+            <span>Panel de Admin</span>
+        </div>
+    </div>
+
+    <div class="menu-label">Menú Principal</div>
+
+    <nav class="sidebar-menu">
+        <ul>
             <li>
-                <a href="#" onclick="localStorage.removeItem('token'); window.location.href='../login.html';">
-                    <i class="ri-logout-box-r-line"></i> Cerrar Sesión
+                <a href="principal_admin.html">
+                    <i class="ri-bar-chart-box-fill"></i>
+                    Panel Principal
+                </a>
+            </li>
+            <li>
+                <a href="agregar_docente.html">
+                    <i class="ri-user-add-fill"></i>
+                    Agregar Docente
+                </a>
+            </li>
+            <li>
+                <a href="lista_docentes.html">
+                    <i class="ri-list-check-2"></i>
+                    Lista de Docentes
+                </a>
+            </li>
+            <li>
+                <a href="solicitudes_clinicas.html">
+                    <i class="ri-hospital-fill"></i>
+                    Solicitudes de Clínicas
+                </a>
+            </li>
+            <li>
+                <a href="lista_clinicas.html">
+                    <i class="ri-hospital-line"></i>
+                    Ver clínicas
                 </a>
             </li>
         </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <a href="#" onclick="logout()" class="logout-btn">
+            <i class="ri-logout-box-r-line"></i> Cerrar Sesión
+        </a>
     </div>
 </aside>
 `;
@@ -164,6 +186,8 @@ document.addEventListener('DOMContentLoaded', function () {
             container.outerHTML = menuAlumnoHTML;
         } else if (menuType === 'maestro') {
             container.outerHTML = menuMaestroHTML;
+        } else if (menuType === 'admin') {
+            container.outerHTML = menuAdminHTML;
         }
 
         // Buscamos el nuevo sidebar en el DOM

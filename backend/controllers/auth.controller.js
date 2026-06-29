@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import { findUserByMatricula, createUser } from '../models/user.model.js';
 import { successResponse, errorResponse } from '../utils/helpers.util.js';
 
@@ -14,19 +15,25 @@ export const login = async (req, res) => {
         }
 
         // 2. Aquí verificarías la contraseña (ej. usando bcrypt, omitido por simplicidad)
-        if (contraseña !== user.Contraseña) { 
+        if (contraseña !== user.CONTRASEÑA) { 
             return errorResponse(res, 401, 'Contraseña incorrecta');
         }
 
+        // Generar JWT
+        const token = jwt.sign(
+            { matricula: user.ID_MATRICULA, rol: user.Id_Rol },
+            'TU_SECRETO_AQUI',
+            { expiresIn: '24h' }
+        );
+
         // 3. Responder exitosamente
         return successResponse(res, 200, 'Inicio de sesión exitoso', {
-
-            matricula: user.ID_Matricula,
-            nombre: user.Name,
+            token,
+            matricula: user.ID_MATRICULA,
+            nombre: user.NAME,
             rol: user.Id_Rol,
-            telefono: user.Telefono,
-            email: user.Correo
-            // Aquí enviarías también tu JWT
+            telefono: user.TELEFONO,
+            email: user.CORREO
         });
 
     } catch (error) {
@@ -37,7 +44,7 @@ export const login = async (req, res) => {
 
 // Controlador para registrar un nuevo usuario
 export const register = async (req, res) => {
-    const { nombre, apellido, matricula, email, telefono, contraseña, id_rol } = req.body;
+    const { nombre, apellido, matricula, email, telefono, contraseña, id_rol, id_maestro } = req.body;
 
     try {
         // 1. Verificar si la matrícula ya está registrada
@@ -47,7 +54,7 @@ export const register = async (req, res) => {
         }
 
         // 2. Crear el usuario en la base de datos
-        const newUserId = await createUser({ nombre, apellido, matricula, email, telefono, contraseña, id_rol });
+        const newUserId = await createUser({ nombre, apellido, matricula, email, telefono, contraseña, id_rol, id_maestro });
 
         // 3. Responder exitosamente
         return successResponse(res, 201, 'Usuario registrado exitosamente', {

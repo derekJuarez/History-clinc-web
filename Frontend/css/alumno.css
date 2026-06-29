@@ -9,15 +9,16 @@
 }
 
 body {
-    background-color: #0b1a30; /* Very dark navy from the new image */
+    background-color: #0b1a30;
     background-image: url('../Image/fondo_completo.png');
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     display: flex;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    height: 100vh;       /* desktop: fijo */
+    overflow: hidden;    /* desktop: sin scroll en body, lo hace .content-area */
 }
 
 /* Sidebar */
@@ -573,7 +574,23 @@ body {
 }
 
 .clinica-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(200, 200, 200, 0.65); /* Gris claro como texto guía */
+    font-style: normal;
+    font-weight: 400;
+}
+
+/* Inputs de dirección: Calle, Colonia, Número y CP */
+.direccion-input {
+    text-align: left;
+    padding-left: 16px;
+    font-size: 13px;
+}
+
+.direccion-input::placeholder {
+    color: #a0a9b8; /* Gris azulado visible como etiqueta guía */
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.3px;
 }
 
 .main-title-pill {
@@ -732,6 +749,23 @@ body {
     body {
         flex-direction: column;
         background-size: cover;
+        height: auto;          /* en movil el body crece con el contenido */
+        min-height: 100vh;
+        overflow-y: auto;      /* habilita scroll vertical en movil */
+        overflow-x: hidden;
+    }
+
+    /* Main content: en movil ocupa lo necesario y permite scroll */
+    .main-content {
+        flex: 1;
+        overflow-y: visible;
+        height: auto;
+    }
+
+    /* Content area: en movil no limita la altura */
+    .content-area {
+        overflow-y: visible;
+        flex: none;
     }
 
     /* Formularios en columna única */
