@@ -21,7 +21,7 @@ const menuAlumnoHTML = `
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="historias.html">
                     <i class="ri-bar-chart-fill"></i>
                     Historial clinico
                 </a>
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Lógica para los submenús
             const submenuToggles = newSidebar.querySelectorAll('.submenu-toggle');
             submenuToggles.forEach(toggle => {
-                toggle.addEventListener('click', function(e) {
+                toggle.addEventListener('click', function (e) {
                     e.preventDefault();
                     const parentLi = this.parentElement;
                     parentLi.classList.toggle('active');

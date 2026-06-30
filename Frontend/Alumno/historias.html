@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historias Clínicas</title>
+    <!-- Bootstrap y fuentes del usuario -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Librería de íconos y Tipografía del Dashboard -->
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'>
+    <link rel='stylesheet'
+        href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>
+
+    <!-- Hoja de estilos del dashboard de alumno -->
+    <link rel="stylesheet" href="../css/alumno.css">
+</head>
+
+<body>
+
+    <!-- Sidebar Dinámico -->
+    <div id="sidebar-container" data-menu="alumno"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <button class="toggle-btn">
+                <i class="ri-layout-right-line"></i>
+            </button>
+            <div class="header-title">
+                <h1>Historial Clínico</h1>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <section class="content-area">
+
+            <nav class="navbar navbar-expand-lg navbar-dark navbar-medical mb-4">
+                <div class="container-fluid px-4">
+
+                    <a class="navbar-brand fw-bold" href="#"><i class="bi bi-heart-pulse-fill me-2"></i> Historia
+                        clinica UMSNH</a>
+                    <div class="d-flex text-white align-items-center">
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container pb-5">
+
+                <div class="glass-form-container mb-4" style="max-width: 800px; margin: 0 auto;">
+                    <h2 style="font-size: 18px; margin-bottom: 20px; text-align: left; color: #fff;">
+                        <i class="bi bi-search me-1"></i> Buscar Paciente
+                    </h2>
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: end;">
+                        <div class="input-box" style="margin: 0;">
+                            <label for="buscarValor">Teléfono o Nombre</label>
+                            <input type="text" id="buscarValor" placeholder="Ej. 4431234567 o Juan Pérez">
+                        </div>
+                        <button class="btn-submit" type="button" onclick="buscarPaciente()" style="width: auto; padding: 0 30px; margin: 0; height: 40px; border-radius: 20px;">
+                            Buscar
+                        </button>
+                    </div>
+                    <div id="statusBusqueda" style="margin-top: 15px; text-align: center; font-size: 13px; color: rgba(255, 255, 255, 0.7);">
+                        Ingresa los datos para localizar el expediente.
+                    </div>
+                </div>
+
+                <div id="contenedorDatos" style="display: none;">
+
+                    <div class="glass-form-container d-flex justify-content-between align-items-center mb-4" style="max-width: 800px; margin: 0 auto; padding: 15px 25px;">
+                        <div>
+                            <h4 class="mb-0 fw-bold text-white" id="resumenNombre">--</h4>
+                            <small style="color: #cbb26a;" id="resumenDetalles">Teléfono: --</small>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge" style="background: #a68b44; color: #0b1a30; font-size: 14px;" id="displayId">--</span><br>
+                            <button class="btn-cancel mt-2" onclick="location.reload()" style="padding: 5px 15px; height: auto;">
+                                <i class="bi bi-x-circle"></i> Cerrar
+                            </button>
+                        </div>
+                    </div>
+
+                    <ul class="nav nav-pills mb-4" id="mainTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="tab-historial" data-bs-toggle="pill"
+                                data-bs-target="#pane-historial" type="button" role="tab">
+                                <i class="bi bi-clock-history me-1"></i> Ver Historial de Visitas
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link bg-success text-white" style="margin-left: 10px;"
+                                id="tab-formulario" data-bs-toggle="pill" data-bs-target="#pane-formulario      "
+                                type="button" role="tab">
+                                <i class="bi bi-plus-circle me-1"></i> Registrar Nueva Consulta
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="mainTabsContent">
+
+                        <div class="tab-pane fade show active" id="pane-historial" role="tabpanel">
+                            <div class="glass-table-container">
+                                <h2 style="text-align: left; font-size: 18px;"><i class="bi bi-journal-text me-2"></i>Consultas Previas</h2>
+                                <div class="table-responsive">
+                                    <table class="pacientes-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha de Visita</th>
+                                                <th>Diagnóstico</th>
+                                                <th>Tratamiento Realizado</th>
+                                                <th>Higiene</th>
+                                                <th class="text-center">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tablaHistorial">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="pane-formulario" role="tabpanel">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-0">
+                                    <form id="formHistoriaClinica" onsubmit="event.preventDefault();">
+
+                                        <div class="px-4 pt-3 bg-white border-bottom">
+                                            <ul class="nav nav-tabs" id="historiaTabs" role="tablist">
+                                                <li class="nav-item"><button class="nav-link active"
+                                                        id="btn-identificacion" data-bs-toggle="tab"
+                                                        data-bs-target="#identificacion" type="button"><i
+                                                            class="bi bi-person-vcard me-1"></i> Identificación</button>
+                                                </li>
+                                                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab"
+                                                        data-bs-target="#antecedentes" type="button"><i
+                                                            class="bi bi-clipboard2-pulse me-1"></i>
+                                                        Antecedentes</button></li>
+                                                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab"
+                                                        data-bs-target="#exploracion" type="button"><i
+                                                            class="bi bi-stethoscope me-1"></i> Exploración</button>
+                                                </li>
+                                                <li class="nav-item"><button class="nav-link text-primary fw-bold"
+                                                        data-bs-toggle="tab" data-bs-target="#odontograma-pane"
+                                                        type="button"><i class="bi bi-teeth me-1"></i>
+                                                        Odontograma</button></li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="tab-content p-4">
+                                            <div class="tab-pane fade show active" id="identificacion" role="tabpanel">
+                                                <div class="row g-4">
+                                                    <div class="col-md-8"><label class="form-label">Nombre Completo
+                                                            <span class="text-danger">*</span></label><input type="text"
+                                                            class="form-control" id="nombre" required></div>
+                                                    <div class="col-md-4"><label class="form-label">Teléfono Móvil <span
+                                                                class="text-danger">*</span></label><input type="tel"
+                                                            class="form-control" id="telefono" required></div>
+                                                    <div class="col-md-3"><label class="form-label">Fecha de
+                                                            Nacimiento</label><input type="date" class="form-control"
+                                                            id="fecha_nac"></div>
+                                                    <div class="col-md-2"><label class="form-label">Edad</label><input
+                                                            type="number" class="form-control bg-light" id="edad"
+                                                            readonly>
+                                                    </div>
+                                                    <div class="col-md-3"><label class="form-label">Sexo</label><select
+                                                            class="form-select" id="sexo">
+                                                            <option value="">Seleccione...</option>
+                                                            <option value="M">Masculino</option>
+                                                            <option value="F">Femenino</option>
+                                                        </select></div>
+                                                    <div class="col-md-4"><label
+                                                            class="form-label">Ocupación</label><input type="text"
+                                                            class="form-control" id="ocupacion"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane fade" id="antecedentes" role="tabpanel">
+                                                <div class="row g-4">
+                                                    <div class="col-md-6"><label class="form-label text-danger"><i
+                                                                class="bi bi-exclamation-triangle-fill me-1"></i>
+                                                            Alergias</label><input type="text"
+                                                            class="form-control border-danger"
+                                                            style="background-color: #fef2f2;" id="alergias"
+                                                            placeholder="Especifique o escriba 'Negadas'"></div>
+                                                    <div class="col-md-6"><label class="form-label">Medicamentos
+                                                            Actuales</label><input type="text" class="form-control"
+                                                            id="medicamentos_actuales"></div>
+                                                    <div class="col-md-3"><label
+                                                            class="form-label">Diabetes</label><select
+                                                            class="form-select" id="diabetes">
+                                                            <option>No</option>
+                                                            <option>Sí</option>
+                                                        </select></div>
+                                                    <div class="col-md-3"><label
+                                                            class="form-label">Hipertensión</label><select
+                                                            class="form-select" id="hipertension">
+                                                            <option>No</option>
+                                                            <option>Sí</option>
+                                                        </select></div>
+                                                    <div class="col-md-3"><label class="form-label">Prob.
+                                                            Cardíacos</label><select class="form-select" id="cardiacos">
+                                                            <option>No</option>
+                                                            <option>Sí</option>
+                                                        </select></div>
+                                                    <div class="col-md-3"><label
+                                                            class="form-label">Embarazo</label><select
+                                                            class="form-select" id="embarazo">
+                                                            <option>No</option>
+                                                            <option>Sí</option>
+                                                        </select></div>
+                                                    <div class="col-12"><label class="form-label">Otros padecimientos o
+                                                            cirugías
+                                                            previas</label><textarea class="form-control"
+                                                            id="otros_padecimientos" rows="2"></textarea></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane fade" id="exploracion" role="tabpanel">
+                                                <div class="row g-4">
+                                                    <div class="col-md-4"><label class="form-label">Higiene
+                                                            Oral</label><select class="form-select" id="higiene">
+                                                            <option>Buena</option>
+                                                            <option>Regular</option>
+                                                            <option>Deficiente</option>
+                                                        </select></div>
+                                                    <div class="col-md-4"><label
+                                                            class="form-label">Hábitos</label><input type="text"
+                                                            class="form-control" id="habitos"
+                                                            placeholder="Bruxismo, Succión, etc."></div>
+                                                    <div class="col-md-4"><label class="form-label">Clasificación Molar
+                                                            /
+                                                            Oclusión</label><input type="text" class="form-control"
+                                                            id="oclusion" placeholder="Ej. Clase I, II, III"></div>
+                                                    <div class="col-12"><label class="form-label">Estado de la ATM
+                                                            (Articulación)</label><input type="text"
+                                                            class="form-control" id="atm"
+                                                            placeholder="Chasquidos, dolor, desviación..."></div>
+                                                    <div class="col-12"><label
+                                                            class="form-label text-warning-emphasis"><i
+                                                                class="bi bi-journal-medical me-1"></i> Motivo de
+                                                            Consulta y
+                                                            Diagnóstico Definitivo</label><textarea
+                                                            class="form-control border-warning-subtle" id="diagnostico"
+                                                            rows="3" required></textarea></div>
+                                                    <div class="col-12"><label
+                                                            class="form-label text-success-emphasis"><i
+                                                                class="bi bi-check2-square me-1"></i> Plan de
+                                                            Tratamiento
+                                                            Realizado / A Realizar</label><textarea
+                                                            class="form-control border-success-subtle"
+                                                            id="plan_treatment" rows="3" required></textarea></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane fade" id="odontograma-pane" role="tabpanel">
+                                                <div class="row g-4">
+                                                    <div class="col-xl-9">
+                                                        <div class="bg-white p-4 border rounded shadow-sm">
+                                                            <div
+                                                                class="text-primary small text-center mb-2 fw-bold letter-spacing-1">
+                                                                ARCADA SUPERIOR</div>
+                                                            <div class="odontograma-arch mb-4" id="arcada-superior">
+                                                            </div>
+                                                            <div
+                                                                class="text-primary small text-center mb-2 fw-bold letter-spacing-1">
+                                                                ARCADA INFERIOR</div>
+                                                            <div class="odontograma-arch" id="arcada-inferior"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-3">
+                                                        <div class="bg-white p-4 border rounded shadow-sm sticky-top"
+                                                            style="top: 20px;">
+                                                            <h6
+                                                                class="fw-bold mb-4 text-dark text-uppercase border-bottom pb-2">
+                                                                <i class="bi bi-palette me-2"></i>Herramientas
+                                                            </h6>
+                                                            <div class="form-check mb-3 p-3 rounded"
+                                                                style="background: #f8fafc; border: 1px solid #e2e8f0;">
+                                                                <input
+                                                                    class="form-check-input opcion-diagnostico ms-1 mt-1"
+                                                                    type="radio" name="diag" id="diagSano" value="sano"
+                                                                    data-color="white" checked>
+                                                                <label class="form-check-label ms-2" for="diagSano">⚪
+                                                                    Sano /
+                                                                    Limpiar</label>
+                                                            </div>
+                                                            <div class="form-check mb-3 p-3 rounded"
+                                                                style="background: #fef2f2; border: 1px solid #fecaca;">
+                                                                <input
+                                                                    class="form-check-input opcion-diagnostico ms-1 mt-1"
+                                                                    type="radio" name="diag" id="diagCaries"
+                                                                    value="caries" data-color="#ef4444">
+                                                                <label class="form-check-label ms-2 text-danger fw-bold"
+                                                                    for="diagCaries">🔴 Caries</label>
+                                                            </div>
+                                                            <div class="form-check mb-3 p-3 rounded"
+                                                                style="background: #eff6ff; border: 1px solid #bfdbfe;">
+                                                                <input
+                                                                    class="form-check-input opcion-diagnostico ms-1 mt-1"
+                                                                    type="radio" name="diag" id="diagResina"
+                                                                    value="resina" data-color="#3b82f6">
+                                                                <label
+                                                                    class="form-check-label ms-2 text-primary fw-bold"
+                                                                    for="diagResina">🔵 Resina</label>
+                                                            </div>
+                                                            <div class="form-check mb-3 p-3 rounded"
+                                                                style="background: #f0fdf4; border: 1px solid #bbf7d0;">
+                                                                <input
+                                                                    class="form-check-input opcion-diagnostico ms-1 mt-1"
+                                                                    type="radio" name="diag" id="diagSellante"
+                                                                    value="sellante" data-color="#22c55e">
+                                                                <label
+                                                                    class="form-check-label ms-2 text-success fw-bold"
+                                                                    for="diagSellante">🟢 Sellante</label>
+                                                            </div>
+                                                            <div class="form-check mb-3 p-3 rounded"
+                                                                style="background: #f1f5f9; border: 1px solid #cbd5e1;">
+                                                                <input
+                                                                    class="form-check-input opcion-diagnostico ms-1 mt-1"
+                                                                    type="radio" name="diag" id="diagAusente"
+                                                                    value="faltante" data-color="#1e293b">
+                                                                <label class="form-check-label ms-2 fw-bold"
+                                                                    style="color: #1e293b" for="diagAusente">⚫
+                                                                    Ausente</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="card-footer bg-light border-top p-4 d-flex justify-content-between align-items-center rounded-bottom">
+                                            <button type="reset" class="btn btn-outline-secondary px-4 fw-bold"
+                                                onclick="limpiarGrafico()"><i class="bi bi-eraser me-2"></i> Limpiar
+                                                Formulario</button>
+                                            <button type="submit" class="btn btn-success px-5 py-2 fw-bold shadow-sm"><i
+                                                    class="bi bi-cloud-arrow-up-fill me-2"></i> Guardar
+                                                Expediente</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalDetalleVisita" data-bs-backdrop="true" tabindex="-1"
+                aria-labelledby="modalDetalleVisitaLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content border-0 shadow">
+                        <div class="modal-header text-white" style="background-color: var(--primary-medical);">
+                            <h5 class="modal-title fw-bold" id="modalDetalleVisitaLabel"><i
+                                    class="bi bi-journal-medical me-2"></i>Historial Clínico de Consulta</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body p-4">
+                            <div class="row g-3">
+                                <div class="col-md-6"><span class="text-muted small text-uppercase fw-bold">Fecha de
+                                        Registro</span>
+                                    <div id="detalleFecha" class="fw-bold fs-6 text-primary"></div>
+                                </div>
+                                <div class="col-md-6"><span class="text-muted small text-uppercase fw-bold">Higiene
+                                        Oral</span>
+                                    <div id="detalleHigiene" class="fw-bold"></div>
+                                </div>
+                                <div class="col-md-4"><span
+                                        class="text-muted small text-uppercase fw-bold">Hábitos</span>
+                                    <div id="detalleHabitos" class="fw-bold"></div>
+                                </div>
+                                <div class="col-md-4"><span
+                                        class="text-muted small text-uppercase fw-bold">Oclusión</span>
+                                    <div id="detalleOclusion" class="fw-bold"></div>
+                                </div>
+                                <div class="col-md-4"><span class="text-muted small text-uppercase fw-bold">Estado
+                                        ATM</span>
+                                    <div id="detalleATM" class="fw-bold"></div>
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <h6 class="fw-bold text-warning-emphasis border-bottom pb-2"><i
+                                            class="bi bi-exclamation-circle-fill me-1"></i> Motivo de Consulta /
+                                        Diagnóstico
+                                        Definitivo</h6>
+                                    <p id="detalleDiagnostico" class="bg-light p-3 rounded border text-dark"
+                                        style="white-space: pre-wrap;"></p>
+                                </div>
+
+                                <div class="col-12 mt-2">
+                                    <h6 class="fw-bold text-success-emphasis border-bottom pb-2"><i
+                                            class="bi bi-check2-square me-1"></i> Plan de Tratamiento Realizado</h6>
+                                    <p id="detallePlan" class="bg-light p-3 rounded border text-dark"
+                                        style="white-space: pre-wrap;"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer bg-light">
+                            <button type="button" class="btn btn-secondary fw-bold px-4"
+                                data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../script_menu.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
