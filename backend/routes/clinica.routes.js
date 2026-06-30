@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getClinicas, registrarClinica, eliminarClinica, getSolicitudes, actualizarEstado } from '../controllers/clinica.controller.js';
+import { getClinicas, registrarClinica, eliminarClinica, getSolicitudes, actualizarEstado, actualizarClinica } from '../controllers/clinica.controller.js';
 
 const router = Router();
 
@@ -11,6 +11,9 @@ router.get('/solicitudes', getSolicitudes);
 
 // POST /api/clinicas - Registrar una nueva clínica
 router.post('/', registrarClinica);
+
+// PUT /api/clinicas/:id - Actualizar datos de clínica
+router.put('/:id', actualizarClinica);
 
 // DELETE /api/clinicas/:id - Eliminar clínica
 router.delete('/:id', eliminarClinica);

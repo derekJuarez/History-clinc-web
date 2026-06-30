@@ -3,7 +3,12 @@ document.getElementById('registro-clinica-form').addEventListener('submit', asyn
 
     const nombre = document.getElementById('nombre-clinica').value.trim();
     const encargado = document.getElementById('encargado-clinica').value.trim();
-    const ubicacion = document.getElementById('ubicacion-clinica').value.trim();
+
+    // Combinar los campos de ubicación en un solo string
+    const calle = document.getElementById('calle-clinica').value.trim();
+    const colonia = document.getElementById('colonia-clinica').value.trim();
+    const numeroCp = document.getElementById('numero-cp-clinica').value.trim();
+    const ubicacion = `${calle}, Col. ${colonia}, ${numeroCp}`;
 
     try {
         const response = await fetch('/api/clinicas', {

@@ -1,5 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
     cargarDocentes();
+
+    // Manejar el submit del formulario de edición de docente
+    const formEditarDocente = document.getElementById('formEditarDocente');
+    if (formEditarDocente) {
+        formEditarDocente.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const matricula = document.getElementById('edit-docente-matricula').value;
+            const nombre = document.getElementById('edit-docente-nombre').value.trim();
+            const telefono = document.getElementById('edit-docente-telefono').value.trim();
+            const correo = document.getElementById('edit-docente-correo').value.trim();
+            const contraseña = document.getElementById('edit-docente-contrasena').value;
+
+            try {
+                const response = await fetch(`/api/docentes/${matricula}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nombre, email: correo, telefono, contraseña })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    alert('Docente actualizado exitosamente.');
+                    cerrarModalDocente();
+                    cargarDocentes(); // Recargar tabla
+                } else {
+                    alert(`Error al actualizar: ${result.message}`);
+                }
+            } catch (error) {
+                console.error('Error al actualizar docente:', error);
+                alert('Error de conexión con el servidor al intentar actualizar.');
+            }
+        });
+    }
 });
 
 // Cargar la lista de docentes desde el backend
@@ -26,13 +63,20 @@ async function cargarDocentes() {
             tablaDocentes.innerHTML = '';
             docentes.forEach(doc => {
                 const fila = document.createElement('tr');
+                const escapedName = (doc.NAME || '').replace(/'/g, "\\'");
+                const escapedTel = (doc.TELEFONO || '').replace(/'/g, "\\'");
+                const escapedEmail = (doc.CORREO || '').replace(/'/g, "\\'");
+
                 fila.innerHTML = `
                     <td>${doc.ID_MATRICULA}</td>
                     <td>${doc.NAME}</td>
                     <td>${doc.TELEFONO || 'Sin teléfono'}</td>
                     <td>${doc.CORREO}</td>
-                    <td style="text-align: center;">
-                        <button class="btn-delete" onclick="eliminarDocente('${doc.ID_MATRICULA}', '${doc.NAME}')">
+                    <td style="text-align: center; white-space: nowrap;">
+                        <button class="btn-edit" onclick="abrirEditarDocente('${doc.ID_MATRICULA}', '${escapedName}', '${escapedTel}', '${escapedEmail}')">
+                            <i class="ri-edit-line"></i> Editar
+                        </button>
+                        <button class="btn-delete" onclick="eliminarDocente('${doc.ID_MATRICULA}', '${escapedName}')">
                             <i class="ri-delete-bin-line"></i> Eliminar
                         </button>
                     </td>
@@ -59,6 +103,24 @@ async function cargarDocentes() {
     }
 }
 
+// Abrir modal de edición con los datos del docente
+function abrirEditarDocente(matricula, name, telefono, correo) {
+    document.getElementById('edit-docente-matricula').value = matricula;
+    document.getElementById('edit-docente-nombre').value = name;
+    document.getElementById('edit-docente-telefono').value = telefono === 'Sin teléfono' ? '' : telefono;
+    document.getElementById('edit-docente-correo').value = correo;
+    document.getElementById('edit-docente-contrasena').value = ''; // Vacío por defecto
+
+    const modal = document.getElementById('modalEditarDocente');
+    if (modal) modal.classList.add('active');
+}
+
+// Cerrar modal de edición
+function cerrarModalDocente() {
+    const modal = document.getElementById('modalEditarDocente');
+    if (modal) modal.classList.remove('active');
+}
+
 // Eliminar un docente por su matrícula
 async function eliminarDocente(matricula, nombre) {
     if (!confirm(`¿Estás seguro de que deseas eliminar al docente ${nombre} (Matrícula: ${matricula})?`)) {
@@ -83,5 +145,7 @@ async function eliminarDocente(matricula, nombre) {
     }
 }
 
-// Exponer la función eliminarDocente de forma global para que el botón de la fila la llame
+// Exponer las funciones al objeto global window para que funcionen con onclick inline
 window.eliminarDocente = eliminarDocente;
+window.abrirEditarDocente = abrirEditarDocente;
+window.cerrarModalDocente = cerrarModalDocente;

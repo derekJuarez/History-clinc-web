@@ -83,6 +83,12 @@ const menuMaestroHTML = `
         <ul>
             <li>
                 <a href="principal_maestro.html">
+                    <i class="ri-layout-grid-fill"></i>
+                    Panel Principal
+                </a>
+            </li>
+            <li>
+                <a href="conteo_pacientes.html">
                     <i class="ri-bar-chart-box-fill"></i>
                     Conteo de pacientes
                 </a>
@@ -94,12 +100,17 @@ const menuMaestroHTML = `
                 </a>
             </li>
             <li>
-                <a href="nueva_clinica.html">
-                    <i class="ri-add-circle-fill"></i>
-                    Nueva CLinica
+                <a href="agregar_alumno.html">
+                    <i class="ri-user-add-fill"></i>
+                    Agregar Alumno
                 </a>
             </li>
-
+            <li>
+                <a href="nueva_clinica.html">
+                    <i class="ri-add-circle-fill"></i>
+                    Nueva Clínica
+                </a>
+            </li>
             <li>
                 <a href="#">
                     <i class="ri-file-list-3-fill"></i>
@@ -149,6 +160,12 @@ const menuAdminHTML = `
                 <a href="lista_docentes.html">
                     <i class="ri-list-check-2"></i>
                     Lista de Docentes
+                </a>
+            </li>
+            <li>
+                <a href="nueva_clinica.html">
+                    <i class="ri-add-circle-fill"></i>
+                    Nueva Clínica
                 </a>
             </li>
             <li>

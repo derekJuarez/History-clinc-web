@@ -1,4 +1,4 @@
-import { getAllClinicas, getSolicitudesClinicas, findClinicaByNombre, createClinica, deleteClinica, updateEstadoClinica } from '../models/clinica.model.js';
+import { getAllClinicas, getSolicitudesClinicas, findClinicaByNombre, createClinica, deleteClinica, updateEstadoClinica, updateClinica } from '../models/clinica.model.js';
 import { successResponse, errorResponse } from '../utils/helpers.util.js';
 
 // Obtener todas las clínicas
@@ -86,3 +86,22 @@ export const actualizarEstado = async (req, res) => {
         return errorResponse(res, 500, 'Error interno del servidor');
     }
 };
+
+// Actualizar clínica
+export const actualizarClinica = async (req, res) => {
+    const { id } = req.params;
+    const { nombre, encargado, ubicacion } = req.body;
+
+    if (!nombre || !encargado || !ubicacion) {
+        return errorResponse(res, 400, 'Todos los campos son obligatorios');
+    }
+
+    try {
+        await updateClinica(id, { nombre, encargado, ubicacion });
+        return successResponse(res, 200, 'Clínica actualizada exitosamente');
+    } catch (error) {
+        console.error(error);
+        return errorResponse(res, 500, 'Error interno del servidor al actualizar clínica');
+    }
+};
+

@@ -1,8 +1,6 @@
 // ========== Cargar alumnos del maestro en el dashboard ==========
 document.addEventListener('DOMContentLoaded', async () => {
-    const listaNombres = document.getElementById('lista-nombres-alumnos');
-    const listaClinicas = document.getElementById('lista-clinicas-alumnos');
-    const listaPacientes = document.getElementById('lista-pacientes-alumnos');
+    const tablaAlumnos = document.getElementById('TablaAlumnosMaestro');
     const teacherMatricula = localStorage.getItem('matricula');
 
     if (!teacherMatricula) {
@@ -11,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Si no estamos en la página del dashboard, no ejecutar
-    if (!listaNombres || !listaClinicas || !listaPacientes) {
+    if (!tablaAlumnos) {
         return;
     }
 
@@ -20,26 +18,42 @@ document.addEventListener('DOMContentLoaded', async () => {
         const result = await response.json();
 
         if (response.ok && result.success) {
-            listaNombres.innerHTML = '';
-            listaClinicas.innerHTML = '';
-            listaPacientes.innerHTML = '';
-
             if (result.data.length === 0) {
-                listaNombres.innerHTML = '<div class="conteo-body-box-item">No tienes alumnos asignados</div>';
-                listaClinicas.innerHTML = '<div class="conteo-body-box-item">-</div>';
-                listaPacientes.innerHTML = '<div class="conteo-body-box-item">-</div>';
+                tablaAlumnos.innerHTML = `
+                <tr>
+                    <td colspan="3" style="text-align: center; color: #888893; padding: 20px;">
+                        No tienes alumnos asignados
+                    </td>
+                </tr>`;
                 return;
             }
 
+            tablaAlumnos.innerHTML = '';
             result.data.forEach(alumno => {
-                listaNombres.innerHTML += `<div class="conteo-body-box-item">${alumno.nombre}</div>`;
-                listaClinicas.innerHTML += `<div class="conteo-body-box-item">${alumno.clinica || 'Sin clínica'}</div>`;
-                listaPacientes.innerHTML += `<div class="conteo-body-box-item">${alumno.pacientes || 0}</div>`;
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${alumno.nombre}</td>
+                    <td>${alumno.clinica || 'Sin clínica'}</td>
+                    <td>${alumno.pacientes || 0}</td>
+                `;
+                tablaAlumnos.appendChild(fila);
             });
         } else {
             console.error('Error al obtener alumnos:', result.message);
+            tablaAlumnos.innerHTML = `
+            <tr>
+                <td colspan="3" style="text-align: center; color: #ef4444; padding: 20px;">
+                    Error al cargar alumnos: ${result.message}
+                </td>
+            </tr>`;
         }
     } catch (error) {
         console.error('Error al conectar con el backend:', error);
+        tablaAlumnos.innerHTML = `
+        <tr>
+            <td colspan="3" style="text-align: center; color: #ef4444; padding: 20px;">
+                Error de conexión con el servidor.
+            </td>
+        </tr>`;
     }
 });

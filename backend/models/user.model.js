@@ -19,12 +19,12 @@ export const createUser = async ({ nombre, apellido, matricula, email, telefono,
 
 export const obtenerTodosMaestros = async () => {
     const query = `
-        SELECT DISTINCT 
+        SELECT 
             u.ID_MATRICULA AS ID_Matricula, 
             u.NAME AS Name 
         FROM usuarios u
-        JOIN clinicas c ON c.ENCARGADO = u.NAME
         WHERE u.Id_Rol = 1
+        ORDER BY u.NAME ASC
     `;
     const [rows] = await db.query(query);
     return rows;

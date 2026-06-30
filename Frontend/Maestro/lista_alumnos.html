@@ -12,6 +12,17 @@
         href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>
     <!-- Hoja de estilos del dashboard -->
     <link rel="stylesheet" href="../css/alumno.css">
+    <style>
+        .glass-table-container h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #cbb26a;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
 </head>
 
 <body>
@@ -25,39 +36,29 @@
         <header class="top-header">
             <div class="header-title">
                 <h1>Lista de Alumnos</h1>
-                <p>Panel de control y Lista de Alumnos</p>
+                <p>Panel de control y lista de alumnos asignados</p>
             </div>
         </header>
 
         <section class="content-area">
-            <!-- Contenedor con fondo negro -->
-            <div class="conteo-pacientes-wrapper">
-                <!-- Título principal tipo banner -->
-                <div class="conteo-header-pill main-title-pill">LISTA DE ALUMNOS</div>
-
-                <div class="conteo-grid">
-                    <!-- Columna: Nombre -->
-                    <div class="conteo-column">
-                        <div class="conteo-header-pill">Nombre del Alumno</div>
-                        <div class="conteo-body-box" id="lista-nombres">
-                            <!-- Los alumnos se cargarán aquí -->
-                        </div>
-                    </div>
-                    <!-- Columna: Matrícula -->
-                    <div class="conteo-column">
-                        <div class="conteo-header-pill">Matrícula</div>
-                        <div class="conteo-body-box" id="lista-matriculas">
-                            <!-- Las matrículas se cargarán aquí -->
-                        </div>
-                    </div>
-                    <!-- Columna: Clínica -->
-                    <div class="conteo-column">
-                        <div class="conteo-header-pill">Unidad Clínica</div>
-                        <div class="conteo-body-box" id="lista-clinicas">
-                            <!-- Las clínicas se cargarán aquí -->
-                        </div>
-                    </div>
-                </div>
+            <div class="glass-table-container">
+                <h2>Alumnos Registrados</h2>
+                <table class="pacientes-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre del Alumno</th>
+                            <th>Matrícula</th>
+                            <th>Unidad Clínica</th>
+                        </tr>
+                    </thead>
+                    <tbody id="TablaAlumnos">
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: #cbb26a; padding: 20px;">
+                                Cargando alumnos...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
     </main>

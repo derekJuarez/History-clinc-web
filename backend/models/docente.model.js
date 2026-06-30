@@ -34,3 +34,19 @@ export const deleteDocenteByMatricula = async (matricula) => {
         [matricula]
     );
 };
+
+// Actualizar un docente por su matrícula
+export const updateDocenteByMatricula = async (matricula, { nombre, email, telefono, contraseña }) => {
+    if (contraseña) {
+        await db.query(
+            'UPDATE usuarios SET NAME = ?, CORREO = ?, TELEFONO = ?, CONTRASEÑA = ? WHERE ID_MATRICULA = ? AND Id_Rol = 1',
+            [nombre, email, telefono, contraseña, matricula]
+        );
+    } else {
+        await db.query(
+            'UPDATE usuarios SET NAME = ?, CORREO = ?, TELEFONO = ? WHERE ID_MATRICULA = ? AND Id_Rol = 1',
+            [nombre, email, telefono, matricula]
+        );
+    }
+};
+

@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ver Pacientes</title>
+    <title>Conteo de Pacientes - Maestro</title>
     <!-- Librería de íconos -->
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'>
     <!-- Tipografía -->
     <link rel='stylesheet'
-        href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>  
-    <!-- Hoja de estilos del dashboard de alumno-->
+        href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>
+    <!-- Hoja de estilos del dashboard -->
     <link rel="stylesheet" href="../css/alumno.css">
     <style>
         .glass-table-container h2 {
@@ -23,45 +24,48 @@
         }
     </style>
 </head>
+
 <body>
 
-    <!-- Sidebar -->
     <!-- Sidebar Dinámico -->
-    <div id="sidebar-container" data-menu="alumno"></div>
+    <div id="sidebar-container" data-menu="maestro"></div>
 
     <!-- Main Content -->
     <main class="main-content">
         <!-- Top Header -->
         <header class="top-header">
             <div class="header-title">
-                <h1>Lista de Pacientes</h1>
-                <p>Ver y gestionar todos los pacientes del sistema</p>
+                <h1>Monitoreo de Alumnos</h1>
+                <p>Conteo detallado de pacientes atendidos por alumno</p>
             </div>
         </header>
-        <!-- Content Area -->
+
         <section class="content-area">
             <div class="glass-table-container">
-                <h2>Pacientes Registrados</h2>
+                <h2>Conteo de Pacientes</h2>
                 <table class="pacientes-table">
                     <thead>
                         <tr>
-                            <th>ID (CURP)</th>
-                            <th>Nombre Completo</th>
-                            <th>Edad</th>
-                            <th>Género</th>
-                            <th>Teléfono</th>
-                            <th>Email</th>
+                            <th>Nombre del Alumno</th>
+                            <th>Clínica</th>
+                            <th>Pacientes</th>
                         </tr>
                     </thead>
-                    <tbody id="TablaPacientes">
-                        <!-- Aquí se agregarán dinámicamente los pacientes -->
+                    <tbody id="TablaAlumnosMaestro">
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: #cbb26a; padding: 20px;">
+                                Cargando datos de alumnos...
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </section>
     </main>
 
+    <!-- Script para cargar el menú dinámico (debe ir primero) -->
     <script src="../script_menu.js"></script>
+    <script src="./maestro_script.js"></script>
 </body>
-<script src="ver_pacientes.js"></script>
+
 </html>

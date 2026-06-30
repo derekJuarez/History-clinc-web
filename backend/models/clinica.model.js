@@ -35,3 +35,12 @@ export const updateEstadoClinica = async (id, estado) => {
 export const deleteClinica = async (id) => {
     await db.query('DELETE FROM clinicas WHERE ID_CLINICA = ?', [id]);
 };
+
+// Actualizar clínica
+export const updateClinica = async (id, { nombre, encargado, ubicacion }) => {
+    await db.query(
+        'UPDATE clinicas SET NOMBRE_CLINICA = ?, ENCARGADO = ?, UBICACION = ? WHERE ID_CLINICA = ?',
+        [nombre, encargado, ubicacion, id]
+    );
+};
+

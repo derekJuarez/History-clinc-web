@@ -31,6 +31,10 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
             window.location.href = 'Alumno/dashboard.html';
         } else if (result.data.rol === 3) {
             window.location.href = 'Admin/principal_admin.html';
+        } else if (result.data.rol === 4) {
+            // Paciente: no tiene panel, mostrar mensaje
+            errorContainer.textContent = 'Los pacientes no tienen acceso al sistema. Contacte a su clínica.';
+            errorContainer.style.display = "block";
         } else {
             errorContainer.textContent = 'Rol desconocido';
             errorContainer.style.display = "block";

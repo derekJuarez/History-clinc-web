@@ -2,7 +2,8 @@ import {
     getAllDocentes, 
     findDocenteByMatricula, 
     createDocente, 
-    deleteDocenteByMatricula 
+    deleteDocenteByMatricula,
+    updateDocenteByMatricula
 } from '../models/docente.model.js';
 import { successResponse, errorResponse } from '../utils/helpers.util.js';
 
@@ -64,3 +65,27 @@ export const eliminarDocente = async (req, res) => {
         return errorResponse(res, 500, 'Error interno del servidor al eliminar docente');
     }
 };
+
+// Actualizar un docente
+export const actualizarDocente = async (req, res) => {
+    const { matricula } = req.params;
+    const { nombre, email, telefono, contraseña } = req.body;
+
+    if (!nombre || !email || !telefono) {
+        return errorResponse(res, 400, 'Nombre, correo y teléfono son obligatorios');
+    }
+
+    try {
+        const existingDocente = await findDocenteByMatricula(matricula);
+        if (!existingDocente) {
+            return errorResponse(res, 404, 'Docente no encontrado');
+        }
+
+        await updateDocenteByMatricula(matricula, { nombre, email, telefono, contraseña });
+        return successResponse(res, 200, 'Docente actualizado exitosamente');
+    } catch (error) {
+        console.error('Error al actualizar docente:', error);
+        return errorResponse(res, 500, 'Error interno del servidor al actualizar docente');
+    }
+};
+
