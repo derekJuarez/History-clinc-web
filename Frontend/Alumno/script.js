@@ -66,6 +66,32 @@ if (fechaNacInput) {
 }
 
 // --- BÚSQUEDA Y LLENADO ---
+function mostrarFormularioNuevoPaciente() {
+    const contenedor = document.getElementById('contenedorDatos');
+    contenedor.style.display = 'block';
+    document.getElementById('statusBusqueda').innerHTML = '';
+    
+    const tabFormulario = new bootstrap.Tab(document.getElementById('tab-formulario'));
+    tabFormulario.show();
+
+    document.getElementById('resumenNombre').innerText = "Registro de Nuevo Paciente";
+    document.getElementById('resumenDetalles').innerText = "Por favor, completa el expediente clínico.";
+    document.getElementById('displayId').innerText = "NUEVO";
+
+    document.getElementById('formHistoriaClinica').reset();
+    limpiarGrafico();
+    document.getElementById('tablaHistorial').innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">Paciente nuevo. Completa el formulario para registrar su primera visita.</td></tr>';
+    
+    document.getElementById('nombre').value = '';
+    document.getElementById('telefono').value = '';
+    const buscarValor = document.getElementById('buscarValor').value;
+    if (/^\d+$/.test(buscarValor)) {
+        document.getElementById('telefono').value = buscarValor;
+    } else {
+        document.getElementById('nombre').value = buscarValor;
+    }
+}
+
 async function buscarPaciente() {
     const valorBusqueda = document.getElementById('buscarValor').value;
     const status = document.getElementById('statusBusqueda');
@@ -169,22 +195,8 @@ async function buscarPaciente() {
                 }
             }
         } else {
-            const tabFormulario = new bootstrap.Tab(document.getElementById('tab-formulario'));
-            tabFormulario.show();
-
-            document.getElementById('resumenNombre').innerText = "Registro de Nuevo Paciente";
-            document.getElementById('resumenDetalles').innerText = "Por favor, completa el expediente clínico.";
-            document.getElementById('displayId').innerText = "NUEVO";
-
-            document.getElementById('formHistoriaClinica').reset();
-            limpiarGrafico();
-            document.getElementById('tablaHistorial').innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">Paciente nuevo. Completa el formulario para registrar su primera visita.</td></tr>';
-
-            if (/^\d+$/.test(valorBusqueda)) {
-                document.getElementById('telefono').value = valorBusqueda;
-            } else {
-                document.getElementById('nombre').value = valorBusqueda;
-            }
+            contenedor.style.display = 'none';
+            status.innerHTML = '<span class="text-warning fw-bold"><i class="bi bi-exclamation-triangle me-1"></i>Paciente no encontrado. Usa el botón "Nueva" para registrarlo.</span>';
         }
     } catch (error) {
         console.error(error);

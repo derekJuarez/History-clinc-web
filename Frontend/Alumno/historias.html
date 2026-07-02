@@ -55,13 +55,16 @@
                     <h2 style="font-size: 18px; margin-bottom: 20px; text-align: left; color: #fff;">
                         <i class="bi bi-search me-1"></i> Buscar Paciente
                     </h2>
-                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: end;">
-                        <div class="input-box" style="margin: 0;">
+                    <div style="display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap;">
+                        <div class="input-box" style="flex: 1; min-width: 250px; margin: 0;">
                             <label for="buscarValor">Teléfono o Nombre</label>
                             <input type="text" id="buscarValor" placeholder="Ej. 4431234567 o Juan Pérez">
                         </div>
                         <button class="btn-submit" type="button" onclick="buscarPaciente()" style="width: auto; padding: 0 30px; margin: 0; height: 40px; border-radius: 20px;">
                             Buscar
+                        </button>
+                        <button class="btn-submit" type="button" onclick="mostrarFormularioNuevoPaciente()" style="width: auto; padding: 0 20px; margin: 0; height: 40px; border-radius: 20px; background: linear-gradient(135deg, #198754, #28a745); color: white;">
+                            <i class="bi bi-plus-circle me-1"></i> Nueva
                         </button>
                     </div>
                     <div id="statusBusqueda" style="margin-top: 15px; text-align: center; font-size: 13px; color: rgba(255, 255, 255, 0.7);">
@@ -124,11 +127,11 @@
                         </div>
 
                         <div class="tab-pane fade" id="pane-formulario" role="tabpanel">
-                            <div class="card border-0 shadow-sm">
+                            <div class="dark-form-mode" style="max-width: 100%; padding: 0; overflow: hidden; margin-top: 15px;">
                                 <div class="card-body p-0">
-                                    <form id="formHistoriaClinica" onsubmit="event.preventDefault();">
+                                    <form id="formHistoriaClinica" style="display: block;" onsubmit="event.preventDefault();">
 
-                                        <div class="px-4 pt-3 bg-white border-bottom">
+                                        <div class="px-4 pt-3 border-bottom" style="border-color: rgba(203, 178, 106, 0.4) !important;">
                                             <ul class="nav nav-tabs" id="historiaTabs" role="tablist">
                                                 <li class="nav-item"><button class="nav-link active"
                                                         id="btn-identificacion" data-bs-toggle="tab"
@@ -334,11 +337,11 @@
                                         </div>
 
                                         <div
-                                            class="card-footer bg-light border-top p-4 d-flex justify-content-between align-items-center rounded-bottom">
-                                            <button type="reset" class="btn btn-outline-secondary px-4 fw-bold"
-                                                onclick="limpiarGrafico()"><i class="bi bi-eraser me-2"></i> Limpiar
+                                            class="card-footer border-top p-4 d-flex justify-content-between align-items-center rounded-bottom">
+                                            <button type="reset" class="btn-cancel px-4 fw-bold"
+                                                onclick="limpiarGrafico()" style="height: 45px;"><i class="bi bi-eraser me-2"></i> Limpiar
                                                 Formulario</button>
-                                            <button type="submit" class="btn btn-success px-5 py-2 fw-bold shadow-sm"><i
+                                            <button type="submit" class="btn-submit px-5 py-2 fw-bold shadow-sm" style="width: auto; height: 45px; margin-top: 0;"><i
                                                     class="bi bi-cloud-arrow-up-fill me-2"></i> Guardar
                                                 Expediente</button>
                                         </div>
