@@ -237,61 +237,61 @@ const formHistoriaClinica = document.getElementById('formHistoriaClinica');
 if (formHistoriaClinica) {
     formHistoriaClinica.addEventListener('submit', async function (e) {
         e.preventDefault();
-    const estadoOdontograma = {};
-    document.querySelectorAll('.diente').forEach(diente => {
-        const numDiente = diente.id.replace('d-', '');
-        estadoOdontograma[numDiente] = {};
-        diente.querySelectorAll('.cara').forEach(cara => {
-            estadoOdontograma[numDiente][cara.getAttribute('data-cara')] = cara.getAttribute('data-estado');
+        const estadoOdontograma = {};
+        document.querySelectorAll('.diente').forEach(diente => {
+            const numDiente = diente.id.replace('d-', '');
+            estadoOdontograma[numDiente] = {};
+            diente.querySelectorAll('.cara').forEach(cara => {
+                estadoOdontograma[numDiente][cara.getAttribute('data-cara')] = cara.getAttribute('data-estado');
+            });
         });
-    });
 
-    const datosCompletos = {
-        paciente: {
-            nombre: document.getElementById('nombre').value,
-            telefono: document.getElementById('telefono').value,
-            fecha_nac: document.getElementById('fecha_nac').value,
-            sexo: document.getElementById('sexo').value,
-            ocupacion: document.getElementById('ocupacion').value
-        },
-        antecedentes: {
-            alergias: document.getElementById('alergias').value,
-            medicamentos_actuales: document.getElementById('medicamentos_actuales').value,
-            diabetes: document.getElementById('diabetes').value,
-            hipertension: document.getElementById('hipertension').value,
-            cardiacos: document.getElementById('cardiacos').value,
-            embarazo: document.getElementById('embarazo').value,
-            otros_padecimientos: document.getElementById('otros_padecimientos').value
-        },
-        exploracion: {
-            higiene: document.getElementById('higiene').value,
-            habitos: document.getElementById('habitos').value,
-            oclusion: document.getElementById('oclusion').value,
-            atm: document.getElementById('atm').value,
-            diagnostico: document.getElementById('diagnostico').value,
-            plan: document.getElementById('plan_treatment').value
-        },
-        odontograma_json: estadoOdontograma
-    };
+        const datosCompletos = {
+            paciente: {
+                nombre: document.getElementById('nombre').value,
+                telefono: document.getElementById('telefono').value,
+                fecha_nac: document.getElementById('fecha_nac').value,
+                sexo: document.getElementById('sexo').value,
+                ocupacion: document.getElementById('ocupacion').value
+            },
+            antecedentes: {
+                alergias: document.getElementById('alergias').value,
+                medicamentos_actuales: document.getElementById('medicamentos_actuales').value,
+                diabetes: document.getElementById('diabetes').value,
+                hipertension: document.getElementById('hipertension').value,
+                cardiacos: document.getElementById('cardiacos').value,
+                embarazo: document.getElementById('embarazo').value,
+                otros_padecimientos: document.getElementById('otros_padecimientos').value
+            },
+            exploracion: {
+                higiene: document.getElementById('higiene').value,
+                habitos: document.getElementById('habitos').value,
+                oclusion: document.getElementById('oclusion').value,
+                atm: document.getElementById('atm').value,
+                diagnostico: document.getElementById('diagnostico').value,
+                plan: document.getElementById('plan_treatment').value
+            },
+            odontograma_json: estadoOdontograma
+        };
 
-    try {
-        const response = await fetch('http://localhost:3001/api/expedientes/guardar', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datosCompletos)
-        });
-        const result = await response.json();
+        try {
+            const response = await fetch('http://localhost:3001/api/expedientes/guardar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datosCompletos)
+            });
+            const result = await response.json();
 
-        if (response.ok && result.success) {
-            alert("✔️ Expediente guardado exitosamente. Se ha agregado una nueva visita al historial.");
-            document.getElementById('buscarValor').value = document.getElementById('telefono').value;
-            buscarPaciente();
-        } else {
-            alert("❌ Error al guardar en la base de datos: " + (result.error || "Revisa la consola"));
+            if (response.ok && result.success) {
+                alert("✔️ Expediente guardado exitosamente. Se ha agregado una nueva visita al historial.");
+                document.getElementById('buscarValor').value = document.getElementById('telefono').value;
+                buscarPaciente();
+            } else {
+                alert("❌ Error al guardar en la base de datos: " + (result.error || "Revisa la consola"));
+            }
+        } catch (error) {
+            console.error(error);
+            alert("❌ No se pudo conectar con el servidor para guardar.");
         }
-    } catch (error) {
-        console.error(error);
-        alert("❌ No se pudo conectar con el servidor para guardar.");
-    }
     });
 }
