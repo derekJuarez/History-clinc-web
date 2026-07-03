@@ -66,6 +66,32 @@ if (fechaNacInput) {
 }
 
 // --- BÚSQUEDA Y LLENADO ---
+function mostrarFormularioNuevoPaciente() {
+    const contenedor = document.getElementById('contenedorDatos');
+    contenedor.style.display = 'block';
+    document.getElementById('statusBusqueda').innerHTML = '';
+    
+    const tabFormulario = new bootstrap.Tab(document.getElementById('tab-formulario'));
+    tabFormulario.show();
+
+    document.getElementById('resumenNombre').innerText = "Registro de Nuevo Paciente";
+    document.getElementById('resumenDetalles').innerText = "Por favor, completa el expediente clínico.";
+    document.getElementById('displayId').innerText = "NUEVO";
+
+    document.getElementById('formHistoriaClinica').reset();
+    limpiarGrafico();
+    document.getElementById('tablaHistorial').innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">Paciente nuevo. Completa el formulario para registrar su primera visita.</td></tr>';
+    
+    document.getElementById('nombre').value = '';
+    document.getElementById('telefono').value = '';
+    const buscarValor = document.getElementById('buscarValor').value;
+    if (/^\d+$/.test(buscarValor)) {
+        document.getElementById('telefono').value = buscarValor;
+    } else {
+        document.getElementById('nombre').value = buscarValor;
+    }
+}
+
 async function buscarPaciente() {
     const valorBusqueda = document.getElementById('buscarValor').value;
     const status = document.getElementById('statusBusqueda');
@@ -169,22 +195,8 @@ async function buscarPaciente() {
                 }
             }
         } else {
-            const tabFormulario = new bootstrap.Tab(document.getElementById('tab-formulario'));
-            tabFormulario.show();
-
-            document.getElementById('resumenNombre').innerText = "Registro de Nuevo Paciente";
-            document.getElementById('resumenDetalles').innerText = "Por favor, completa el expediente clínico.";
-            document.getElementById('displayId').innerText = "NUEVO";
-
-            document.getElementById('formHistoriaClinica').reset();
-            limpiarGrafico();
-            document.getElementById('tablaHistorial').innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">Paciente nuevo. Completa el formulario para registrar su primera visita.</td></tr>';
-
-            if (/^\d+$/.test(valorBusqueda)) {
-                document.getElementById('telefono').value = valorBusqueda;
-            } else {
-                document.getElementById('nombre').value = valorBusqueda;
-            }
+            contenedor.style.display = 'none';
+            status.innerHTML = '<span class="text-warning fw-bold"><i class="bi bi-exclamation-triangle me-1"></i>Paciente no encontrado. Usa el botón "Nueva" para registrarlo.</span>';
         }
     } catch (error) {
         console.error(error);
@@ -237,61 +249,61 @@ const formHistoriaClinica = document.getElementById('formHistoriaClinica');
 if (formHistoriaClinica) {
     formHistoriaClinica.addEventListener('submit', async function (e) {
         e.preventDefault();
-    const estadoOdontograma = {};
-    document.querySelectorAll('.diente').forEach(diente => {
-        const numDiente = diente.id.replace('d-', '');
-        estadoOdontograma[numDiente] = {};
-        diente.querySelectorAll('.cara').forEach(cara => {
-            estadoOdontograma[numDiente][cara.getAttribute('data-cara')] = cara.getAttribute('data-estado');
+        const estadoOdontograma = {};
+        document.querySelectorAll('.diente').forEach(diente => {
+            const numDiente = diente.id.replace('d-', '');
+            estadoOdontograma[numDiente] = {};
+            diente.querySelectorAll('.cara').forEach(cara => {
+                estadoOdontograma[numDiente][cara.getAttribute('data-cara')] = cara.getAttribute('data-estado');
+            });
         });
-    });
 
-    const datosCompletos = {
-        paciente: {
-            nombre: document.getElementById('nombre').value,
-            telefono: document.getElementById('telefono').value,
-            fecha_nac: document.getElementById('fecha_nac').value,
-            sexo: document.getElementById('sexo').value,
-            ocupacion: document.getElementById('ocupacion').value
-        },
-        antecedentes: {
-            alergias: document.getElementById('alergias').value,
-            medicamentos_actuales: document.getElementById('medicamentos_actuales').value,
-            diabetes: document.getElementById('diabetes').value,
-            hipertension: document.getElementById('hipertension').value,
-            cardiacos: document.getElementById('cardiacos').value,
-            embarazo: document.getElementById('embarazo').value,
-            otros_padecimientos: document.getElementById('otros_padecimientos').value
-        },
-        exploracion: {
-            higiene: document.getElementById('higiene').value,
-            habitos: document.getElementById('habitos').value,
-            oclusion: document.getElementById('oclusion').value,
-            atm: document.getElementById('atm').value,
-            diagnostico: document.getElementById('diagnostico').value,
-            plan: document.getElementById('plan_treatment').value
-        },
-        odontograma_json: estadoOdontograma
-    };
+        const datosCompletos = {
+            paciente: {
+                nombre: document.getElementById('nombre').value,
+                telefono: document.getElementById('telefono').value,
+                fecha_nac: document.getElementById('fecha_nac').value,
+                sexo: document.getElementById('sexo').value,
+                ocupacion: document.getElementById('ocupacion').value
+            },
+            antecedentes: {
+                alergias: document.getElementById('alergias').value,
+                medicamentos_actuales: document.getElementById('medicamentos_actuales').value,
+                diabetes: document.getElementById('diabetes').value,
+                hipertension: document.getElementById('hipertension').value,
+                cardiacos: document.getElementById('cardiacos').value,
+                embarazo: document.getElementById('embarazo').value,
+                otros_padecimientos: document.getElementById('otros_padecimientos').value
+            },
+            exploracion: {
+                higiene: document.getElementById('higiene').value,
+                habitos: document.getElementById('habitos').value,
+                oclusion: document.getElementById('oclusion').value,
+                atm: document.getElementById('atm').value,
+                diagnostico: document.getElementById('diagnostico').value,
+                plan: document.getElementById('plan_treatment').value
+            },
+            odontograma_json: estadoOdontograma
+        };
 
-    try {
-        const response = await fetch('http://localhost:3001/api/expedientes/guardar', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datosCompletos)
-        });
-        const result = await response.json();
+        try {
+            const response = await fetch('http://localhost:3001/api/expedientes/guardar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datosCompletos)
+            });
+            const result = await response.json();
 
-        if (response.ok && result.success) {
-            alert("✔️ Expediente guardado exitosamente. Se ha agregado una nueva visita al historial.");
-            document.getElementById('buscarValor').value = document.getElementById('telefono').value;
-            buscarPaciente();
-        } else {
-            alert("❌ Error al guardar en la base de datos: " + (result.error || "Revisa la consola"));
+            if (response.ok && result.success) {
+                alert("✔️ Expediente guardado exitosamente. Se ha agregado una nueva visita al historial.");
+                document.getElementById('buscarValor').value = document.getElementById('telefono').value;
+                buscarPaciente();
+            } else {
+                alert("❌ Error al guardar en la base de datos: " + (result.error || "Revisa la consola"));
+            }
+        } catch (error) {
+            console.error(error);
+            alert("❌ No se pudo conectar con el servidor para guardar.");
         }
-    } catch (error) {
-        console.error(error);
-        alert("❌ No se pudo conectar con el servidor para guardar.");
-    }
     });
 }
