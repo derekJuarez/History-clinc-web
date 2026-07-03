@@ -9,7 +9,7 @@ export async function registrarPaciente(pacienteData) {
         // Insertar en tabla usuarios
         const [userResult] = await db.query(
             'INSERT INTO usuarios (ID_Matricula, Name, Telefono, Correo, Id_Rol, Contraseña) VALUES (?, ?, ?, ?, ?, ?)',
-            [curp, nombre, telefono, email, 4, passwordGenerada] // 4 = Paciente
+            [curp, nombre, telefono, email, 2, passwordGenerada] // 2 = Paciente
         );
         // Insertar en tabla paciente
         const [pacienteResult] = await db.query(
@@ -35,7 +35,7 @@ export async function obtenerPacientes() {
             u.Correo AS correo
         FROM usuarios u
         INNER JOIN paciente p ON u.ID_Matricula = p.Id_Usuario
-        WHERE u.Id_Rol = 4
+        WHERE u.Id_Rol = 3
     `);
 
     return rows;

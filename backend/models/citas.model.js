@@ -43,3 +43,16 @@ export async function modificarCita(Id_cita, nuevosDatos) {
         throw error;
     }
 }
+
+export async function verificarChoqueDeHorario(fecha, hora) {
+    try {
+        const [rows] = await db.query(
+            `SELECT * FROM citas WHERE Fecha = ? AND Hora = ? AND Estatus != 'Cancelada'`,
+            [fecha, hora,]
+        );
+        return rows.length > 0; // Retorna true si hay un choque de horario
+    } catch (error) {
+        console.error('Error al verificar choque de horario:', error);
+        throw error;
+    }
+}
