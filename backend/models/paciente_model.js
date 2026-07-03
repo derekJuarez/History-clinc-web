@@ -9,7 +9,7 @@ export async function registrarPaciente(pacienteData) {
         // Insertar en tabla usuarios
         const [userResult] = await db.query(
             'INSERT INTO usuarios (ID_Matricula, Name, Telefono, Correo, Id_Rol, Contraseña) VALUES (?, ?, ?, ?, ?, ?)',
-            [curp, nombre, telefono, email, 2, passwordGenerada] // 2 = Paciente
+            [curp, nombre, telefono, email, 3, passwordGenerada] // 3 = Paciente
         );
         // Insertar en tabla paciente
         const [pacienteResult] = await db.query(
