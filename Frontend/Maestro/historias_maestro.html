@@ -4,53 +4,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historias Clínicas Registradas</title>
-    <!-- Bootstrap y fuentes del usuario -->
+    <title>Ver Historias Clínicas | Panel Maestro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <!-- Librería de íconos -->
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'>
-    <!-- Tipografía -->
-    <link rel='stylesheet'
-        href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>
-    <!-- Hoja de estilos del dashboard -->
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'>
     <link rel="stylesheet" href="../css/alumno.css">
+    <style>
+        .badge-PENDIENTE  { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.4); padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .badge-REVISADO   { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.4); padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+
+        .btn-ver {
+            background: rgba(203,178,106,0.15);
+            color: #cbb26a;
+            border: 1px solid rgba(203,178,106,0.4);
+            border-radius: 6px;
+            padding: 5px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-ver:hover { background: rgba(203,178,106,0.3); transform: translateY(-1px); }
+
+        .btn-revisar {
+            background: rgba(16,185,129,0.15);
+            color: #10b981;
+            border: 1px solid rgba(16,185,129,0.4);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-revisar:hover { background: rgba(16,185,129,0.3); }
+
+        .search-box {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            color: #fff;
+            padding: 8px 14px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            width: 100%;
+            max-width: 320px;
+            outline: none;
+        }
+        .search-box:focus { border-color: #cbb26a; }
+        .search-box::placeholder { color: rgba(255,255,255,0.4); }
+
+        /* Modal detalle */
+        .modal-detalle { background: #111115; border: 1px solid #222228; border-radius: 16px; max-width: 780px; width: 95%; max-height: 90vh; overflow-y: auto; padding: 0; }
+        .modal-overlay-custom { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 10000; animation: fadeIn 0.2s ease; }
+        .modal-header-custom { background: linear-gradient(135deg, #0b1a30, #1a2f4a); padding: 20px 28px; border-radius: 16px 16px 0 0; border-bottom: 1px solid #222228; display: flex; justify-content: space-between; align-items: center; }
+        .modal-body-custom { padding: 24px 28px; }
+        .section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; font-weight: 600; margin-bottom: 4px; }
+        .section-value { font-size: 14px; color: #e5e7eb; font-weight: 500; margin-bottom: 0; }
+        .detalle-section { background: rgba(255,255,255,0.03); border: 1px solid #222228; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+        .detalle-section h6 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #cbb26a; font-weight: 700; margin-bottom: 12px; }
+        .close-modal { background: rgba(255,255,255,0.1); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .close-modal:hover { background: rgba(255,255,255,0.2); }
+
+        /* Diente mini para odontograma en modal */
+        .odonto-mini-grid { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
+        .odonto-mini-diente { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #374151; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #6b7280; position: relative; title: attr(data-num); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: #6b7280; }
+        .empty-state i { font-size: 52px; color: #374151; margin-bottom: 16px; display: block; }
+    </style>
 </head>
 
 <body>
-
-    <!-- Sidebar Dinámico -->
     <div id="sidebar-container" data-menu="maestro"></div>
 
-    <!-- Main Content -->
     <main class="main-content">
-        <!-- Top Header -->
         <header class="top-header">
-            <button class="toggle-btn">
-                <i class="ri-layout-right-line"></i>
-            </button>
             <div class="header-title">
                 <h1>Historias Clínicas</h1>
-                <p>Historias Clínicas Registradas por los Alumnos</p>
+                <p>Informes clínicos registrados por tus alumnos</p>
             </div>
         </header>
 
         <section class="content-area">
-            <div class="container pb-5 mt-4">
+            <div class="container-fluid pb-5 mt-2">
                 <div class="glass-table-container">
-                    <h2 style="text-align: left; font-size: 18px; color: #fff; margin-bottom: 20px;">
-                        <i class="bi bi-journal-medical me-2"></i>Historial de Consultas Registradas
-                    </h2>
-
-                    <!-- Búsqueda -->
-                    <div class="mb-4" style="max-width: 400px;">
-                        <div class="input-box" style="margin: 0;">
-                            <input type="text" id="buscarHistoria" class="form-control"
-                                placeholder="Buscar por alumno o paciente..."
-                                style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff;">
+                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                        <div>
+                            <h2 style="font-size:20px; color:#cbb26a; text-transform:uppercase; letter-spacing:1px; margin:0;">
+                                <i class="bi bi-journal-medical me-2"></i>Informes de Alumnos
+                            </h2>
+                            <p style="font-size:12px; color:#6b7280; margin:4px 0 0;">
+                                Solo se muestran los informes de tus alumnos asignados
+                            </p>
                         </div>
+                        <input type="text" class="search-box" id="buscarHistoria" placeholder="🔍 Buscar por alumno o paciente..." oninput="filtrarTabla()">
                     </div>
 
                     <div class="table-responsive">
@@ -61,38 +116,16 @@
                                     <th>Alumno</th>
                                     <th>Paciente</th>
                                     <th>Diagnóstico</th>
-                                    <th>Tratamiento</th>
-                                    <th class="text-center">Acción</th>
+                                    <th>Plan de Tratamiento</th>
+                                    <th style="text-align:center;">Estado</th>
+                                    <th style="text-align:center;">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody id="tablaHistoriasMaestro">
-                                <!-- Datos de ejemplo -->
                                 <tr>
-                                    <td>2023-10-25</td>
-                                    <td>Juan Pérez</td>
-                                    <td>María Gómez</td>
-                                    <td>Caries dental</td>
-                                    <td>Resina</td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm"
-                                            style="background: #a68b44; color: #0b1a30; font-weight: 600;"
-                                            data-bs-toggle="modal" data-bs-target="#modalDetalleVisita">
-                                            <i class="bi bi-eye"></i> Ver Detalle
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2023-10-24</td>
-                                    <td>Ana Ruiz</td>
-                                    <td>Carlos López</td>
-                                    <td>Gingivitis</td>
-                                    <td>Limpieza profunda</td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm"
-                                            style="background: #a68b44; color: #0b1a30; font-weight: 600;"
-                                            data-bs-toggle="modal" data-bs-target="#modalDetalleVisita">
-                                            <i class="bi bi-eye"></i> Ver Detalle
-                                        </button>
+                                    <td colspan="7" style="text-align:center; color:#cbb26a; padding:30px;">
+                                        <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                        Cargando historias clínicas...
                                     </td>
                                 </tr>
                             </tbody>
@@ -100,75 +133,87 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Modal for details -->
-            <div class="modal fade" id="modalDetalleVisita" data-bs-backdrop="true" tabindex="-1"
-                aria-labelledby="modalDetalleVisitaLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content border-0 shadow">
-                        <div class="modal-header text-white" style="background-color: #0b1a30;">
-                            <h5 class="modal-title fw-bold" id="modalDetalleVisitaLabel"><i
-                                    class="bi bi-journal-medical me-2"></i>Detalle de Historia Clínica</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body p-4">
-                            <div class="row g-3">
-                                <div class="col-md-6"><span
-                                        class="text-muted small text-uppercase fw-bold">Alumno</span>
-                                    <div class="fw-bold fs-6 text-primary">Juan Pérez</div>
-                                </div>
-                                <div class="col-md-6"><span
-                                        class="text-muted small text-uppercase fw-bold">Paciente</span>
-                                    <div class="fw-bold fs-6 text-primary">María Gómez</div>
-                                </div>
-                                <div class="col-md-6"><span class="text-muted small text-uppercase fw-bold">Fecha de
-                                        Registro</span>
-                                    <div class="fw-bold">2023-10-25</div>
-                                </div>
-                                <div class="col-md-6"><span class="text-muted small text-uppercase fw-bold">Higiene
-                                        Oral</span>
-                                    <div class="fw-bold">Buena</div>
-                                </div>
-                                <div class="col-md-6"><span
-                                        class="text-muted small text-uppercase fw-bold">Hábitos</span>
-                                    <div class="fw-bold">Ninguno</div>
-                                </div>
-                                <div class="col-md-6"><span
-                                        class="text-muted small text-uppercase fw-bold">Oclusión</span>
-                                    <div class="fw-bold">Clase I</div>
-                                </div>
-
-                                <div class="col-12 mt-4">
-                                    <h6 class="fw-bold text-warning-emphasis border-bottom pb-2"><i
-                                            class="bi bi-exclamation-circle-fill me-1"></i> Motivo de Consulta /
-                                        Diagnóstico Definitivo</h6>
-                                    <p class="bg-light p-3 rounded border text-dark" style="white-space: pre-wrap;">
-                                        Caries dental en pieza 14</p>
-                                </div>
-
-                                <div class="col-12 mt-2">
-                                    <h6 class="fw-bold text-success-emphasis border-bottom pb-2"><i
-                                            class="bi bi-check2-square me-1"></i> Plan de Tratamiento Realizado</h6>
-                                    <p class="bg-light p-3 rounded border text-dark" style="white-space: pre-wrap;">
-                                        Resina fotocurable</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer bg-light">
-                            <button type="button" class="btn btn-secondary fw-bold px-4"
-                                data-bs-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </section>
     </main>
 
-    <!-- Scripts -->
+    <!-- Modal de detalle completo -->
+    <div id="modalOverlay" class="modal-overlay-custom" style="display:none;" onclick="cerrarModalDetalle(event)">
+        <div class="modal-detalle" onclick="event.stopPropagation()">
+            <div class="modal-header-custom">
+                <div>
+                    <h5 style="color:#fff; font-weight:700; margin:0; font-size:16px;">
+                        <i class="bi bi-journal-medical me-2" style="color:#cbb26a;"></i>Historia Clínica Completa
+                    </h5>
+                    <small id="modal-fecha" style="color:#6b7280;"></small>
+                </div>
+                <button class="close-modal" onclick="cerrarModalDetalle()">✕</button>
+            </div>
+            <div class="modal-body-custom">
+
+                <!-- Info alumno + paciente -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <div class="detalle-section">
+                            <h6><i class="bi bi-mortarboard-fill me-1"></i>Alumno</h6>
+                            <p class="section-value" id="modal-alumno"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detalle-section">
+                            <h6><i class="bi bi-person-fill me-1"></i>Paciente</h6>
+                            <p class="section-value" id="modal-paciente"></p>
+                            <small id="modal-paciente-det" style="color:#6b7280; font-size:11px;"></small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Antecedentes -->
+                <div class="detalle-section">
+                    <h6><i class="bi bi-clipboard2-pulse me-1"></i>Antecedentes Médicos</h6>
+                    <div class="row g-2">
+                        <div class="col-6 col-md-3"><p class="section-label">Diabetes</p><p class="section-value" id="modal-diabetes"></p></div>
+                        <div class="col-6 col-md-3"><p class="section-label">Hipertensión</p><p class="section-value" id="modal-hipertension"></p></div>
+                        <div class="col-6 col-md-3"><p class="section-label">Problemas Cardíacos</p><p class="section-value" id="modal-cardiacos"></p></div>
+                        <div class="col-6 col-md-3"><p class="section-label">Embarazo</p><p class="section-value" id="modal-embarazo"></p></div>
+                        <div class="col-12"><p class="section-label">Alergias</p><p class="section-value" id="modal-alergias"></p></div>
+                        <div class="col-12"><p class="section-label">Medicamentos Actuales</p><p class="section-value" id="modal-medicamentos"></p></div>
+                        <div class="col-12"><p class="section-label">Otros Padecimientos</p><p class="section-value" id="modal-otros"></p></div>
+                    </div>
+                </div>
+
+                <!-- Exploración -->
+                <div class="detalle-section">
+                    <h6><i class="bi bi-stethoscope me-1"></i>Exploración Clínica</h6>
+                    <div class="row g-2">
+                        <div class="col-6 col-md-4"><p class="section-label">Higiene Oral</p><p class="section-value" id="modal-higiene"></p></div>
+                        <div class="col-6 col-md-4"><p class="section-label">Hábitos</p><p class="section-value" id="modal-habitos"></p></div>
+                        <div class="col-6 col-md-4"><p class="section-label">Oclusión</p><p class="section-value" id="modal-oclusion"></p></div>
+                        <div class="col-12"><p class="section-label">Estado ATM</p><p class="section-value" id="modal-atm"></p></div>
+                    </div>
+                </div>
+
+                <!-- Diagnóstico y Plan -->
+                <div class="detalle-section">
+                    <h6><i class="bi bi-journal-check me-1" style="color:#f59e0b;"></i>Diagnóstico y Tratamiento</h6>
+                    <p class="section-label">Diagnóstico Definitivo</p>
+                    <p class="section-value mb-3" id="modal-diagnostico" style="white-space:pre-wrap;"></p>
+                    <p class="section-label">Plan de Tratamiento</p>
+                    <p class="section-value" id="modal-plan" style="white-space:pre-wrap;"></p>
+                </div>
+
+                <!-- Botón marcar revisado -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <span id="modal-estado-label" style="font-size:13px; color:#6b7280;"></span>
+                    <button id="btn-marcar-revisado" class="btn-revisar" onclick="marcarRevisado()" style="padding: 8px 20px; font-size: 13px;">
+                        <i class="bi bi-check2-circle me-1"></i> Marcar como Revisado
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../script_menu.js"></script>
-    <script src="maestro_script.js"></script>
+    <script src="historias_maestro.js"></script>
 </body>
-
 </html>

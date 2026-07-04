@@ -13,7 +13,7 @@ export async function registrarPaciente(pacienteData) {
         );
         // Insertar en tabla paciente
         const [pacienteResult] = await db.query(
-            'INSERT INTO paciente (Id_usuario, Fecha_Nacimiento, Sexo, Estado_Civil, Ocupacion, Residencia, Telefono_Emergencia, Contacto_Familiar) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            'INSERT INTO paciente (Id_usuario, Fecha_Nacimiento, Sexo, Estado_Civil, Ocupacion, Lugar_Origen_Residencia, Telefono_Emergencia, Contacto_Familiar) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
             [curp, fecha_nacimiento, sexo, estado_civil, ocupacion, residencia, tel_emergencia, contacto_familiar]
         );
         return { userId: userResult.insertId, pacienteId: pacienteResult.insertId };

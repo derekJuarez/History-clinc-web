@@ -1,12 +1,54 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Alumnos</title>
+    <title>Registro de Alumnos | Panel Maestro</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="../css/alumno.css">
+    <style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .info-maestro-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 10px 16px;
+            margin-bottom: 24px;
+            color: #93c5fd;
+            font-size: 13px;
+        }
+
+        .info-maestro-badge i {
+            font-size: 18px;
+            color: #3b82f6;
+            flex-shrink: 0;
+        }
+
+        .info-maestro-badge span {
+            font-weight: 600;
+            color: #bfdbfe;
+        }
+
+        .form-hint {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .password-hint {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+    </style>
 </head>
 <body>
     <div id="sidebar-container" data-menu="maestro"></div>
@@ -14,31 +56,45 @@
         <header class="top-header">
             <div class="header-title">
                 <h1>Registro de Alumnos</h1>
-                <p>Panel de administracion y Registro de Alumnos</p>
+                <p>Registra y asigna alumnos a tu lista de supervisión</p>
             </div>
         </header>
         <section class="content-area">
             <div class="glass-form-container">
                 <h2>Registro de Alumnos</h2>
+
+                <!-- Badge informativo del maestro -->
+                <div class="info-maestro-badge">
+                    <i class="ri-information-line"></i>
+                    <div>
+                        El alumno quedará asignado a tu lista automáticamente.
+                        Si ya tiene otro maestro, se enviará una solicitud al administrador.
+                    </div>
+                </div>
+
                 <form id="registro-alumno-form">
                     <fieldset class="form-section">
                         <legend><span class="step-number">1</span> DATOS DEL ALUMNO</legend>
                         <div class="form-section-content">
                             <div class="input-box">
-                                <label for="nombre-alumno">Nombre de Alumno</label>
-                                <input type="text" id="nombre-alumno" placeholder="Nombre de Alumno" required>
+                                <label for="nombre-alumno">Nombre Completo del Alumno</label>
+                                <input type="text" id="nombre-alumno" placeholder="Nombre completo" required>
                             </div>
                             <div class="input-box">
-                                <label for="matricula-alumno">Matricula</label>
-                                <input type="text" id="matricula-alumno" placeholder="Matricula" required>
+                                <label for="matricula-alumno">Matrícula del Alumno</label>
+                                <input type="text" id="matricula-alumno" placeholder="Matrícula" required>
+                                <p class="form-hint">La matrícula es el identificador único del alumno en el sistema.</p>
                             </div>
                             <div class="input-box" style="grid-column: span 2;">
-                                <label for="unidad-clinica-alumno">Unidad Clinica</label>
-                                <input type="text" id="unidad-clinica-alumno" placeholder="Unidad Clinica" required>
+                                <label for="contrasena-alumno">Contraseña inicial <em style="color:#6b7280; font-weight:400;">(opcional)</em></label>
+                                <input type="text" id="contrasena-alumno" placeholder="Si se deja vacío, se usará la matrícula como contraseña">
+                                <p class="password-hint"><i class="ri-lock-line"></i> Por defecto la contraseña será la misma matrícula del alumno.</p>
                             </div>
                         </div>
                     </fieldset>
-                    <button type="submit" class="btn-submit">Confirmar Registro</button>
+                    <button type="submit" class="btn-submit" id="btn-submit">
+                        <i class="ri-user-add-line"></i> Confirmar Registro
+                    </button>
                 </form>
             </div>
         </section>

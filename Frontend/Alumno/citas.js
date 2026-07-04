@@ -1,7 +1,7 @@
 //Traenos usuario, pacinete y ubicacion desde la base de datos
-const urlPacientes = 'http://localhost:3001/api/paciente/todos';
-const urlClinicas = 'http://localhost:3001/api/clinicas/';
-const urlMaestros = 'http://localhost:3001/api/maestros/todos';
+const urlPacientes = '/api/paciente/todos';
+const urlClinicas = '/api/clinicas/';
+const urlMaestros = '/api/maestros/todos';
 
 async function obtenerDatos() {
     try {
@@ -60,7 +60,7 @@ document.getElementById('FormCitas').addEventListener('submit', async (e) => {
 
     try {
         // Lo mandamos a la ruta de guardar cita
-        const response = await fetch('http://localhost:3001/api/citas/registrar', {
+        const response = await fetch('/api/citas/registrar', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(citaData)

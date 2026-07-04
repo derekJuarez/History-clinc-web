@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitudes de Cambio de Asesor | Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="../css/alumno.css">
+    <style>
+        /* ─── Tabs ─────────────────────────────────────────────────── */
+        .tabs-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #222228;
+            padding-bottom: 0;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: #888893;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: -1px;
+        }
+
+        .tab-btn.active {
+            color: #cbb26a;
+            border-bottom-color: #cbb26a;
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: #d1d5db;
+        }
+
+        /* ─── Table ─────────────────────────────────────────────────── */
+        .glass-table-container h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #cbb26a;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .table-subtitle {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+
+        .badge-estado {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-PENDIENTE  { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.4); }
+        .badge-APROBADO   { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.4); }
+        .badge-RECHAZADO  { background: rgba(239,68,68,0.15);  color: #ef4444; border: 1px solid rgba(239,68,68,0.4); }
+
+        /* ─── Botones de acción ─────────────────────────────────────── */
+        .acciones-cell {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-accept {
+            background: rgba(16,185,129,0.15);
+            color: #10b981;
+            border: 1px solid rgba(16,185,129,0.4);
+        }
+
+        .btn-accept:hover {
+            background: rgba(16,185,129,0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-reject {
+            background: rgba(239,68,68,0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239,68,68,0.4);
+        }
+
+        .btn-reject:hover {
+            background: rgba(239,68,68,0.3);
+            transform: translateY(-1px);
+        }
+
+        /* ─── Arrow de cambio de maestro ─────────────────────────────── */
+        .maestro-change {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 12px;
+        }
+
+        .maestro-change .actual {
+            color: #888893;
+        }
+
+        .maestro-change .arrow {
+            color: #f59e0b;
+            font-size: 10px;
+        }
+
+        .maestro-change .nuevo {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        /* ─── Empty state ─────────────────────────────────────────────── */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888893;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #374151;
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            font-size: 15px;
+        }
+
+        /* ─── Toast de notificación ──────────────────────────────────── */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #ffffff;
+            z-index: 9999;
+            animation: slideInRight 0.4s ease;
+            max-width: 380px;
+            line-height: 1.5;
+        }
+
+        .toast.exito {
+            background: #064e3b;
+            border: 1px solid #10b981;
+        }
+
+        .toast.error {
+            background: #450a0a;
+            border: 1px solid #ef4444;
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        /* ─── Modal de confirmación ──────────────────────────────────── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal-box {
+            background: #111115;
+            border: 1px solid #2d2d35;
+            border-radius: 14px;
+            padding: 32px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .modal-desc {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .modal-btn.confirm-accept {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .modal-btn.confirm-accept:hover { background: #059669; }
+
+        .modal-btn.confirm-reject {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .modal-btn.confirm-reject:hover { background: #dc2626; }
+
+        .modal-btn.cancel {
+            background: #1f2937;
+            color: #9ca3af;
+        }
+
+        .modal-btn.cancel:hover { background: #374151; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Dinámico -->
+    <div id="sidebar-container" data-menu="admin"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Solicitudes de Cambio de Asesor</h1>
+                <p>Gestiona las solicitudes de reasignación de maestro enviadas por los docentes</p>
+            </div>
+        </header>
+
+        <section class="content-area">
+            <div class="glass-table-container">
+                <h2>Solicitudes de Cambio de Asesor</h2>
+                <p class="table-subtitle">Cuando un maestro intenta registrar un alumno que ya tiene otro docente asignado, aparece aquí para tu aprobación.</p>
+
+                <!-- Tabs: Pendientes / Historial -->
+                <div class="tabs-container">
+                    <button class="tab-btn active" id="tab-pendientes" onclick="cambiarTab('pendientes')">
+                        <i class="ri-time-line"></i> Pendientes
+                        <span id="badge-count" style="
+                            display: inline-block;
+                            background: #f59e0b;
+                            color: #000;
+                            border-radius: 10px;
+                            padding: 1px 7px;
+                            font-size: 11px;
+                            margin-left: 6px;
+                            font-weight: 700;
+                        ">0</span>
+                    </button>
+                    <button class="tab-btn" id="tab-historial" onclick="cambiarTab('historial')">
+                        <i class="ri-history-line"></i> Historial
+                    </button>
+                </div>
+
+                <table class="pacientes-table">
+                    <thead>
+                        <tr>
+                            <th>Alumno</th>
+                            <th>Matrícula</th>
+                            <th>Cambio de Asesor</th>
+                            <th>Fecha</th>
+                            <th id="col-estado-header">Estado</th>
+                            <th id="col-acciones-header">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="TablaSolicitudes">
+                        <tr>
+                            <td colspan="6" style="text-align:center; color:#cbb26a; padding:20px;">
+                                Cargando solicitudes...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script_menu.js"></script>
+    <script src="solicitudes_asesor.js"></script>
+</body>
+</html>
