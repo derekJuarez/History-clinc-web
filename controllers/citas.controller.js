@@ -1,11 +1,17 @@
-import { registrarCita,obtenerCitas,modificarCita } from '../models/citas.model.js';
+import { registrarCita,obtenerCitas,modificarCita, verificarChoqueDeHorario } from '../models/citas.model.js';
 import { successResponse, errorResponse } from '../utils/helpers.util.js';
 
 export async function registrar(req, res) {
     try {
         const citaData = req.body;
+        const horarioOcupado = await verificarChoqueDeHorario(citaData.fecha, citaData.hora);
+
+        if (horarioOcupado) {
+            return errorResponse(res, 409, 'El horario seleccionado ya está ocupado. Por favor, elige otro.');
+        }
+        
         const result = await registrarCita(citaData);
-        successResponse(res, 201, 'Cita registrada exitosamente', result);
+        successResponse(res, 201, 'Cita registrada exitosamente', { id: result });
     } catch (error) {
         console.error('Error al registrar cita:', error);
         errorResponse(res, 500, 'Error al registrar cita');
