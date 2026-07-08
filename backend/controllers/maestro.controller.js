@@ -4,13 +4,23 @@ import {successResponse, errorResponse} from '../utils/helpers.util.js';
 
 export const obtenerTodos = async (req, res) => {
     try {
-        const maestroDarta = req.body;
-        const maestros = await obtenerTodosMaestros();
-        successResponse(res, 201, 'Maestros obtenidos exitosamente', maestros);
+        const maestrosRaw = await obtenerTodosMaestros();
+        
+        // Normalizar claves para asegurar compatibilidad de mayúsculas/minúsculas
+        const maestros = maestrosRaw.map(m => {
+            const nameKey = Object.keys(m).find(k => k.toLowerCase() === 'name') || 'Name';
+            const matriculaKey = Object.keys(m).find(k => k.toLowerCase() === 'id_matricula') || 'ID_Matricula';
+            return {
+                ID_Matricula: m[matriculaKey],
+                Name: m[nameKey]
+            };
+        });
 
-    }catch (error) {
+        return successResponse(res, 201, 'Maestros obtenidos exitosamente', maestros);
+
+    } catch (error) {
         console.error('Error al obtener maestros:', error);
-        errorResponse(res, 500, 'Error al obtener maestros');
+        return errorResponse(res, 500, 'Error al obtener maestros');
     }
 };
 

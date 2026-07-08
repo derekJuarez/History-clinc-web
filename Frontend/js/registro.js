@@ -27,7 +27,8 @@ async function cargarMaestros() {
             maestrosCargados = result.data;
             maestrosListDatalist.innerHTML = '';
             maestrosCargados.forEach(maestro => {
-                maestrosListDatalist.innerHTML += `<option value="${maestro.Name}"></option>`;
+                const name = maestro.Name || maestro.NAME || '';
+                maestrosListDatalist.innerHTML += `<option value="${name}"></option>`;
             });
         } else {
             console.error('Error al cargar maestros:', result.message);
@@ -52,12 +53,15 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
     let id_maestro = null;
     if (id_rol === 2) {
         const selectedName = maestroSearchInput.value.trim();
-        const selectedTeacher = maestrosCargados.find(m => m.Name.toLowerCase() === selectedName.toLowerCase());
+        const selectedTeacher = maestrosCargados.find(m => {
+            const name = m.Name || m.NAME || '';
+            return name.toLowerCase() === selectedName.toLowerCase();
+        });
         if (!selectedTeacher) {
             alert('Por favor selecciona un maestro válido de la lista.');
             return;
         }
-        id_maestro = selectedTeacher.ID_Matricula;
+        id_maestro = selectedTeacher.ID_Matricula || selectedTeacher.ID_MATRICULA;
     }
 
     // Validar que las contraseñas coincidan
