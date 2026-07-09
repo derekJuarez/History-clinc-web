@@ -11,10 +11,12 @@ document.getElementById('registro-clinica-form').addEventListener('submit', asyn
     const ubicacion = `${calle}, Col. ${colonia}, ${numeroCp}`;
 
     try {
+        const token = localStorage.getItem('token');
         const response = await fetch('/api/clinicas', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({ nombre, encargado, ubicacion })
         });

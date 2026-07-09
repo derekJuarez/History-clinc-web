@@ -25,9 +25,13 @@ document.getElementById('registro-alumno-form').addEventListener('submit', async
     btnSubmit.textContent = 'Procesando...';
 
     try {
+        const token = localStorage.getItem('token');
         const response = await fetch('/api/alumnos', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
             body: JSON.stringify({ nombre, matricula, contrasena, maestro_matricula })
         });
 

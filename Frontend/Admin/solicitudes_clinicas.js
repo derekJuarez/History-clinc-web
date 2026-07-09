@@ -4,7 +4,10 @@ async function cargarSolicitudes() {
     const tabla = document.getElementById('TablaSolicitudes');
     
     try {
-        const response = await fetch('/api/clinicas/solicitudes');
+        const token = localStorage.getItem('token');
+        const response = await fetch('/api/clinicas/solicitudes', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
         const data = await response.json();
         
         if (response.ok) {
@@ -69,10 +72,12 @@ async function actualizarEstado(id, estado) {
     }
     
     try {
+        const token = localStorage.getItem('token');
         const response = await fetch(`/api/clinicas/${id}/estado`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({ estado })
         });

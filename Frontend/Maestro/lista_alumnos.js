@@ -8,7 +8,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        const response = await fetch(`/api/alumnos/maestro/${teacherMatricula}`);
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/alumnos/maestro/${teacherMatricula}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
         const result = await response.json();
 
         if (response.ok && result.success) {

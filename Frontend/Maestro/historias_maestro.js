@@ -15,7 +15,10 @@ async function cargarHistorias() {
     }
 
     try {
-        const response = await fetch(`/api/expedientes/maestro/${matricula}`);
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/expedientes/maestro/${matricula}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
         const data = await response.json();
 
         if (!response.ok) throw new Error(data.message || 'Error al cargar');
@@ -100,7 +103,10 @@ async function verDetalle(id) {
     // Si no está (raro), pedir al servidor
     if (!inf) {
         try {
-            const r = await fetch(`/api/expedientes/${id}`);
+            const token = localStorage.getItem('token');
+            const r = await fetch(`/api/expedientes/${id}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
             const d = await r.json();
             if (r.ok) inf = d.data;
         } catch (e) { console.error(e); return; }
@@ -161,7 +167,11 @@ async function marcarRevisado() {
     if (!informeActualId) return;
 
     try {
-        const response = await fetch(`/api/expedientes/${informeActualId}/revisado`, { method: 'PUT' });
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/expedientes/${informeActualId}/revisado`, { 
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
         const data = await response.json();
 
         if (response.ok) {

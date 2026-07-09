@@ -9,10 +9,12 @@ document.getElementById('registro-docente-form').addEventListener('submit', asyn
     const contraseña = document.getElementById('contrasena-docente').value;
 
     try {
+        const token = localStorage.getItem('token');
         const response = await fetch('/api/docentes', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 nombre,

@@ -13,10 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const ubicacion = document.getElementById('edit-clinica-ubicacion').value.trim();
 
             try {
+                const token = localStorage.getItem('token');
                 const response = await fetch(`/api/clinicas/${id}`, {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify({ nombre, encargado, ubicacion })
                 });
@@ -43,7 +45,10 @@ async function cargarClinicas() {
     const tablaClinicas = document.getElementById('TablaClinicas');
 
     try {
-        const response = await fetch('/api/clinicas');
+        const token = localStorage.getItem('token');
+        const response = await fetch('/api/clinicas', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
         const result = await response.json();
 
         if (response.ok && result.success) {
@@ -125,8 +130,10 @@ async function eliminarClinica(id, nombre) {
     }
 
     try {
+        const token = localStorage.getItem('token');
         const response = await fetch(`/api/clinicas/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
         });
         const result = await response.json();
 

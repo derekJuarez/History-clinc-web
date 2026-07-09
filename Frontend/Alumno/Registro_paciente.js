@@ -17,10 +17,12 @@ document.getElementById('registroPacienteForm').addEventListener('submit', async
     };
 
     try {
+        const token = localStorage.getItem('token');
         const response = await fetch("/api/paciente/registrar", {
             method: 'Post',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(pacienteData)
         });

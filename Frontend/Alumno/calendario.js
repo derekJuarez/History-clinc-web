@@ -15,7 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Obtener citas del backend
     const obtenerCitas = async () => {
         try {
-            const res = await fetch('/api/citas/obtener');
+            const token = localStorage.getItem('token');
+            const res = await fetch('/api/citas/obtener', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
             const data = await res.json();
             citasGlobal = data.data || [];
             renderCalendar();
@@ -153,9 +156,13 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
+            const token = localStorage.getItem('token');
             const res = await fetch(`/api/citas/modificar/${id_cita}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify(datosCita)
             });
             if(res.ok) {
@@ -195,9 +202,13 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
+            const token = localStorage.getItem('token');
             const res = await fetch(`/api/citas/modificar/${id_cita}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify(nuevosDatos)
             });
             

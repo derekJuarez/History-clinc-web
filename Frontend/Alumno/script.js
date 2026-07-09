@@ -105,7 +105,10 @@ async function buscarPaciente() {
     status.innerHTML = '<div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div><span class="text-primary fw-bold">Buscando en la base de datos...</span>';
 
     try {
-        const respuesta = await fetch(`/api/expedientes/buscar/${valorBusqueda}`);
+        const token = localStorage.getItem('token');
+        const respuesta = await fetch(`/api/expedientes/buscar/${valorBusqueda}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
         const data = await respuesta.json();
 
         contenedor.style.display = 'block';
@@ -299,9 +302,13 @@ if (formHistoriaClinica) {
         };
 
         try {
+            const token = localStorage.getItem('token');
             const response = await fetch('/api/expedientes/guardar', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify(datosCompletos)
             });
             const result = await response.json();

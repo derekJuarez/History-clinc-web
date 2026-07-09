@@ -5,10 +5,12 @@ const urlMaestros = '/api/maestros/todos';
 
 async function obtenerDatos() {
     try {
+        const token = localStorage.getItem('token');
+        const headers = { 'Authorization': `Bearer ${token}` };
 
-        const resPacientes = await fetch(urlPacientes);
-        const resClinicas = await fetch(urlClinicas);
-        const resMaestros = await fetch(urlMaestros);
+        const resPacientes = await fetch(urlPacientes, { headers });
+        const resClinicas = await fetch(urlClinicas, { headers });
+        const resMaestros = await fetch(urlMaestros, { headers });
 
         const Pacientes = await resPacientes.json();
         const Clinicas = await resClinicas.json();
@@ -59,10 +61,14 @@ document.getElementById('FormCitas').addEventListener('submit', async (e) => {
     };
 
     try {
+        const token = localStorage.getItem('token');
         // Lo mandamos a la ruta de guardar cita
         const response = await fetch('/api/citas/registrar', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
             body: JSON.stringify(citaData)
         });
         const result = await response.json();

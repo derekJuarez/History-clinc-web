@@ -14,10 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const contraseña = document.getElementById('edit-docente-contrasena').value;
 
             try {
+                const token = localStorage.getItem('token');
                 const response = await fetch(`/api/docentes/${matricula}`, {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify({ nombre, email: correo, telefono, contraseña })
                 });
@@ -44,7 +46,10 @@ async function cargarDocentes() {
     const tablaDocentes = document.getElementById('TablaDocentes');
 
     try {
-        const response = await fetch('/api/docentes');
+        const token = localStorage.getItem('token');
+        const response = await fetch('/api/docentes', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
         const result = await response.json();
 
         if (response.ok && result.success) {
@@ -128,8 +133,10 @@ async function eliminarDocente(matricula, nombre) {
     }
 
     try {
+        const token = localStorage.getItem('token');
         const response = await fetch(`/api/docentes/${matricula}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
         });
         const result = await response.json();
 

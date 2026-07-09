@@ -29,7 +29,10 @@ async function cargarSolicitudes(tab = 'pendientes') {
             ? '/api/solicitudes-asesor?historial=true'
             : '/api/solicitudes-asesor';
 
-        const response = await fetch(url);
+        const token = localStorage.getItem('token');
+        const response = await fetch(url, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
         const data = await response.json();
 
         if (!response.ok) {
@@ -160,9 +163,13 @@ async function procesarAccion(id, estado) {
     cerrarModal();
 
     try {
+        const token = localStorage.getItem('token');
         const response = await fetch(`/api/solicitudes-asesor/${id}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
             body: JSON.stringify({ estado })
         });
 
@@ -184,7 +191,10 @@ async function procesarAccion(id, estado) {
 
 async function cargarBadgePendientes() {
     try {
-        const response = await fetch('/api/solicitudes-asesor');
+        const token = localStorage.getItem('token');
+        const response = await fetch('/api/solicitudes-asesor', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
         const data = await response.json();
         if (response.ok) {
             document.getElementById('badge-count').textContent = (data.data || []).length;
