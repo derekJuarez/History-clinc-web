@@ -13,6 +13,8 @@ import pacienteRoutes from './routes/paciente.routes.js';
 import citasRoutes from './routes/citas.routes.js';
 import maestroRoutes from './routes/maestro.routes.js';
 import docenteRoutes from './routes/docente.routes.js';
+import solicitudAsesorRoutes from './routes/solicitud_asesor.routes.js';
+import expedienteRoutes from './routes/expediente.routes.js';
 
 
 //archivos frontend
@@ -45,6 +47,8 @@ app.use('/api/paciente', pacienteRoutes); // Rutas de paciente
 app.use('/api/citas', citasRoutes); // Rutas de citas
 app.use('/api/maestros', maestroRoutes); // Rutas de maestros
 app.use('/api/docentes', docenteRoutes); // Rutas de docentes asesores
+app.use('/api/solicitudes-asesor', solicitudAsesorRoutes); // Solicitudes de cambio de asesor
+app.use('/api/expedientes', expedienteRoutes); // Informes clínicos de alumnos
 // Middleware para manejar rutas no encontradas
 app.use((req, res) => {
     res.status(404).json({ message: 'Ruta no encontrada' });

@@ -105,7 +105,7 @@ async function buscarPaciente() {
     status.innerHTML = '<div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div><span class="text-primary fw-bold">Buscando en la base de datos...</span>';
 
     try {
-        const respuesta = await fetch(`http://localhost:3001/api/expedientes/${valorBusqueda}`);
+        const respuesta = await fetch(`/api/expedientes/buscar/${valorBusqueda}`);
         const data = await respuesta.json();
 
         contenedor.style.display = 'block';
@@ -249,6 +249,17 @@ const formHistoriaClinica = document.getElementById('formHistoriaClinica');
 if (formHistoriaClinica) {
     formHistoriaClinica.addEventListener('submit', async function (e) {
         e.preventDefault();
+
+        const matricula_alumno = localStorage.getItem('matricula');
+        if (!matricula_alumno) {
+            mostrarToastAlumno('error', 'No se encontró tu sesión. Por favor inicia sesión nuevamente.');
+            return;
+        }
+
+        const btnGuardar = this.querySelector('[type="submit"]');
+        btnGuardar.disabled = true;
+        btnGuardar.innerHTML = '<i class="bi bi-hourglass-split me-2"></i> Guardando...';
+
         const estadoOdontograma = {};
         document.querySelectorAll('.diente').forEach(diente => {
             const numDiente = diente.id.replace('d-', '');
@@ -259,6 +270,7 @@ if (formHistoriaClinica) {
         });
 
         const datosCompletos = {
+            matricula_alumno,
             paciente: {
                 nombre: document.getElementById('nombre').value,
                 telefono: document.getElementById('telefono').value,
@@ -287,7 +299,7 @@ if (formHistoriaClinica) {
         };
 
         try {
-            const response = await fetch('http://localhost:3001/api/expedientes/guardar', {
+            const response = await fetch('/api/expedientes/guardar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(datosCompletos)
@@ -295,15 +307,59 @@ if (formHistoriaClinica) {
             const result = await response.json();
 
             if (response.ok && result.success) {
-                alert("✔️ Expediente guardado exitosamente. Se ha agregado una nueva visita al historial.");
+                mostrarToastAlumno('exito', '✅ Informe clínico subido exitosamente. Tu docente podrá revisarlo en su panel.');
                 document.getElementById('buscarValor').value = document.getElementById('telefono').value;
                 buscarPaciente();
             } else {
-                alert("❌ Error al guardar en la base de datos: " + (result.error || "Revisa la consola"));
+                mostrarToastAlumno('error', '❌ Error al guardar: ' + (result.message || 'Revisa la consola'));
             }
         } catch (error) {
             console.error(error);
-            alert("❌ No se pudo conectar con el servidor para guardar.");
+            mostrarToastAlumno('error', '❌ No se pudo conectar con el servidor para guardar.');
+        } finally {
+            btnGuardar.disabled = false;
+            btnGuardar.innerHTML = '<i class="bi bi-cloud-arrow-up-fill me-2"></i> Guardar Expediente';
         }
     });
 }
+
+function mostrarToastAlumno(tipo, mensaje) {
+    const anterior = document.getElementById('toast-alumno');
+    if (anterior) anterior.remove();
+
+    const colores = {
+        exito: { bg: '#064e3b', border: '#10b981' },
+        error: { bg: '#450a0a', border: '#ef4444' }
+    };
+    const c = colores[tipo] || colores.exito;
+
+    const toast = document.createElement('div');
+    toast.id = 'toast-alumno';
+    toast.style.cssText = `
+        position: fixed; bottom: 28px; right: 28px;
+        background: ${c.bg}; border: 1px solid ${c.border};
+        border-radius: 12px; padding: 16px 22px;
+        color: #fff; font-size: 14px; z-index: 9999;
+        max-width: 380px; line-height: 1.5;
+        animation: slideUp 0.3s ease;
+        font-family: 'Poppins', sans-serif;
+    `;
+    toast.innerHTML = mensaje;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 7000);
+}
+
+// --- MANEJO DE HASH PARA CARGAR FORMULARIO DIRECTAMENTE ---
+function verificarHashParaNuevaConsulta() {
+    if (window.location.hash === '#nueva') {
+        mostrarFormularioNuevoPaciente();
+        // Opcional: limpiar el hash después de cargarlo para que si vuelve a dar clic funcione
+        // history.replaceState(null, null, ' '); 
+    }
+}
+
+// Verificar al cargar la página
+document.addEventListener('DOMContentLoaded', verificarHashParaNuevaConsulta);
+
+// Verificar si el hash cambia mientras ya está en la página
+window.addEventListener('hashchange', verificarHashParaNuevaConsulta);

@@ -40,12 +40,18 @@ body {
 .flip-front, .flip-back {
     width: 100%;
     backface-visibility: hidden;
-    background: rgba(0, 0, 0, 0.15); /* Tintado muy sutil para leer el texto */
+    background: #0a2862; /* Color sólido azul marino institucional */
     border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(8px);
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 30px 35px;
+}
+
+.login-logo {
+    display: block;
+    margin: 0 auto 15px;
+    max-width: 120px;
+    height: auto;
 }
 
 .flip-back {

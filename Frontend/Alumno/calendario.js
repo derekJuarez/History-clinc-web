@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Obtener citas del backend
     const obtenerCitas = async () => {
         try {
-            const res = await fetch('http://localhost:3001/api/citas/obtener');
+            const res = await fetch('/api/citas/obtener');
             const data = await res.json();
             citasGlobal = data.data || [];
             renderCalendar();
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
-            const res = await fetch(`http://localhost:3001/api/citas/modificar/${id_cita}`, {
+            const res = await fetch(`/api/citas/modificar/${id_cita}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(datosCita)
@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
-            const res = await fetch(`http://localhost:3001/api/citas/modificar/${id_cita}`, {
+            const res = await fetch(`/api/citas/modificar/${id_cita}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(nuevosDatos)

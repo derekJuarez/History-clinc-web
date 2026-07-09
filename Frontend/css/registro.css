@@ -24,19 +24,24 @@ body {
     background-attachment: fixed;
 }
 
-/* Tarjeta contenedora con el mismo diseño glassmorphism del login */
+/* Tarjeta contenedora con el mismo diseño sólido del login */
 .register-container {
     width: 450px;
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(13px);
-    -webkit-backdrop-filter: blur(13px);
+    background: #0a2862; /* Color sólido azul marino institucional */
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 40px 35px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.register-logo {
+    display: block;
+    margin: 0 auto 10px;
+    max-width: 120px;
+    height: auto;
 }
 
 #registerForm {

@@ -9,11 +9,11 @@ export async function registrarPaciente(pacienteData) {
         // Insertar en tabla usuarios
         const [userResult] = await db.query(
             'INSERT INTO usuarios (ID_Matricula, Name, Telefono, Correo, Id_Rol, Contraseña) VALUES (?, ?, ?, ?, ?, ?)',
-            [curp, nombre, telefono, email, 3, passwordGenerada] // 3 = Paciente
+            [curp, nombre, telefono, email, 4, passwordGenerada] // 4 = Paciente
         );
         // Insertar en tabla paciente
         const [pacienteResult] = await db.query(
-            'INSERT INTO paciente (Id_usuario, Fecha_Nacimiento, Sexo, Estado_Civil, Ocupacion, Residencia, Telefono_Emergencia, Contacto_Familiar) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            'INSERT INTO paciente (Id_usuario, Fecha_Nacimiento, Sexo, Estado_Civil, Ocupacion, Lugar_Origen_Residencia, Telefono_Emergencia, Contacto_Familiar) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
             [curp, fecha_nacimiento, sexo, estado_civil, ocupacion, residencia, tel_emergencia, contacto_familiar]
         );
         return { userId: userResult.insertId, pacienteId: pacienteResult.insertId };
@@ -35,7 +35,7 @@ export async function obtenerPacientes() {
             u.Correo AS correo
         FROM usuarios u
         INNER JOIN paciente p ON u.ID_Matricula = p.Id_Usuario
-        WHERE u.Id_Rol = 3
+        WHERE u.Id_Rol = 4
     `);
 
     return rows;

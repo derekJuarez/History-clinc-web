@@ -15,7 +15,7 @@ export const login = async (req, res) => {
         }
 
         // 2. Aquí verificarías la contraseña (ej. usando bcrypt, omitido por simplicidad)
-        if (contraseña !== user.Contraseña) { 
+        if (contraseña !== user.CONTRASEÑA) {
             return errorResponse(res, 401, 'Contraseña incorrecta');
         }
 
@@ -29,11 +29,11 @@ export const login = async (req, res) => {
         // 3. Responder exitosamente
         return successResponse(res, 200, 'Inicio de sesión exitoso', {
             token,
-            matricula: user.ID_Matricula,
-            nombre: user.Name,
+            matricula: user.ID_MATRICULA,
+            nombre: user.NAME,
             rol: user.Id_Rol,
-            telefono: user.Telefono,
-            email: user.Correo
+            telefono: user.TELEFONO,
+            email: user.CORREO
         });
 
     } catch (error) {

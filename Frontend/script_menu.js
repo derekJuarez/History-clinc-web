@@ -46,14 +46,6 @@ const menuAlumnoHTML = `
                 <ul class="submenu">
                     <li><a href="citas.html">Agendar Cita</a></li>
                     <li><a href="ver_citas.html">Calendario de Citas</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="ri-file-list-3-fill"></i>
-                    Informes
-                </a>
-            </li>
         </ul>
     </nav>
 
@@ -112,7 +104,7 @@ const menuMaestroHTML = `
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="historias_maestro.html">
                     <i class="ri-file-list-3-fill"></i>
                     Ver historias
                 </a>
@@ -175,6 +167,12 @@ const menuAdminHTML = `
                 </a>
             </li>
             <li>
+                <a href="solicitudes_asesor.html">
+                    <i class="ri-user-shared-fill"></i>
+                    Solicitudes de Asesor
+                </a>
+            </li>
+            <li>
                 <a href="lista_clinicas.html">
                     <i class="ri-hospital-line"></i>
                     Ver clínicas
@@ -211,6 +209,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const newSidebar = document.getElementById('sidebar');
 
         if (newSidebar) {
+            // Personalizar el mensaje de bienvenida con el nombre del usuario
+            const userName = localStorage.getItem('nombre');
+            if (userName) {
+                const titleText = newSidebar.querySelector('.title-text h2');
+                if (titleText) {
+                    titleText.textContent = `Bienvenido, ${userName.split(' ')[0]}`;
+                }
+            }
+
             // Lógica para los submenús
             const submenuToggles = newSidebar.querySelectorAll('.submenu-toggle');
             submenuToggles.forEach(toggle => {
