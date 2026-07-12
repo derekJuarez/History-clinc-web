@@ -13,7 +13,8 @@ export const registrar = async (req, res) => {
 
 export const obtenerTodos = async (req, res) => {
     try {
-        const pacientes = await obtenerPacientes();
+        // Extraer la matrícula del estudiante desde el token de autenticación
+        const pacientes = await obtenerPacientes(req.user.matricula);
         return successResponse(res, 200, 'Pacientes obtenidos exitosamente', pacientes);
     } catch (error) {
         console.error('Error al obtener pacientes:', error);

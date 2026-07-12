@@ -13,7 +13,8 @@ document.getElementById('registroPacienteForm').addEventListener('submit', async
         ocupacion: document.getElementById('ocupacion').value,
         residencia: document.getElementById('residencia').value,
         tel_emergencia: document.getElementById('tel_emergencia').value,
-        contacto_familiar: document.getElementById('contacto_familiar').value
+        contacto_familiar: document.getElementById('contacto_familiar').value,
+        id_estudiante: localStorage.getItem('matricula') // Obtener la matrícula del estudiante desde el almacenamiento local
     };
 
     try {

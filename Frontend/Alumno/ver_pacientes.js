@@ -28,6 +28,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             result.data.forEach(paciente => {
                 const edad = calcular_edad(paciente.fecha_nacimiento);
 
+                // Verificar si hay una radiografía reciente y crear el enlace correspondiente
+                let botonRadiografia = '<span class="text-danger">No disponible</span>';
+                // Aquí asumimos que `radiografia_reciente` es un campo que contiene la URL de la radiografía más reciente
+                if (paciente.radiografia_reciente) {
+                    botonRadiografia = `<a href="/uploads/radiografias/${paciente.radiografia_reciente}" target="_blank" style="padding: 5px 10px; background-color: 
+                    #007bff; color: white; border-radius: 5px; text-decoration: none;">Ver Imagen</a>`;
+                }
+
                 const fila = `
                 <tr>
                     <td>${paciente.curp}</td>
@@ -36,6 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td>${paciente.sexo}</td>
                     <td>${paciente.telefono}</td>
                     <td>${paciente.correo}</td>
+                    <td>${botonRadiografia}</td>
                 </tr>
                 `;
                 //insertar la fila en la tabla
