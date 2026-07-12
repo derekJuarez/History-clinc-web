@@ -30,6 +30,32 @@ export async function obtenerCitas() {
     }
 }
 
+export async function obtenerCitasPorPaciente(id_paciente) {
+    try {
+        const [rows] = await db.query(`
+            SELECT 
+    c.*, 
+    u_pac.Name AS Nombre_Paciente,
+    u_est.Name AS Nombre_Estudiante,
+    u_doc.Name AS Nombre_Docente,
+    cli.NOMBRE_CLINICA AS Nombre_Clinica,
+    cli.UBICACION AS Ubicacion_Clinica
+FROM citas c
+INNER JOIN paciente p ON c.Id_Paciente = p.Id_Paciente
+INNER JOIN usuarios u_pac ON p.Id_Usuario = u_pac.Id_Matricula
+LEFT JOIN usuarios u_est ON c.Id_Estudiante = u_est.Id_Matricula
+LEFT JOIN usuarios u_doc ON c.Id_Docente_Asesor = u_doc.Id_Matricula
+LEFT JOIN clinicas cli ON c.Id_Clinica = cli.ID_CLINICA
+WHERE c.Id_Paciente = ?
+
+        `, [id_paciente]);
+        return rows;
+    } catch (error) {
+        console.error('Error al obtener citas por paciente:', error);
+        throw error;
+    }
+}
+
 export async function modificarCita(Id_cita, nuevosDatos) {
     const {fecha,hora,estatus} = nuevosDatos;
     try {

@@ -1,25 +1,166 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel='stylesheet'
-        href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>
+    <title>Portal Paciente - Historial de Citas</title>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'>
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'>
-    <link rel="stylesheet" href="../css/alumno.css">
-    <title>Paceiente</title>
+    <link rel="stylesheet" href="../css/paciente_style.css">
 </head>
 <body>
-
-    <main class="main-content">
-        <!-- Top Header -->
-        <header class="top-header">
-            <div class="header-title">
-                <span class="icon"><i class="ri-user-line"></i></span>
-                <h1>Bienvenido </h1> <!-- Aquí puedes agregar el nombre del paciente dinámicamente-->
+    <!-- Barra Superior -->
+    <header class="topbar">
+        <div class="logo-area">
+            <div class="logo-icon">Hx</div>
+            <span class="logo-text">Clínica Universitaria</span>
+        </div>
+        <div class="user-area">
+            <button class="icon-btn"><i class="ri-notification-3-line"></i></button>
+            <div class="user-profile">
+                <div class="avatar"><i class="ri-user-line"></i></div>
+                <div class="user-info">
+                    <!-- DYNAMIC: Nombre del Paciente logueado -->
+                    <span class="name" id="paciente-nombre">Paciente Demo</span>
+                    <!-- DYNAMIC: Rol o tipo de paciente (opcional) -->
+                    <span class="role" id="paciente-rol">Paciente</span>
+                </div>
             </div>
-        </header>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <!-- Encabezado -->
+        <section class="page-header">
+            <h1>Mis Citas</h1>
+            <!-- DYNAMIC: Resumen general de próximas y completadas -->
+            <p id="resumen-general-citas">1 próxima · 2 completadas</p>
+        </section>
+
+        <!-- Tarjetas de Resumen -->
+        <section class="summary-cards">
+            <div class="card summary">
+                <!-- DYNAMIC: Contador de citas próximas confirmadas -->
+                <div class="number" id="count-proximas">1</div>
+                <div class="details">Próximas<br>confirmadas</div>
+            </div>
+            <div class="card summary">
+                <!-- DYNAMIC: Contador total de citas -->
+                <div class="number" style="color: #ea580c;" id="count-total">0</div>
+                <div class="details">Total<br>de citas</div>
+            </div>
+            <div class="card summary">
+                <!-- DYNAMIC: Contador de citas de este mes -->
+                <div class="number" style="color: #0d9488;" id="count-mes">2</div>
+                <!-- DYNAMIC: Nombre del mes actual -->
+                <div class="details">Este mes<br><span id="nombre-mes-actual">en julio</span></div>
+            </div>
+        </section>
+
+        <!-- Contenido Dividido -->
+        <section class="content-split">
+            <!-- Columna Izquierda: Lista de Citas -->
+            <div class="appointments-list">
+                <div class="list-controls">
+                    <div class="tabs">
+                        <button class="tab active" id="tab-proximas">Próximas</button>
+                        <button class="tab" id="tab-historial">Historial</button>
+                    </div>
+                    <div class="search-box">
+                        <i class="ri-search-line"></i>
+                        <input type="text" id="buscador-citas" placeholder="Buscar estudiante o profesor...">
+                    </div>
+                </div>
+
+                <!-- DYNAMIC CONTENEDOR: Aquí el JS inyectará las tarjetas de cita de la base de datos -->
+                <div id="contenedor-lista-citas">
+                    <!-- Elemento de Cita de Ejemplo (El JS usará esta estructura por cada cita) -->
+                    <div class="appointment-card active">
+                        <div class="date-box">
+                            <!-- DYNAMIC: Mes, Día, Día de la semana -->
+                            <span class="month">JUL</span>
+                            <span class="day">14</span>
+                            <span class="weekday">MAR</span>
+                        </div>
+                        <div class="info-box">
+                            <!-- DYNAMIC: Nombre del estudiante -->
+                            <h4 class="student-name">Est. Carlos Ruiz</h4>
+                            <!-- DYNAMIC: Nombre del profesor responsable -->
+                            <span class="prof-name">Prof. Mariana Solís (Responsable)</span>
+                            <div class="meta">
+                                <!-- DYNAMIC: Hora y tipo de cita -->
+                                <span class="time"><i class="ri-time-line"></i> 09:30</span>
+                                <span class="type"><i class="ri-map-pin-line"></i> Presencial</span>
+                            </div>
+                        </div>
+                        <div class="status-box">
+                            <!-- DYNAMIC: Estado de la cita (clase css dinámica y texto) -->
+                            <span class="status badge-confirmed"><i class="ri-check-line"></i> Confirmada</span>
+                            <i class="ri-arrow-right-s-line arrow"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Detalles de la Cita Seleccionada -->
+            <div class="appointment-detail">
+                <div class="detail-card" id="detalle-cita-panel">
+                    <!-- Cabecera Verde Oscuro -->
+                    <div class="detail-header">
+                        <!-- DYNAMIC: Iniciales del estudiante o profesor -->
+                        <div class="prof-avatar" id="detalle-iniciales">CR</div>
+                        <div class="header-info">
+                            <!-- DYNAMIC: Estudiante encargado -->
+                            <h3 id="detalle-estudiante">Est. Carlos Ruiz</h3>
+                            <!-- DYNAMIC: Profesor encargado -->
+                            <p id="detalle-profesor">Supervisión: Prof. Mariana Solís</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Tarjeta de Fecha flotante -->
+                    <div class="detail-datetime">
+                        <span class="label">FECHA Y HORA</span>
+                        <!-- DYNAMIC: Fecha completa y hora -->
+                        <h4 id="detalle-fecha">Martes, 14 De Julio</h4>
+                        <p id="detalle-hora">09:30 hs</p>
+                    </div>
+                    
+                    <!-- Cuerpo de Detalles -->
+                    <div class="detail-body">
+                        <div class="detail-row status-row">
+                            <span class="label">Estado de cita</span>
+                            <!-- DYNAMIC: Etiqueta de estado -->
+                            <span class="status badge-confirmed" id="detalle-estado"><i class="ri-check-line"></i> Confirmada</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="ri-map-pin-line icon"></i>
+                            <div class="content">
+                                <span class="label">Ubicación y Lugar</span>
+                                <!-- DYNAMIC: Ubicación física o link de telemedicina -->
+                                <p id="detalle-ubicacion">Clínica Universitaria, Consultorio 302</p>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <i class="ri-file-list-3-line icon"></i>
+                            <div class="content">
+                                <span class="label">Notas adicionales</span>
+                                <!-- DYNAMIC: Notas o comentarios dejados por el doctor/estudiante -->
+                                <p id="detalle-notas">Recuerde traer la radiografía panorámica impresa y llegar 10 minutos antes de su hora.</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-info" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <p style="font-size: 13px; color: #cbb26a; margin-bottom: 5px;"><i class="ri-phone-line"></i> Teléfono Estudiante: <span id="detalle-tel-estudiante" style="color: #fff;"></span></p>
+                            <p style="font-size: 13px; color: #cbb26a;"><i class="ri-phone-line"></i> Teléfono Profesor: <span id="detalle-tel-profesor" style="color: #fff;"></span></p>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
+    <script src="dashboard_paciente.js"></script>
 </body>
 </html>
