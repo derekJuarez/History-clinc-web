@@ -48,17 +48,23 @@ document.getElementById('FormCitas').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     //logica para guardar los datos de la cita en la base de datos
-    const citaData = {
-        fecha: document.getElementById('fecha').value,
-        hora: document.getElementById('hora').value,
-        estatus: 'Pendiente',
-        id_paciente: document.getElementById('paciente').value,
-        id_clinica: document.getElementById('ubicacion').value,
-        id_estudiante: localStorage.getItem('matricula'),
-        id_docente: document.getElementById('docente').value,
-        motivo: document.getElementById('motivo').value
+    const citaData = new FormData();
+    citaData.append('id_estudiante', localStorage.getItem('matricula'));
+    citaData.append('fecha', document.getElementById('fecha').value);
+    citaData.append('hora', document.getElementById('hora').value);
+    citaData.append('motivo', document.getElementById('motivo').value);
+    citaData.append('estatus', 'Pendiente');
+    citaData.append('id_paciente', document.getElementById('paciente').value);
+    citaData.append('id_clinica', document.getElementById('ubicacion').value);
+    citaData.append('id_docente', document.getElementById('docente').value);
+    citaData.append('nota', document.getElementById('nota').value);
 
-    };
+    const inputRadiografia = document.getElementById('input-archivo');
+
+    if(inputRadiografia.files.length > 0) {
+        //importante 'archivo_radiografia' debe coincidir con el nombre del campo en el backend
+        citaData.append('radiografia', inputRadiografia.files[0]);
+    }
 
     try {
         const token = localStorage.getItem('token');
@@ -66,10 +72,9 @@ document.getElementById('FormCitas').addEventListener('submit', async (e) => {
         const response = await fetch('/api/citas/registrar', {
             method: 'POST',
             headers: { 
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(citaData)
+            body: citaData
         });
         const result = await response.json();
         if (response.ok) {

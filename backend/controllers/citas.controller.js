@@ -4,6 +4,13 @@ import { successResponse, errorResponse } from '../utils/helpers.util.js';
 export async function registrar(req, res) {
     try {
         const citaData = req.body;
+
+        if(req.file){
+            citaData.radiografia = req.file.filename; // Guardar el nombre del archivo en la propiedad radiografia
+        }else{
+            citaData.radiografia = null; // Si no se subió ningún archivo, establecer como null
+        }
+        
         const horarioOcupado = await verificarChoqueDeHorario(citaData.fecha, citaData.hora);
 
         if (horarioOcupado) {

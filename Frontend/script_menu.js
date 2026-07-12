@@ -189,25 +189,6 @@ const menuAdminHTML = `
 </aside>
 `;
 
-const menuPacienteHTML = `
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-        <div class="icon">
-            <i class="ri-user-fill"></i>
-        </div>
-        <div class="title-text">
-            <h2>Bienvenido</h2>
-            <span>Panel de Paciente</span>
-        </div>
-    </div>
-
-    <div class="sidebar-footer">
-        <a href="#" onclick="logout()" class="logout-btn">
-            <i class="ri-logout-box-r-line"></i> Cerrar Sesión
-        </a>
-    </div>
-</aside>
-`;
 
 document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('sidebar-container');
@@ -223,8 +204,8 @@ document.addEventListener('DOMContentLoaded', function () {
             container.outerHTML = menuMaestroHTML;
         } else if (menuType === 'admin') {
             container.outerHTML = menuAdminHTML;
-        } else if (menuType === 'paciente') {
-            container.outerHTML = menuPacienteHTML;
+        } else {
+            console.error('Tipo de menú no reconocido:', menuType);
         }
 
         // Buscamos el nuevo sidebar en el DOM
