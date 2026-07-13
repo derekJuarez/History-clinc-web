@@ -11,19 +11,24 @@
 <body>
     <!-- Barra Superior -->
     <header class="topbar">
-        <div class="logo-area">
-            <div class="logo-icon">Hx</div>
-            <span class="logo-text">Clínica Universitaria</span>
+        <div>
+            <span class="logo-text">Bienvendido al Portal del Paciente</span>
         </div>
         <div class="user-area">
-            <button class="icon-btn"><i class="ri-notification-3-line"></i></button>
-            <div class="user-profile">
+            <div class="user-profile" style="position: relative;">
                 <div class="avatar"><i class="ri-user-line"></i></div>
-                <div class="user-info">
+                <div class="user-info" id="user-info-btn" style="cursor: pointer;">
                     <!-- DYNAMIC: Nombre del Paciente logueado -->
                     <span class="name" id="paciente-nombre">Paciente Demo</span>
                     <!-- DYNAMIC: Rol o tipo de paciente (opcional) -->
                     <span class="role" id="paciente-rol">Paciente</span>
+                </div>
+                
+                <!-- Dropdown de Cerrar Sesión -->
+                <div id="logout-dropdown" class="logout-dropdown" style="display: none;">
+                    <button id="btn-cerrar-sesion" class="logout-btn">
+                        <i class="ri-logout-box-r-line"></i> Cerrar Sesión
+                    </button>
                 </div>
             </div>
         </div>
@@ -65,10 +70,6 @@
                     <div class="tabs">
                         <button class="tab active" id="tab-proximas">Próximas</button>
                         <button class="tab" id="tab-historial">Historial</button>
-                    </div>
-                    <div class="search-box">
-                        <i class="ri-search-line"></i>
-                        <input type="text" id="buscador-citas" placeholder="Buscar estudiante o profesor...">
                     </div>
                 </div>
 
@@ -150,17 +151,14 @@
                         </div>
 
                         <div class="contact-info" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
-                            <p style="font-size: 13px; color: #cbb26a; margin-bottom: 5px;"><i class="ri-phone-line"></i> Teléfono Estudiante: <span id="detalle-tel-estudiante" style="color: #fff;"></span></p>
-                            <p style="font-size: 13px; color: #cbb26a;"><i class="ri-phone-line"></i> Teléfono Profesor: <span id="detalle-tel-profesor" style="color: #fff;"></span></p>
+                            <p style="font-size: 13px; color: #cbb26a; margin-bottom: 5px;"><i class="ri-phone-line"></i> Contacto Estudiante: <span id="detalle-tel-estudiante" style="color: #fff;"></span></p>
+                            <p style="font-size: 13px; color: #cbb26a;"><i class="ri-phone-line"></i> Contacto Profesor: <span id="detalle-tel-profesor" style="color: #fff;"></span></p>
                         </div>
-
-
                     </div>
                 </div>
             </div>
         </section>
     </main>
-
     <script src="dashboard_paciente.js"></script>
 </body>
 </html>

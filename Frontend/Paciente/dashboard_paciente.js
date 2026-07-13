@@ -34,6 +34,31 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById('tab-proximas').addEventListener('click', () => cambiarTab('proximas'));
             document.getElementById('tab-historial').addEventListener('click', () => cambiarTab('historial'));
             
+            // Configurar el dropdown de cerrar sesión
+            const userInfoBtn = document.getElementById('user-info-btn');
+            const logoutDropdown = document.getElementById('logout-dropdown');
+            const btnCerrarSesion = document.getElementById('btn-cerrar-sesion');
+
+            if (userInfoBtn && logoutDropdown) {
+                userInfoBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Evitar que el click se propague al documento
+                    logoutDropdown.style.display = logoutDropdown.style.display === 'none' ? 'block' : 'none';
+                });
+
+                // Cerrar el menú si hacen click fuera de él
+                document.addEventListener('click', () => {
+                    logoutDropdown.style.display = 'none';
+                });
+
+                // Funcionalidad de cerrar sesión
+                btnCerrarSesion.addEventListener('click', () => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('id_paciente');
+                    localStorage.removeItem('rol');
+                    window.location.href = '../login.html'; // Ajusta la ruta a tu login
+                });
+            }
+            
             // Renderizar la lista inicial (Próximas)
             renderizarListaDeCitas();
 

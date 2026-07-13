@@ -37,7 +37,9 @@ export async function obtenerCitasPorPaciente(id_paciente) {
     c.*, 
     u_pac.Name AS Nombre_Paciente,
     u_est.Name AS Nombre_Estudiante,
+    u_est.Telefono AS Telefono_Estudiante,
     u_doc.Name AS Nombre_Docente,
+    u_doc.Telefono AS Telefono_Docente,
     cli.NOMBRE_CLINICA AS Nombre_Clinica,
     cli.UBICACION AS Ubicacion_Clinica
 FROM citas c

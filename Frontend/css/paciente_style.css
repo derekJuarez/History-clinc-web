@@ -449,6 +449,41 @@ body {
     transform: translateY(-2px);
 }
 
+/* Dropdown de Cerrar Sesión */
+.logout-dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: rgba(11, 26, 48, 0.95);
+    border: 1px solid rgba(203, 178, 106, 0.4);
+    backdrop-filter: blur(12px);
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    z-index: 100;
+    min-width: 160px;
+}
+
+.logout-btn {
+    width: 100%;
+    padding: 10px 15px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.logout-btn:hover {
+    background: rgba(234, 88, 12, 0.2); /* Tono naranja rojizo */
+    color: #ea580c;
+}
+
 /* RESPONSIVE */
 @media (max-width: 900px) {
     .content-split { grid-template-columns: 1fr; }
