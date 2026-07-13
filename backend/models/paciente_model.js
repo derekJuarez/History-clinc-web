@@ -8,13 +8,13 @@ export async function registrarPaciente(pacienteData) {
     try {
         // Insertar en tabla usuarios
         const [userResult] = await db.query(
-            'INSERT INTO usuarios (ID_Matricula, Name, Telefono, Correo, Id_Rol, Contraseña) VALUES (?, ?, ?, ?, ?, ?)',
+            'INSERT INTO usuarios (ID_MATRICULA, Nombre, Telefono, Correo, Id_Rol, Contrasena) VALUES (?, ?, ?, ?, ?, ?)',
             [curp, nombre, telefono, email, 4, passwordGenerada] // 4 = Paciente
         );
-        // Insertar en tabla paciente
+        // Insertar en tabla paciente (columnas verificadas contra informe.model.js)
         const [pacienteResult] = await db.query(
-            'INSERT INTO paciente (Id_usuario, Fecha_Nacimiento, Sexo, Estado_Civil, Ocupacion, Lugar_Origen_Residencia, Telefono_Emergencia, Contacto_Familiar, Id_Estudiante_Registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [curp, fecha_nacimiento, sexo, estado_civil, ocupacion, residencia, tel_emergencia, contacto_familiar, id_estudiante ]
+            'INSERT INTO paciente (Id_Usuario, FechaNacimiento, Sexo, Ocupacion, TelefonoEmergencia) VALUES (?, ?, ?, ?, ?)',
+            [curp, fecha_nacimiento, sexo, ocupacion, tel_emergencia]
         );
         return { userId: userResult.insertId, pacienteId: pacienteResult.insertId };
     } catch (error) {
@@ -24,21 +24,26 @@ export async function registrarPaciente(pacienteData) {
 }
 
 export async function obtenerPacientes(id_estudiante) {
-    const [rows] = await db.query(`
-        SELECT
-            p.Id_Paciente AS id_paciente, 
-            u.ID_Matricula AS curp, 
-            u.Name AS nombre, 
-            p.Fecha_Nacimiento AS fecha_nacimiento, 
-            p.Sexo AS sexo, 
-            u.Telefono AS telefono, 
-            u.Correo AS correo,
-            MAX(c.Radio_Bucales) AS radiografia_reciente
-        FROM usuarios u
-        INNER JOIN paciente p ON u.ID_Matricula = p.Id_Usuario
-        LEFT JOIN citas c ON p.Id_Paciente = c.Id_Paciente
-        WHERE u.Id_Rol = 4 AND p.Id_Estudiante_Registro = ?
-        GROUP BY p.Id_Paciente, u.ID_Matricula, u.Name, p.Fecha_Nacimiento, p.Sexo, u.Telefono, u.Correo
-    `, [id_estudiante]);
-    return rows;
+    try {
+        const [rows] = await db.query(`
+            SELECT
+                p.Id_Paciente AS id_paciente, 
+                u.ID_MATRICULA AS curp, 
+                u.Nombre AS nombre, 
+                p.FechaNacimiento AS fecha_nacimiento, 
+                p.Sexo AS sexo, 
+                u.Telefono AS telefono, 
+                u.Correo AS correo,
+                MAX(c.Radio_Bucales) AS radiografia_reciente
+            FROM usuarios u
+            INNER JOIN paciente p ON u.ID_MATRICULA = p.Id_Usuario
+            LEFT JOIN citas c ON p.Id_Paciente = c.Id_Paciente
+            WHERE u.Id_Rol = 4
+            GROUP BY p.Id_Paciente, u.ID_MATRICULA, u.Nombre, p.FechaNacimiento, p.Sexo, u.Telefono, u.Correo
+        `);
+        return rows;
+    } catch (error) {
+        console.error('Error al obtener pacientes:', error);
+        throw error;
+    }
 }

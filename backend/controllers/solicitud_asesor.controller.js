@@ -36,8 +36,10 @@ export const actualizarSolicitudCambioAsesor = async (req, res) => {
             return errorResponse(res, 404, 'Solicitud no encontrada');
         }
 
-        if (solicitud.ESTADO !== 'PENDIENTE') {
-            return errorResponse(res, 409, `Esta solicitud ya fue ${solicitud.ESTADO.toLowerCase()}`);
+        // Leer columnas del nuevo esquema (PascalCase)
+        const estadoActual = solicitud.Estado || solicitud.ESTADO;
+        if (estadoActual !== 'PENDIENTE') {
+            return errorResponse(res, 409, `Esta solicitud ya fue ${estadoActual.toLowerCase()}`);
         }
 
         // Actualizar estado de la solicitud
@@ -46,14 +48,18 @@ export const actualizarSolicitudCambioAsesor = async (req, res) => {
         // Si se aprueba, cambiar el maestro del alumno en la tabla usuarios
         if (estado === 'APROBADO') {
             await actualizarMaestroDeAlumno(
-                solicitud.MATRICULA_ALUMNO,
-                solicitud.MATRICULA_MAESTRO_NUEVO
+                solicitud.MatriculaAlumno || solicitud.MATRICULA_ALUMNO,
+                solicitud.MatriculaMaestroNuevo || solicitud.MATRICULA_MAESTRO_NUEVO
             );
         }
 
+        const nombreAlumno = solicitud.NombreAlumno || solicitud.NOMBRE_ALUMNO;
+        const nombreMaestroNuevo = solicitud.NombreMaestroNuevo || solicitud.NOMBRE_MAESTRO_NUEVO;
+        const nombreMaestroActual = solicitud.NombreMaestroActual || solicitud.NOMBRE_MAESTRO_ACTUAL;
+
         const mensaje = estado === 'APROBADO'
-            ? `Solicitud aprobada. El alumno ${solicitud.NOMBRE_ALUMNO} ahora está asignado a ${solicitud.NOMBRE_MAESTRO_NUEVO}`
-            : `Solicitud rechazada. El alumno ${solicitud.NOMBRE_ALUMNO} permanece con ${solicitud.NOMBRE_MAESTRO_ACTUAL}`;
+            ? `Solicitud aprobada. El alumno ${nombreAlumno} ahora está asignado a ${nombreMaestroNuevo}`
+            : `Solicitud rechazada. El alumno ${nombreAlumno} permanece con ${nombreMaestroActual}`;
 
         return successResponse(res, 200, mensaje, { id, estado });
     } catch (error) {

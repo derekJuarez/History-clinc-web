@@ -46,6 +46,14 @@ const menuAlumnoHTML = `
                 <ul class="submenu">
                     <li><a href="citas.html">Agendar Cita</a></li>
                     <li><a href="ver_citas.html">Calendario de Citas</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="perfil.html">
+                    <i class="ri-user-settings-line"></i>
+                    Mi Perfil
+                </a>
+            </li>
         </ul>
     </nav>
 
@@ -107,6 +115,12 @@ const menuMaestroHTML = `
                 <a href="historias_maestro.html">
                     <i class="ri-file-list-3-fill"></i>
                     Ver historias
+                </a>
+            </li>
+            <li>
+                <a href="perfil.html">
+                    <i class="ri-user-settings-line"></i>
+                    Mi Perfil
                 </a>
             </li>
         </ul>
@@ -176,6 +190,12 @@ const menuAdminHTML = `
                 <a href="lista_clinicas.html">
                     <i class="ri-hospital-line"></i>
                     Ver clínicas
+                </a>
+            </li>
+            <li>
+                <a href="perfil.html">
+                    <i class="ri-user-settings-line"></i>
+                    Mi Perfil
                 </a>
             </li>
         </ul>

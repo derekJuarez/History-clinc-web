@@ -25,12 +25,12 @@ async function obtenerDatos() {
 
         const selectClinica = document.getElementById('ubicacion');
         Clinicas.data.forEach(c => {
-            selectClinica.innerHTML += `<option value="${c.ID_CLINICA}">${c.UBICACION}</option>`;
+            selectClinica.innerHTML += `<option value="${c.ID_CLINICA}">${c.Nombre} - ${c.Ubicacion}</option>`;
         });
 
         const selectMaestro = document.getElementById('docente');
         Maestros.data.forEach(m => {
-            selectMaestro.innerHTML += `<option value="${m.ID_Matricula}">${m.Name}</option>`;
+            selectMaestro.innerHTML += `<option value="${m.ID_Matricula || m.ID_MATRICULA}">${m.Nombre || m.Name}</option>`;
         });
 
     } catch (error) {

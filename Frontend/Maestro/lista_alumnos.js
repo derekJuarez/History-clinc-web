@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (result.data.length === 0) {
                 tablaAlumnos.innerHTML = `
                 <tr>
-                    <td colspan="3" style="text-align: center; color: #888893; padding: 20px;">
+                    <td colspan="4" style="text-align: center; color: #888893; padding: 20px;">
                         No tienes alumnos asignados
                     </td>
                 </tr>`;
@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 fila.innerHTML = `
                     <td>${alumno.nombre}</td>
                     <td>${alumno.matricula}</td>
-                    <td>${alumno.clinica || 'Sin clínica registrada'}</td>
+                    <td>${alumno.correo || '-'}</td>
+                    <td>${alumno.clinica || 'Sin clinica registrada'}</td>
                 `;
                 tablaAlumnos.appendChild(fila);
             });
@@ -39,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error('Error al obtener alumnos:', result.message);
             tablaAlumnos.innerHTML = `
             <tr>
-                <td colspan="3" style="text-align: center; color: #ef4444; padding: 20px;">
+                <td colspan="4" style="text-align: center; color: #ef4444; padding: 20px;">
                     Error al cargar alumnos: ${result.message}
                 </td>
             </tr>`;
@@ -48,8 +49,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error al conectar con el backend:', error);
         tablaAlumnos.innerHTML = `
         <tr>
-            <td colspan="3" style="text-align: center; color: #ef4444; padding: 20px;">
-                Error de conexión con el servidor.
+            <td colspan="4" style="text-align: center; color: #ef4444; padding: 20px;">
+                Error de conexion con el servidor.
             </td>
         </tr>`;
     }

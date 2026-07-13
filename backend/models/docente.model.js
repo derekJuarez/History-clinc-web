@@ -3,7 +3,7 @@ import db from '../config/db.js';
 // Obtener todos los docentes (usuarios con Id_Rol = 1)
 export const getAllDocentes = async () => {
     const [rows] = await db.query(
-        'SELECT ID_MATRICULA, NAME, TELEFONO, CORREO FROM usuarios WHERE Id_Rol = 1 ORDER BY NAME ASC'
+        'SELECT ID_MATRICULA, Nombre, Telefono, Correo FROM usuarios WHERE Id_Rol = 1 ORDER BY Nombre ASC'
     );
     return rows;
 };
@@ -21,7 +21,7 @@ export const findDocenteByMatricula = async (matricula) => {
 export const createDocente = async ({ nombre, apellido, matricula, email, telefono, contraseña }) => {
     const fullName = `${nombre} ${apellido}`.trim();
     await db.query(
-        'INSERT INTO usuarios (ID_MATRICULA, NAME, TELEFONO, CONTRASEÑA, CORREO, Id_Rol) VALUES (?, ?, ?, ?, ?, 1)',
+        'INSERT INTO usuarios (ID_MATRICULA, Nombre, Telefono, Contrasena, Correo, Id_Rol) VALUES (?, ?, ?, ?, ?, 1)',
         [matricula, fullName, telefono, contraseña, email]
     );
     return matricula;
@@ -39,14 +39,15 @@ export const deleteDocenteByMatricula = async (matricula) => {
 export const updateDocenteByMatricula = async (matricula, { nombre, email, telefono, contraseña }) => {
     if (contraseña) {
         await db.query(
-            'UPDATE usuarios SET NAME = ?, CORREO = ?, TELEFONO = ?, CONTRASEÑA = ? WHERE ID_MATRICULA = ? AND Id_Rol = 1',
+            'UPDATE usuarios SET Nombre = ?, Correo = ?, Telefono = ?, Contrasena = ? WHERE ID_MATRICULA = ? AND Id_Rol = 1',
             [nombre, email, telefono, contraseña, matricula]
         );
     } else {
         await db.query(
-            'UPDATE usuarios SET NAME = ?, CORREO = ?, TELEFONO = ? WHERE ID_MATRICULA = ? AND Id_Rol = 1',
+            'UPDATE usuarios SET Nombre = ?, Correo = ?, Telefono = ? WHERE ID_MATRICULA = ? AND Id_Rol = 1',
             [nombre, email, telefono, matricula]
         );
     }
 };
+
 

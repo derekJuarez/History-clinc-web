@@ -19,7 +19,7 @@ export const guardarExpediente = async (req, res) => {
     try {
         // Obtener nombre del alumno desde usuarios
         const alumno = await findUserByMatricula(matricula_alumno);
-        const nombre_alumno = alumno ? alumno.NAME : 'Alumno desconocido';
+        const nombre_alumno = alumno ? (alumno.Nombre || alumno.NAME || alumno.Name || 'Alumno desconocido') : 'Alumno desconocido';
 
         const id = await guardarInforme({
             matricula_alumno,
@@ -112,6 +112,8 @@ export const marcarRevisado = async (req, res) => {
 
 import { buscarInformesPorPaciente } from '../models/informe.model.js';
 
+import db from '../config/db.js';
+
 // GET /api/expedientes/buscar/:valor — Alumno busca paciente por nombre o teléfono
 export const buscarPaciente = async (req, res) => {
     const { valor } = req.params;
@@ -121,10 +123,17 @@ export const buscarPaciente = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Paciente no encontrado' });
         }
 
-        // El primer informe es el más reciente (ORDER BY FECHA_REGISTRO DESC)
         const ultimoInforme = informes[0];
+        const idPaciente = ultimoInforme.Id_Paciente;
 
-        let odontoJSON = ultimoInforme.ODONTOGRAMA_JSON;
+        // Buscar antecedentes, alergias, hábitos del paciente
+        const [alergias] = await db.query('SELECT Alergia FROM alergias_paciente WHERE Id_Paciente = ?', [idPaciente]);
+        const [antecedentes] = await db.query('SELECT Categoria, Detalle FROM antecedentes_paciente WHERE Id_Paciente = ?', [idPaciente]);
+        const [habitos] = await db.query('SELECT Habito FROM habitos_paciente WHERE Id_Paciente = ?', [idPaciente]);
+
+        const getAnt = (cat) => antecedentes.find(a => a.Categoria === cat)?.Detalle || 'No';
+
+        let odontoJSON = ultimoInforme.OdontogramaJSON;
         if (typeof odontoJSON === 'string') {
             try { odontoJSON = JSON.parse(odontoJSON); } catch(e) {}
         }
@@ -134,41 +143,41 @@ export const buscarPaciente = async (req, res) => {
             paciente: {
                 nombre: ultimoInforme.NOMBRE_PACIENTE,
                 telefono: ultimoInforme.TELEFONO_PACIENTE,
-                fecha_nac: ultimoInforme.FECHA_NAC_PACIENTE,
-                sexo: ultimoInforme.SEXO_PACIENTE,
-                ocupacion: ultimoInforme.OCUPACION_PACIENTE,
-                id_paciente: ultimoInforme.ID_INFORME
+                fecha_nac: ultimoInforme.FechaNacimiento,
+                sexo: ultimoInforme.Sexo,
+                ocupacion: ultimoInforme.Ocupacion,
+                id_paciente: ultimoInforme.Id_Informe
             },
             antecedentes: {
-                alergias: ultimoInforme.ALERGIAS,
-                medicamentos_actuales: ultimoInforme.MEDICAMENTOS_ACTUALES,
-                diabetes: ultimoInforme.DIABETES,
-                hipertension: ultimoInforme.HIPERTENSION,
-                problemas_cardiacos: ultimoInforme.PROBLEMAS_CARDIACOS,
-                embarazo: ultimoInforme.EMBARAZO,
-                otros_padecimientos: ultimoInforme.OTROS_PADECIMIENTOS
+                alergias: alergias.map(a => a.Alergia).join(', ') || 'Ninguna',
+                medicamentos_actuales: getAnt('Medicamentos'),
+                diabetes: getAnt('Diabetes'),
+                hipertension: getAnt('Hipertension'),
+                problemas_cardiacos: getAnt('Problemas Cardiacos'),
+                embarazo: getAnt('Embarazo'),
+                otros_padecimientos: getAnt('Otros')
             },
             historial_completo: informes.map(i => {
-                let parsedOdonto = i.ODONTOGRAMA_JSON;
+                let parsedOdonto = i.OdontogramaJSON;
                 if (typeof parsedOdonto === 'string') {
                     try { parsedOdonto = JSON.parse(parsedOdonto); } catch(e) {}
                 }
                 return {
-                    fecha_registro: i.FECHA_REGISTRO,
-                    diagnostico_definitivo: i.DIAGNOSTICO,
-                    plan_tratamiento: i.PLAN_TRATAMIENTO,
-                    higiene_oral: i.HIGIENE_ORAL,
-                    habitos: i.HABITOS,
-                    oclusion: i.OCLUSION,
-                    estado_atm: i.ESTADO_ATM,
+                    fecha_registro: i.FechaRegistro,
+                    diagnostico_definitivo: i.Diagnostico,
+                    plan_tratamiento: i.PlanTratamiento,
+                    higiene_oral: i.HigieneOral,
+                    habitos: habitos.map(h => h.Habito).join(', '),
+                    oclusion: 'Normal', // Ya no está en BD
+                    estado_atm: i.ATM,
                     odontograma: parsedOdonto
                 };
             }),
             historia_actual: {
-                higiene_oral: ultimoInforme.HIGIENE_ORAL,
-                habitos: ultimoInforme.HABITOS,
-                oclusion: ultimoInforme.OCLUSION,
-                estado_atm: ultimoInforme.ESTADO_ATM,
+                higiene_oral: ultimoInforme.HigieneOral,
+                habitos: habitos.map(h => h.Habito).join(', '),
+                oclusion: 'Normal',
+                estado_atm: ultimoInforme.ATM,
                 odontograma: odontoJSON
             }
         };

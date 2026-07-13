@@ -68,15 +68,15 @@ async function cargarDocentes() {
             tablaDocentes.innerHTML = '';
             docentes.forEach(doc => {
                 const fila = document.createElement('tr');
-                const escapedName = (doc.NAME || '').replace(/'/g, "\\'");
-                const escapedTel = (doc.TELEFONO || '').replace(/'/g, "\\'");
-                const escapedEmail = (doc.CORREO || '').replace(/'/g, "\\'");
+                const escapedName = (doc.Nombre || '').replace(/'/g, "\\'");
+                const escapedTel = (doc.Telefono || '').replace(/'/g, "\\'");
+                const escapedEmail = (doc.Correo || '').replace(/'/g, "\\'");
 
                 fila.innerHTML = `
                     <td>${doc.ID_MATRICULA}</td>
-                    <td>${doc.NAME}</td>
-                    <td>${doc.TELEFONO || 'Sin teléfono'}</td>
-                    <td>${doc.CORREO}</td>
+                    <td>${doc.Nombre}</td>
+                    <td>${doc.Telefono || 'Sin teléfono'}</td>
+                    <td>${doc.Correo}</td>
                     <td style="text-align: center; white-space: nowrap;">
                         <button class="btn-edit" onclick="abrirEditarDocente('${doc.ID_MATRICULA}', '${escapedName}', '${escapedTel}', '${escapedEmail}')">
                             <i class="ri-edit-line"></i> Editar
@@ -128,7 +128,7 @@ function cerrarModalDocente() {
 
 // Eliminar un docente por su matrícula
 async function eliminarDocente(matricula, nombre) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar al docente ${nombre} (Matrícula: ${matricula})?`)) {
+    if (!await customConfirm(`¿Estás seguro de que deseas eliminar al docente ${nombre} (Matrícula: ${matricula})?`)) {
         return;
     }
 

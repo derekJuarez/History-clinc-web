@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="/js/custom_alert.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1a30">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Mi Perfil - Administrador</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="../css/alumno.css">
+</head>
+<body>
+    <div id="sidebar-container" data-menu="admin"></div>
+    <main class="main-content">
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Mi Perfil</h1>
+                <p>Gestiona tus datos personales y credenciales de acceso</p>
+            </div>
+        </header>
+        <section class="content-area">
+            <div class="glass-form-container">
+                <h2>Configuración del Perfil</h2>
+                <form id="perfil-form">
+                    <fieldset class="form-section">
+                        <legend><span class="step-number">1</span> DATOS PERSONALES</legend>
+                        <div class="form-section-content">
+                            <div class="input-box">
+                                <label for="profile-matricula">Matrícula (Identificador único)</label>
+                                <input type="text" id="profile-matricula" readonly style="background: rgba(255,255,255,0.02); color: #64748b; cursor: not-allowed; border-color: rgba(255,255,255,0.05);">
+                            </div>
+                            <div class="input-box">
+                                <label for="profile-nombre">Nombre Completo</label>
+                                <input type="text" id="profile-nombre" placeholder="Nombre completo" required>
+                            </div>
+                            <div class="input-box">
+                                <label for="profile-email">Correo Electrónico</label>
+                                <input type="email" id="profile-email" placeholder="ejemplo@umich.mx" required>
+                            </div>
+                            <div class="input-box">
+                                <label for="profile-telefono">Teléfono de Contacto</label>
+                                <input type="tel" id="profile-telefono" placeholder="Teléfono" required>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-section">
+                        <legend><span class="step-number">2</span> SEGURIDAD</legend>
+                        <p style="color: #64748b; font-size: 13px; margin: -10px 0 15px 0;"><i class="ri-information-line"></i> Deja los campos vacíos si no deseas cambiar tu contraseña.</p>
+                        <div class="form-section-content">
+                            <div class="input-box">
+                                <label for="profile-contrasena">Nueva Contraseña</label>
+                                <input type="password" id="profile-contrasena" placeholder="Nueva contraseña" minlength="6">
+                            </div>
+                            <div class="input-box">
+                                <label for="profile-confirmar-contrasena">Confirmar Nueva Contraseña</label>
+                                <input type="password" id="profile-confirmar-contrasena" placeholder="Confirmar contraseña" minlength="6">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <button type="submit" class="btn-submit">Guardar Cambios</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <script src="../script_menu.js"></script>
+    <script src="/js/perfil.js"></script>
+</body>
+</html>
