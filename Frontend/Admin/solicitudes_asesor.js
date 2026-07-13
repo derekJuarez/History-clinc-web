@@ -64,37 +64,37 @@ async function cargarSolicitudes(tab = 'pendientes') {
 
         tabla.innerHTML = '';
         solicitudes.forEach(sol => {
-            const fecha = new Date(sol.FECHA_SOLICITUD).toLocaleDateString('es-MX', {
+            const fecha = new Date(sol.FechaSolicitud).toLocaleDateString('es-MX', {
                 year: 'numeric', month: 'short', day: 'numeric',
                 hour: '2-digit', minute: '2-digit'
             });
 
-            const esPendiente = sol.ESTADO === 'PENDIENTE';
+            const esPendiente = sol.Estado === 'PENDIENTE';
 
             const fila = document.createElement('tr');
             fila.innerHTML = `
-                <td><strong>${sol.NOMBRE_ALUMNO || '—'}</strong></td>
-                <td><code style="color:#cbb26a; font-size:12px;">${sol.MATRICULA_ALUMNO}</code></td>
+                <td><strong>${sol.NombreAlumno || '—'}</strong></td>
+                <td><code style="color:#cbb26a; font-size:12px;">${sol.MatriculaAlumno}</code></td>
                 <td>
                     <div class="maestro-change">
-                        <span class="actual"><i class="ri-user-line"></i> ${sol.NOMBRE_MAESTRO_ACTUAL || 'Sin maestro'}</span>
+                        <span class="actual"><i class="ri-user-line"></i> ${sol.NombreMaestroActual || 'Sin maestro'}</span>
                         <span class="arrow">▼ Solicita cambio a ▼</span>
-                        <span class="nuevo"><i class="ri-user-star-line"></i> ${sol.NOMBRE_MAESTRO_NUEVO}</span>
+                        <span class="nuevo"><i class="ri-user-star-line"></i> ${sol.NombreMaestroNuevo}</span>
                     </div>
                 </td>
                 <td style="font-size:12px; color:#6b7280;">${fecha}</td>
                 <td>
-                    <span class="badge-estado badge-${sol.ESTADO}">${sol.ESTADO}</span>
+                    <span class="badge-estado badge-${sol.Estado}">${sol.Estado}</span>
                 </td>
                 <td style="display: ${tab === 'historial' ? 'none' : ''};">
                     ${esPendiente ? `
                         <div class="acciones-cell">
                             <button class="btn-action btn-accept" 
-                                onclick="confirmarAccion(${sol.ID_SOLICITUD}, 'APROBADO', '${(sol.NOMBRE_ALUMNO || '').replace(/'/g, "\\'")}', '${(sol.NOMBRE_MAESTRO_NUEVO || '').replace(/'/g, "\\'")}')">
+                                onclick="confirmarAccion(${sol.Id_Solicitud}, 'APROBADO', '${(sol.NombreAlumno || '').replace(/'/g, "\\'")}', '${(sol.NombreMaestroNuevo || '').replace(/'/g, "\\'")}')">
                                 <i class="ri-check-line"></i> Aceptar
                             </button>
                             <button class="btn-action btn-reject"
-                                onclick="confirmarAccion(${sol.ID_SOLICITUD}, 'RECHAZADO', '${(sol.NOMBRE_ALUMNO || '').replace(/'/g, "\\'")}', '${(sol.NOMBRE_MAESTRO_ACTUAL || '').replace(/'/g, "\\'")}')">
+                                onclick="confirmarAccion(${sol.Id_Solicitud}, 'RECHAZADO', '${(sol.NombreAlumno || '').replace(/'/g, "\\'")}', '${(sol.NombreMaestroActual || '').replace(/'/g, "\\'")}')">
                                 <i class="ri-close-line"></i> Rechazar
                             </button>
                         </div>

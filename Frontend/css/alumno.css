@@ -8,17 +8,23 @@
     color: #fff;
 }
 
+html {
+    background-color: #0b1a30;
+}
+
 body {
     background-color: #0b1a30;
     background-image: url('../Image/fondo_completo.png');
-    background-size: 100% 100%;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     display: flex;
     min-height: 100vh;
+    min-height: 100dvh;  /* dynamic viewport para móviles */
     height: 100vh;       /* desktop: fijo */
     overflow: hidden;    /* desktop: sin scroll en body, lo hace .content-area */
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* Sidebar */
@@ -769,8 +775,11 @@ body {
         background-size: cover;
         height: auto;          /* en movil el body crece con el contenido */
         min-height: 100vh;
+        min-height: 100dvh;    /* dynamic viewport para móviles */
         overflow-y: auto;      /* habilita scroll vertical en movil */
         overflow-x: hidden;
+        padding: 0;
+        margin: 0;
     }
 
     /* Main content: en movil ocupa lo necesario y permite scroll */

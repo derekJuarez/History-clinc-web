@@ -10,8 +10,8 @@ export const crearSolicitudCambioAsesor = async ({
     nombre_maestro_actual
 }) => {
     const [result] = await db.query(
-        `INSERT INTO solicitudes_cambio_asesor 
-         (MATRICULA_ALUMNO, NOMBRE_ALUMNO, MATRICULA_MAESTRO_NUEVO, NOMBRE_MAESTRO_NUEVO, MATRICULA_MAESTRO_ACTUAL, NOMBRE_MAESTRO_ACTUAL)
+        `INSERT INTO solicitud_cambio_asesor 
+         (MatriculaAlumno, NombreAlumno, MatriculaMaestroNuevo, NombreMaestroNuevo, MatriculaMaestroActual, NombreMaestroActual)
          VALUES (?, ?, ?, ?, ?, ?)`,
         [matricula_alumno, nombre_alumno, matricula_maestro_nuevo, nombre_maestro_nuevo, matricula_maestro_actual, nombre_maestro_actual]
     );
@@ -21,7 +21,7 @@ export const crearSolicitudCambioAsesor = async ({
 // Obtener todas las solicitudes pendientes (para el admin)
 export const getSolicitudesPendientes = async () => {
     const [rows] = await db.query(
-        `SELECT * FROM solicitudes_cambio_asesor WHERE ESTADO = 'PENDIENTE' ORDER BY FECHA_SOLICITUD DESC`
+        `SELECT * FROM solicitud_cambio_asesor WHERE Estado = 'PENDIENTE' ORDER BY FechaSolicitud DESC`
     );
     return rows;
 };
@@ -29,7 +29,7 @@ export const getSolicitudesPendientes = async () => {
 // Obtener todas las solicitudes (historial)
 export const getAllSolicitudes = async () => {
     const [rows] = await db.query(
-        `SELECT * FROM solicitudes_cambio_asesor ORDER BY FECHA_SOLICITUD DESC`
+        `SELECT * FROM solicitud_cambio_asesor ORDER BY FechaSolicitud DESC`
     );
     return rows;
 };
@@ -37,7 +37,7 @@ export const getAllSolicitudes = async () => {
 // Buscar solicitud por ID
 export const findSolicitudById = async (id) => {
     const [rows] = await db.query(
-        'SELECT * FROM solicitudes_cambio_asesor WHERE ID_SOLICITUD = ?',
+        'SELECT * FROM solicitud_cambio_asesor WHERE Id_Solicitud = ?',
         [id]
     );
     return rows[0];
@@ -46,7 +46,8 @@ export const findSolicitudById = async (id) => {
 // Actualizar estado de solicitud (APROBADO o RECHAZADO)
 export const actualizarEstadoSolicitud = async (id, estado) => {
     await db.query(
-        'UPDATE solicitudes_cambio_asesor SET ESTADO = ? WHERE ID_SOLICITUD = ?',
+        'UPDATE solicitud_cambio_asesor SET Estado = ? WHERE Id_Solicitud = ?',
         [estado, id]
     );
 };
+

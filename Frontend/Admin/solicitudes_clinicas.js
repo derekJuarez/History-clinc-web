@@ -29,9 +29,9 @@ async function cargarSolicitudes() {
             solicitudes.forEach(solicitud => {
                 const fila = document.createElement('tr');
                 fila.innerHTML = `
-                    <td>${solicitud.NOMBRE_CLINICA}</td>
-                    <td>${solicitud.ENCARGADO}</td>
-                    <td>${solicitud.UBICACION}</td>
+                    <td>${solicitud.Nombre}</td>
+                    <td>${solicitud.Encargado}</td>
+                    <td>${solicitud.Ubicacion}</td>
                     <td style="text-align: center;">
                         <button class="btn-action btn-accept" onclick="actualizarEstado(${solicitud.ID_CLINICA}, 'APROBADO')">
                             <i class="ri-check-line"></i> Aceptar
@@ -67,7 +67,7 @@ async function cargarSolicitudes() {
 
 async function actualizarEstado(id, estado) {
     const accionStr = estado === 'APROBADO' ? 'aceptar' : 'rechazar';
-    if (!confirm(`¿Estás seguro de que deseas ${accionStr} esta solicitud?`)) {
+    if (!await customConfirm(`¿Estás seguro de que deseas ${accionStr} esta solicitud?`)) {
         return;
     }
     

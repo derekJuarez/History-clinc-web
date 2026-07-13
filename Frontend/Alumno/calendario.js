@@ -67,8 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
             citasDelDia.forEach(cita => {
                 const citaElement = document.createElement('div');
                 // Estilos dinámicos según el estado de la cita
-                citaElement.style.background = cita.Estatus === 'Pendiente' ? '#ffc107' : (cita.Estatus === 'Completa' ? '#28a745' : '#dc3545');
-                citaElement.style.color = cita.Estatus === 'Pendiente' ? 'black' : 'white';
+                citaElement.style.background = cita.Estado === 'Pendiente' ? '#ffc107' : (cita.Estado === 'Completa' ? '#28a745' : '#dc3545');
+                citaElement.style.color = cita.Estado === 'Pendiente' ? 'black' : 'white';
                 citaElement.style.padding = '4px';
                 citaElement.style.marginTop = '5px';
                 citaElement.style.borderRadius = '5px';
@@ -117,10 +117,10 @@ document.addEventListener("DOMContentLoaded", () => {
         tdHora.textContent = cita.Hora.substring(0,5);
         
         // Guardar datos ocultos para cuando editen
-        document.getElementById("edit-id-cita").value = cita.ID_Cita;
+        document.getElementById("edit-id-cita").value = cita.Id_Cita;
         document.getElementById("edit-fecha").value = cita.Fecha.split('T')[0];
-        document.getElementById("edit-hora").value = cita.Hora;
-        document.getElementById("edit-estatus").value = cita.Estatus;
+        document.getElementById("edit-hora").value = cita.Hora.substring(0, 5);
+        document.getElementById("edit-estatus").value = cita.Estado;
 
         // Mostrar tabla y ocultar form
         vistaTabla.style.display = "block";
@@ -178,15 +178,15 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Acción: Completar Cita
-    btnCompletar.addEventListener('click', () => {
-        if(confirm("¿Estás seguro de marcar esta cita como COMPLETA?")) {
+    btnCompletar.addEventListener('click', async () => {
+        if(await customConfirm("¿Estás seguro de marcar esta cita como COMPLETA?")) {
             cambiarEstatusCita("Completa");
         }
     });
 
     // Acción: Cancelar Cita
-    btnCancelar.addEventListener('click', () => {
-        if(confirm("¿Estás seguro de CANCELAR esta cita?")) {
+    btnCancelar.addEventListener('click', async () => {
+        if(await customConfirm("¿Estás seguro de CANCELAR esta cita?")) {
             cambiarEstatusCita("Cancelada");
         }
     });

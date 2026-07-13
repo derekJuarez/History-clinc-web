@@ -50,12 +50,12 @@ function renderTabla(informes) {
     tabla.innerHTML = '';
 
     informes.forEach(inf => {
-        const fecha = new Date(inf.FECHA_REGISTRO).toLocaleDateString('es-MX', {
+        const fecha = new Date(inf.FechaRegistro).toLocaleDateString('es-MX', {
             year: 'numeric', month: 'short', day: 'numeric',
             hour: '2-digit', minute: '2-digit'
         });
-        const diagnostico = (inf.DIAGNOSTICO || '—').substring(0, 60) + (inf.DIAGNOSTICO?.length > 60 ? '...' : '');
-        const plan = (inf.PLAN_TRATAMIENTO || '—').substring(0, 50) + (inf.PLAN_TRATAMIENTO?.length > 50 ? '...' : '');
+        const diagnostico = (inf.Diagnostico || '—').substring(0, 60) + (inf.Diagnostico?.length > 60 ? '...' : '');
+        const plan = (inf.PlanTratamiento || '—').substring(0, 50) + (inf.PlanTratamiento?.length > 50 ? '...' : '');
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -68,13 +68,13 @@ function renderTabla(informes) {
                 <div style="font-weight:600; color:#e5e7eb; font-size:13px;">${inf.NOMBRE_PACIENTE}</div>
                 <div style="font-size:11px; color:#6b7280;">${inf.TELEFONO_PACIENTE || ''}</div>
             </td>
-            <td style="font-size:12px; color:#d1d5db; max-width:200px;" title="${inf.DIAGNOSTICO || ''}">${diagnostico}</td>
-            <td style="font-size:12px; color:#d1d5db; max-width:180px;" title="${inf.PLAN_TRATAMIENTO || ''}">${plan}</td>
+            <td style="font-size:12px; color:#d1d5db; max-width:200px;" title="${inf.Diagnostico || ''}">${diagnostico}</td>
+            <td style="font-size:12px; color:#d1d5db; max-width:180px;" title="${inf.PlanTratamiento || ''}">${plan}</td>
             <td style="text-align:center;">
-                <span class="badge-${inf.ESTADO}">${inf.ESTADO}</span>
+                <span class="badge-${inf.Estado}">${inf.Estado}</span>
             </td>
             <td style="text-align:center;">
-                <button class="btn-ver" onclick="verDetalle(${inf.ID_INFORME})">
+                <button class="btn-ver" onclick="verDetalle(${inf.Id_Informe})">
                     <i class="bi bi-eye me-1"></i> Ver
                 </button>
             </td>
@@ -98,7 +98,7 @@ async function verDetalle(id) {
     const overlay = document.getElementById('modalOverlay');
 
     // Buscar en la lista local primero
-    let inf = todosLosInformes.find(i => i.ID_INFORME === id);
+    let inf = todosLosInformes.find(i => i.Id_Informe === id);
 
     // Si no está (raro), pedir al servidor
     if (!inf) {
@@ -115,7 +115,7 @@ async function verDetalle(id) {
     if (!inf) return;
 
     // Llenar campos del modal
-    const fecha = new Date(inf.FECHA_REGISTRO).toLocaleDateString('es-MX', {
+    const fecha = new Date(inf.FechaRegistro).toLocaleDateString('es-MX', {
         year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
     });
 
@@ -124,28 +124,28 @@ async function verDetalle(id) {
     document.getElementById('modal-paciente').textContent = inf.NOMBRE_PACIENTE || '—';
     document.getElementById('modal-paciente-det').textContent = [
         inf.TELEFONO_PACIENTE ? `Tel: ${inf.TELEFONO_PACIENTE}` : '',
-        inf.SEXO_PACIENTE ? `Sexo: ${inf.SEXO_PACIENTE}` : '',
-        inf.OCUPACION_PACIENTE ? `Ocupación: ${inf.OCUPACION_PACIENTE}` : ''
+        inf.Sexo ? `Sexo: ${inf.Sexo}` : '',
+        inf.Ocupacion ? `Ocupación: ${inf.Ocupacion}` : ''
     ].filter(Boolean).join(' | ');
 
-    document.getElementById('modal-diabetes').textContent = inf.DIABETES || 'No';
-    document.getElementById('modal-hipertension').textContent = inf.HIPERTENSION || 'No';
-    document.getElementById('modal-cardiacos').textContent = inf.PROBLEMAS_CARDIACOS || 'No';
-    document.getElementById('modal-embarazo').textContent = inf.EMBARAZO || 'No';
-    document.getElementById('modal-alergias').textContent = inf.ALERGIAS || 'Negadas';
-    document.getElementById('modal-medicamentos').textContent = inf.MEDICAMENTOS_ACTUALES || 'Ninguno';
-    document.getElementById('modal-otros').textContent = inf.OTROS_PADECIMIENTOS || 'Ninguno';
-    document.getElementById('modal-higiene').textContent = inf.HIGIENE_ORAL || '—';
-    document.getElementById('modal-habitos').textContent = inf.HABITOS || '—';
-    document.getElementById('modal-oclusion').textContent = inf.OCLUSION || '—';
-    document.getElementById('modal-atm').textContent = inf.ESTADO_ATM || '—';
-    document.getElementById('modal-diagnostico').textContent = inf.DIAGNOSTICO || 'Sin registro';
-    document.getElementById('modal-plan').textContent = inf.PLAN_TRATAMIENTO || 'Sin registro';
+    document.getElementById('modal-diabetes').textContent = inf.Diabetes || 'No';
+    document.getElementById('modal-hipertension').textContent = inf.Hipertension || 'No';
+    document.getElementById('modal-cardiacos').textContent = inf.ProblemasCardiacos || 'No';
+    document.getElementById('modal-embarazo').textContent = inf.Embarazo || 'No';
+    document.getElementById('modal-alergias').textContent = inf.Alergias || 'Negadas';
+    document.getElementById('modal-medicamentos').textContent = inf.Medicamentos || 'Ninguno';
+    document.getElementById('modal-otros').textContent = inf.Otros || 'Ninguno';
+    document.getElementById('modal-higiene').textContent = inf.HigieneOral || '—';
+    document.getElementById('modal-habitos').textContent = inf.Habitos || '—';
+    document.getElementById('modal-oclusion').textContent = inf.Oclusion || '—';
+    document.getElementById('modal-atm').textContent = inf.ATM || '—';
+    document.getElementById('modal-diagnostico').textContent = inf.Diagnostico || 'Sin registro';
+    document.getElementById('modal-plan').textContent = inf.PlanTratamiento || 'Sin registro';
 
     // Estado del botón revisar
     const btnRevisar = document.getElementById('btn-marcar-revisado');
     const estadoLabel = document.getElementById('modal-estado-label');
-    if (inf.ESTADO === 'REVISADO') {
+    if (inf.Estado === 'REVISADO') {
         btnRevisar.style.display = 'none';
         estadoLabel.innerHTML = '<span style="color:#10b981;"><i class="bi bi-check-circle-fill me-1"></i>Este informe ya fue revisado</span>';
     } else {
@@ -176,8 +176,8 @@ async function marcarRevisado() {
 
         if (response.ok) {
             // Actualizar en la lista local
-            const inf = todosLosInformes.find(i => i.ID_INFORME === informeActualId);
-            if (inf) inf.ESTADO = 'REVISADO';
+            const inf = todosLosInformes.find(i => i.Id_Informe === informeActualId);
+            if (inf) inf.Estado = 'REVISADO';
 
             // Actualizar UI del modal
             document.getElementById('btn-marcar-revisado').style.display = 'none';

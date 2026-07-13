@@ -10,15 +10,23 @@
     color: #fff;
 }
 
+html {
+    background-color: #0a1628;
+}
+
 body {
     min-height: 100vh;
+    min-height: 100dvh; /* dynamic viewport for mobile browsers */
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #0a1628;
     background-image: url("../Image/bg.png");
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .flip-card {
@@ -253,6 +261,36 @@ input::-webkit-contacts-auto-fill-button {
 
     body {
         padding: 20px;
+    }
+}
+
+/* ========== RESPONSIVE - MÓVIL FULLSCREEN APP-LIKE ========== */
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+    .flip-card {
+        width: 100%;
+        max-width: 100%;
+        perspective: none;
+    }
+
+    .flip-card-inner {
+        width: 100%;
+    }
+
+    .flip-front, .flip-back {
+        border-radius: 0;
+        border: none;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 40px 28px;
+        background: #0a2862;
     }
 }
 

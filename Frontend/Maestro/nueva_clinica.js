@@ -2,7 +2,9 @@ document.getElementById('registro-clinica-form').addEventListener('submit', asyn
     e.preventDefault();
 
     const nombre = document.getElementById('nombre-clinica').value.trim();
-    const encargado = document.getElementById('encargado-clinica').value.trim();
+    // El encargado se asigna automáticamente desde el token en el servidor.
+    // Lo mandamos también como fallback desde localStorage.
+    const encargado = localStorage.getItem('matricula') || '';
 
     // Combinar los campos de ubicación en un solo string
     const calle = document.getElementById('calle-clinica').value.trim();

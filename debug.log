@@ -1,0 +1,13 @@
+{
+  "inputMatricula": "2025785t",
+  "inputContraseña": "123456",
+  "dbUser": {
+    "ID_MATRICULA": "2025785t",
+    "NAME": "Fernando Bautista Paniagua",
+    "TELEFONO": "4437788964",
+    "CONTRASEÑA": "123456",
+    "CORREO": "2025785t@umich.mx",
+    "Id_Rol": 2,
+    "ID_MAESTRO": "GRS98023"
+  }
+}

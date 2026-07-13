@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let filtroActual = 'proximas'; // 'proximas' o 'historial'
     
     try{
-        const response = await fetch(`http://localhost:3001/api/citas/obtener/${id_paciente}`, {
+        const response = await fetch(`/api/citas/obtener/${id_paciente}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const fechaCita = new Date(cita.Fecha);
             fechaCita.setMinutes(fechaCita.getMinutes() + fechaCita.getTimezoneOffset()); 
 
-            const estatus = cita.Estatus.toLowerCase();
+            const estatus = cita.Estado.toLowerCase();
 
             if ((estatus === 'confirmada' || estatus === 'pendiente') && fechaCita >= hoy) proximas++;
             if (estatus === 'completada' || estatus === 'cancelada') completadas++;
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Filtrar citas según el tab activo
         const citasFiltradas = todasLasCitas.filter(cita => {
-            const estatus = cita.Estatus.toLowerCase();
+            const estatus = cita.Estado.toLowerCase();
             if (filtroActual === 'proximas') {
                 return estatus === 'pendiente' || estatus === 'confirmada';
             } else {
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         citasFiltradas.forEach((cita, index) => {
             const fechas = formatearFechaHora(cita.Fecha, cita.Hora);
-            const estilo = obtenerEstiloEstado(cita.Estatus);
+            const estilo = obtenerEstiloEstado(cita.Estado);
             
             const nombreEstudiante = cita.Nombre_Estudiante ? `Est. ${cita.Nombre_Estudiante}` : "Estudiante no asignado";
             const nombreProfesor = cita.Nombre_Docente ? `Prof. ${cita.Nombre_Docente} (Resp.)` : "Profesor no asignado";
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById('detalle-cita-panel').style.display = 'block';
         
         const fechas = formatearFechaHora(cita.Fecha, cita.Hora);
-        const estilo = obtenerEstiloEstado(cita.Estatus);
+        const estilo = obtenerEstiloEstado(cita.Estado);
         
         const nombreEstudiante = cita.Nombre_Estudiante || "No asignado";
         const nombreProfesor = cita.Nombre_Docente ? `Supervisión: Prof. ${cita.Nombre_Docente}` : "Sin profesor asignado";

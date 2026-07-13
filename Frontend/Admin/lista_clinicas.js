@@ -67,14 +67,14 @@ async function cargarClinicas() {
             tablaClinicas.innerHTML = '';
             clinicas.forEach(clinica => {
                 const fila = document.createElement('tr');
-                const escapedNombre = (clinica.NOMBRE_CLINICA || '').replace(/'/g, "\\'");
-                const escapedEncargado = (clinica.ENCARGADO || '').replace(/'/g, "\\'");
-                const escapedUbicacion = (clinica.UBICACION || '').replace(/'/g, "\\'");
+                const escapedNombre = (clinica.Nombre || '').replace(/'/g, "\\'");
+                const escapedEncargado = (clinica.Encargado || '').replace(/'/g, "\\'");
+                const escapedUbicacion = (clinica.Ubicacion || '').replace(/'/g, "\\'");
 
                 fila.innerHTML = `
-                    <td>${clinica.NOMBRE_CLINICA}</td>
-                    <td>${clinica.ENCARGADO}</td>
-                    <td>${clinica.UBICACION}</td>
+                    <td>${clinica.Nombre}</td>
+                    <td>${clinica.Encargado}</td>
+                    <td>${clinica.Ubicacion}</td>
                     <td style="text-align: center; white-space: nowrap;">
                         <button class="btn-edit" onclick="abrirEditarClinica(${clinica.ID_CLINICA}, '${escapedNombre}', '${escapedEncargado}', '${escapedUbicacion}')">
                             <i class="ri-edit-line"></i> Editar
@@ -125,7 +125,7 @@ function cerrarModalClinica() {
 
 // Eliminar una clínica por su ID
 async function eliminarClinica(id, nombre) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar la clínica "${nombre}"?`)) {
+    if (!await customConfirm(`¿Estás seguro de que deseas eliminar la clínica "${nombre}"?`)) {
         return;
     }
 

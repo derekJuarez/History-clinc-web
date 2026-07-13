@@ -14,7 +14,9 @@ export const getClinicas = async (req, res) => {
 
 // Registrar una nueva clínica
 export const registrarClinica = async (req, res) => {
-    const { nombre, encargado, ubicacion } = req.body;
+    const { nombre, ubicacion } = req.body;
+    // El encargado es la matrícula del maestro autenticado (del token)
+    const encargado = req.user?.matricula || req.body.encargado;
 
     if (!nombre || !encargado || !ubicacion) {
         return errorResponse(res, 400, 'Todos los campos son requeridos');

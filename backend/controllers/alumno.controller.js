@@ -59,46 +59,46 @@ export const registrarAlumno = async (req, res) => {
             return successResponse(res, 201, 'Alumno registrado y asignado exitosamente', {
                 matricula,
                 nombre,
-                maestro: maestro.NAME
+                maestro: maestro.Nombre
             });
         }
 
         // ─── CASO 2: Alumno existe SIN maestro → asignar maestro actual ──────
-        if (!alumnoExistente.ID_MAESTRO) {
+        if (!alumnoExistente.Id_Maestro) {
             await actualizarMaestroDeAlumno(matricula, maestro_matricula);
             return successResponse(res, 200, 'Maestro asignado al alumno existente exitosamente', {
                 matricula,
-                nombre: alumnoExistente.NAME,
-                maestro: maestro.NAME
+                nombre: alumnoExistente.Nombre,
+                maestro: maestro.Nombre
             });
         }
 
         // ─── CASO 3: Alumno existe CON OTRO maestro → solicitud de cambio ────
-        if (alumnoExistente.ID_MAESTRO !== maestro_matricula) {
+        if (alumnoExistente.Id_Maestro !== maestro_matricula) {
             // Obtener datos del maestro actual para la solicitud
-            const maestroActual = await findUserByMatricula(alumnoExistente.ID_MAESTRO);
+            const maestroActual = await findUserByMatricula(alumnoExistente.Id_Maestro);
 
             await crearSolicitudCambioAsesor({
                 matricula_alumno: matricula,
-                nombre_alumno: alumnoExistente.NAME,
+                nombre_alumno: alumnoExistente.Nombre,
                 matricula_maestro_nuevo: maestro_matricula,
-                nombre_maestro_nuevo: maestro.NAME,
-                matricula_maestro_actual: alumnoExistente.ID_MAESTRO,
-                nombre_maestro_actual: maestroActual ? maestroActual.NAME : 'Desconocido'
+                nombre_maestro_nuevo: maestro.Nombre,
+                matricula_maestro_actual: alumnoExistente.Id_Maestro,
+                nombre_maestro_actual: maestroActual ? maestroActual.Nombre : 'Desconocido'
             });
 
             return successResponse(res, 202, 'El alumno ya tiene un maestro asignado. Se generó una solicitud de cambio de asesor al administrador.', {
                 matricula,
-                nombre_alumno: alumnoExistente.NAME,
-                maestro_actual: maestroActual ? maestroActual.NAME : 'Desconocido',
-                maestro_solicitante: maestro.NAME
+                nombre_alumno: alumnoExistente.Nombre,
+                maestro_actual: maestroActual ? maestroActual.Nombre : 'Desconocido',
+                maestro_solicitante: maestro.Nombre
             });
         }
 
         // Si el alumno ya tiene el MISMO maestro
         return successResponse(res, 200, 'Este alumno ya está asignado a tu lista', {
             matricula,
-            nombre: alumnoExistente.NAME
+            nombre: alumnoExistente.Nombre
         });
 
     } catch (error) {
@@ -128,7 +128,9 @@ export const getAlumnosPorMaestro = async (req, res) => {
     }
 
     try {
+        console.log(`[DEBUG] Buscando alumnos del maestro con matrícula: "${matricula}" (tipo: ${typeof matricula})`);
         const alumnos = await obtenerAlumnosDeMaestro(matricula);
+        console.log(`[DEBUG] Alumnos encontrados: ${alumnos.length}`, alumnos.map(a => a.matricula));
         return successResponse(res, 200, 'Alumnos del maestro obtenidos exitosamente', alumnos);
     } catch (error) {
         console.error('Error al obtener alumnos del maestro:', error);
