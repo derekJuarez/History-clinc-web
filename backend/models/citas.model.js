@@ -37,7 +37,9 @@ export async function obtenerCitasPorPaciente(id_paciente) {
     c.*, 
     u_pac.Nombre AS Nombre_Paciente,
     u_est.Nombre AS Nombre_Estudiante,
+    u_est.Telefono AS Telefono_Estudiante,
     u_doc.Nombre AS Nombre_Docente,
+    u_doc.Telefono AS Telefono_Docente, 
     cli.Nombre AS Nombre_Clinica,
     cli.Ubicacion AS Ubicacion_Clinica
 FROM citas c
@@ -46,7 +48,7 @@ INNER JOIN usuarios u_pac ON p.Id_Usuario = u_pac.ID_MATRICULA
 LEFT JOIN usuarios u_est ON c.Id_Estudiante = u_est.ID_MATRICULA
 LEFT JOIN usuarios u_doc ON c.Id_Docente_Asesor = u_doc.ID_MATRICULA
 LEFT JOIN clinicas cli ON c.Id_Clinica = cli.ID_CLINICA
-WHERE c.Id_Paciente = ?
+WHERE u_pac.ID_MATRICULA = ?
 
         `, [id_paciente]);
         return rows;

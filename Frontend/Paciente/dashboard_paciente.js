@@ -1,16 +1,13 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    let id_paciente = localStorage.getItem("id_paciente");
-    
-    if (!id_paciente) {
-        id_paciente = 1;
-    }
+    const id_paciente = localStorage.getItem("matricula");
+ 
     
     const token = localStorage.getItem("token");
     
     // Variables globales para la vista
     let todasLasCitas = [];
     let filtroActual = 'proximas'; // 'proximas' o 'historial'
-    
+
     try{
         const response = await fetch(`/api/citas/obtener/${id_paciente}`, {
             method: 'GET',
@@ -24,9 +21,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (result.success) {
             todasLasCitas = result.data;
             
-            if (todasLasCitas.length > 0 && todasLasCitas[0].Nombre_Paciente) {
-                document.getElementById('paciente-nombre').textContent = todasLasCitas[0].Nombre_Paciente;
-            }
+            const nombrePaciente = localStorage.getItem("nombre") || "Paciente";
+            document.getElementById('paciente-nombre').textContent = nombrePaciente;
             
             actualizarPerfilYContadores(todasLasCitas);
             
