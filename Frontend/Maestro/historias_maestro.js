@@ -71,11 +71,8 @@ function renderTabla(informes) {
             <td style="font-size:12px; color:#d1d5db; max-width:200px;" title="${inf.Diagnostico || ''}">${diagnostico}</td>
             <td style="font-size:12px; color:#d1d5db; max-width:180px;" title="${inf.PlanTratamiento || ''}">${plan}</td>
             <td style="text-align:center;">
-                <span class="badge-${inf.Estado}">${inf.Estado}</span>
-            </td>
-            <td style="text-align:center;">
-                <button class="btn-ver" onclick="verDetalle(${inf.Id_Informe})">
-                    <i class="bi bi-eye me-1"></i> Ver
+                <button class="btn btn-sm" style="background: #a68b44; color: #0b1a30; font-weight: 600;" onclick="verDetalle(${inf.Id_Informe})">
+                    <i class="bi bi-eye"></i> Ver Detalle
                 </button>
             </td>
         `;
@@ -95,23 +92,9 @@ function filtrarTabla() {
 
 async function verDetalle(id) {
     informeActualId = id;
-    const overlay = document.getElementById('modalOverlay');
 
-    // Buscar en la lista local primero
+    // Buscar en la lista local
     let inf = todosLosInformes.find(i => i.Id_Informe === id);
-
-    // Si no está (raro), pedir al servidor
-    if (!inf) {
-        try {
-            const token = localStorage.getItem('token');
-            const r = await fetch(`/api/expedientes/${id}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const d = await r.json();
-            if (r.ok) inf = d.data;
-        } catch (e) { console.error(e); return; }
-    }
-
     if (!inf) return;
 
     // Llenar campos del modal
@@ -122,46 +105,27 @@ async function verDetalle(id) {
     document.getElementById('modal-fecha').textContent = `Registrado el ${fecha}`;
     document.getElementById('modal-alumno').textContent = `${inf.NOMBRE_ALUMNO || '—'} (${inf.MATRICULA_ALUMNO})`;
     document.getElementById('modal-paciente').textContent = inf.NOMBRE_PACIENTE || '—';
-    document.getElementById('modal-paciente-det').textContent = [
-        inf.TELEFONO_PACIENTE ? `Tel: ${inf.TELEFONO_PACIENTE}` : '',
-        inf.Sexo ? `Sexo: ${inf.Sexo}` : '',
-        inf.Ocupacion ? `Ocupación: ${inf.Ocupacion}` : ''
-    ].filter(Boolean).join(' | ');
+    
+    let detalles = [];
+    if (inf.TELEFONO_PACIENTE) detalles.push(`Tel: ${inf.TELEFONO_PACIENTE}`);
+    if (inf.Sexo) detalles.push(`Sexo: ${inf.Sexo}`);
+    if (inf.Ocupacion) detalles.push(`Ocupación: ${inf.Ocupacion}`);
+    const detDiv = document.getElementById('modal-paciente-det');
+    if (detDiv) detDiv.textContent = detalles.join(' | ');
 
-    document.getElementById('modal-diabetes').textContent = inf.Diabetes || 'No';
-    document.getElementById('modal-hipertension').textContent = inf.Hipertension || 'No';
-    document.getElementById('modal-cardiacos').textContent = inf.ProblemasCardiacos || 'No';
-    document.getElementById('modal-embarazo').textContent = inf.Embarazo || 'No';
-    document.getElementById('modal-alergias').textContent = inf.Alergias || 'Negadas';
-    document.getElementById('modal-medicamentos').textContent = inf.Medicamentos || 'Ninguno';
-    document.getElementById('modal-otros').textContent = inf.Otros || 'Ninguno';
     document.getElementById('modal-higiene').textContent = inf.HigieneOral || '—';
     document.getElementById('modal-habitos').textContent = inf.Habitos || '—';
     document.getElementById('modal-oclusion').textContent = inf.Oclusion || '—';
-    document.getElementById('modal-atm').textContent = inf.ATM || '—';
     document.getElementById('modal-diagnostico').textContent = inf.Diagnostico || 'Sin registro';
     document.getElementById('modal-plan').textContent = inf.PlanTratamiento || 'Sin registro';
 
-    // Estado del botón revisar
-    const btnRevisar = document.getElementById('btn-marcar-revisado');
-    const estadoLabel = document.getElementById('modal-estado-label');
-    if (inf.Estado === 'REVISADO') {
-        btnRevisar.style.display = 'none';
-        estadoLabel.innerHTML = '<span style="color:#10b981;"><i class="bi bi-check-circle-fill me-1"></i>Este informe ya fue revisado</span>';
-    } else {
-        btnRevisar.style.display = 'inline-flex';
-        estadoLabel.textContent = '';
-    }
-
-    overlay.style.display = 'flex';
+    // Abrir Modal de Bootstrap
+    const modalEl = document.getElementById('modalDetalleVisita');
+    const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+    modalInstance.show();
 }
 
-function cerrarModalDetalle(e) {
-    if (!e || e.target === document.getElementById('modalOverlay')) {
-        document.getElementById('modalOverlay').style.display = 'none';
-        informeActualId = null;
-    }
-}
+
 
 async function marcarRevisado() {
     if (!informeActualId) return;

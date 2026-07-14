@@ -70,7 +70,6 @@
                             <small style="color: #cbb26a;" id="resumenDetalles">Teléfono: --</small>
                         </div>
                         <div class="text-end">
-                            <span class="badge" style="background: #a68b44; color: #0b1a30; font-size: 14px;" id="displayId">--</span><br>
                             <button class="btn-cancel mt-2" onclick="location.reload()" style="padding: 5px 15px; height: auto;">
                                 <i class="bi bi-x-circle"></i> Cerrar
                             </button>
@@ -168,46 +167,47 @@
                                                     <div class="col-md-4"><label
                                                             class="form-label">Ocupación</label><input type="text"
                                                             class="form-control" id="ocupacion"></div>
+                                                    <div class="col-md-5"><label
+                                                            class="form-label">Médico de Cabecera</label><input type="text"
+                                                            class="form-control" id="medico_cabecera" placeholder="Nombre del médico"></div>
                                                 </div>
                                             </div>
 
                                             <div class="tab-pane fade" id="antecedentes" role="tabpanel">
                                                 <div class="row g-4">
-                                                    <div class="col-md-6"><label class="form-label text-danger"><i
+                                                    <div class="col-md-12"><label class="form-label text-danger"><i
                                                                 class="bi bi-exclamation-triangle-fill me-1"></i>
                                                             Alergias</label><input type="text"
                                                             class="form-control border-danger"
                                                             style="background-color: #fef2f2;" id="alergias"
                                                             placeholder="Especifique o escriba 'Negadas'"></div>
-                                                    <div class="col-md-6"><label class="form-label">Medicamentos
+                                                    <div class="col-md-4"><label class="form-label">Tabaquismo</label><select class="form-select" id="tabaquismo">
+                                                            <option value="No">No</option>
+                                                            <option value="Si">Sí</option>
+                                                        </select></div>
+                                                    <div class="col-md-4"><label class="form-label">Alcoholismo</label><select class="form-select" id="alcoholismo">
+                                                            <option value="No">No</option>
+                                                            <option value="Si">Sí</option>
+                                                        </select></div>
+                                                    <div class="col-md-4"><label class="form-label">Drogadicción</label><select class="form-select" id="drogadiccion">
+                                                            <option value="No">No</option>
+                                                            <option value="Si">Sí</option>
+                                                        </select></div>
+                                                    
+                                                    <div class="col-md-6"><label class="form-label">Datos Cardiovasculares</label><textarea class="form-control"
+                                                            id="cardiovascular_data" rows="2" placeholder="Hipertensión, problemas cardíacos, etc."></textarea></div>
+                                                    <div class="col-md-6"><label class="form-label">Datos Endocrinos</label><textarea class="form-control"
+                                                            id="endocrino_data" rows="2" placeholder="Diabetes, problemas de tiroides, etc."></textarea></div>
+                                                    <div class="col-md-6"><label class="form-label">Datos Hematológicos</label><textarea class="form-control"
+                                                            id="hematologico_data" rows="2" placeholder="Anemia, problemas de coagulación, etc."></textarea></div>
+                                                    <div class="col-md-6"><label class="form-label">Enf. Infectocontagiosas</label><textarea class="form-control"
+                                                            id="infectocontagiosas_data" rows="2" placeholder="Hepatitis, VIH, etc."></textarea></div>
+                                                            
+                                                    <div class="col-md-12"><label class="form-label">Medicamentos
                                                             Actuales</label><input type="text" class="form-control"
                                                             id="medicamentos_actuales"></div>
-                                                    <div class="col-md-3"><label
-                                                            class="form-label">Diabetes</label><select
-                                                            class="form-select" id="diabetes">
-                                                            <option>No</option>
-                                                            <option>Sí</option>
-                                                        </select></div>
-                                                    <div class="col-md-3"><label
-                                                            class="form-label">Hipertensión</label><select
-                                                            class="form-select" id="hipertension">
-                                                            <option>No</option>
-                                                            <option>Sí</option>
-                                                        </select></div>
-                                                    <div class="col-md-3"><label class="form-label">Prob.
-                                                            Cardíacos</label><select class="form-select" id="cardiacos">
-                                                            <option>No</option>
-                                                            <option>Sí</option>
-                                                        </select></div>
-                                                    <div class="col-md-3"><label
-                                                            class="form-label">Embarazo</label><select
-                                                            class="form-select" id="embarazo">
-                                                            <option>No</option>
-                                                            <option>Sí</option>
-                                                        </select></div>
-                                                    <div class="col-12"><label class="form-label">Otros padecimientos o
-                                                            cirugías
-                                                            previas</label><textarea class="form-control"
+                                                    <div class="col-12"><label class="form-label">Otros padecimientos, cirugías previas o embarazo
+                                                            </label><textarea class="form-control"
                                                             id="otros_padecimientos" rows="2"></textarea></div>
                                                 </div>
                                             </div>

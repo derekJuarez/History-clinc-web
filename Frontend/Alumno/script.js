@@ -76,7 +76,6 @@ function mostrarFormularioNuevoPaciente() {
 
     document.getElementById('resumenNombre').innerText = "Registro de Nuevo Paciente";
     document.getElementById('resumenDetalles').innerText = "Por favor, completa el expediente clínico.";
-    document.getElementById('displayId').innerText = "NUEVO";
 
     document.getElementById('formHistoriaClinica').reset();
     limpiarGrafico();
@@ -120,7 +119,6 @@ async function buscarPaciente() {
 
             document.getElementById('resumenNombre').innerText = data.paciente.nombre || 'Nombre no registrado';
             document.getElementById('resumenDetalles').innerText = `Teléfono: ${data.paciente.telefono} | Sexo: ${data.paciente.sexo || 'N/A'}`;
-            document.getElementById('displayId').innerText = `ID: #${data.paciente.id_paciente}`;
 
             document.getElementById('nombre').value = data.paciente.nombre || '';
             document.getElementById('telefono').value = data.paciente.telefono || '';
@@ -137,11 +135,14 @@ async function buscarPaciente() {
 
             if (data.antecedentes) {
                 document.getElementById('alergias').value = data.antecedentes.alergias || '';
+                document.getElementById('tabaquismo').value = data.antecedentes.tabaquismo || 'No';
+                document.getElementById('alcoholismo').value = data.antecedentes.alcoholismo || 'No';
+                document.getElementById('drogadiccion').value = data.antecedentes.drogadiccion || 'No';
+                document.getElementById('cardiovascular_data').value = data.antecedentes.cardiovascular_data || '';
+                document.getElementById('endocrino_data').value = data.antecedentes.endocrino_data || '';
+                document.getElementById('hematologico_data').value = data.antecedentes.hematologico_data || '';
+                document.getElementById('infectocontagiosas_data').value = data.antecedentes.infectocontagiosas_data || '';
                 document.getElementById('medicamentos_actuales').value = data.antecedentes.medicamentos_actuales || '';
-                document.getElementById('diabetes').value = data.antecedentes.diabetes || 'No';
-                document.getElementById('hipertension').value = data.antecedentes.hipertension || 'No';
-                document.getElementById('cardiacos').value = data.antecedentes.problemas_cardiacos || 'No';
-                document.getElementById('embarazo').value = data.antecedentes.embarazo || 'No';
                 document.getElementById('otros_padecimientos').value = data.antecedentes.otros_padecimientos || '';
             }
 
@@ -279,15 +280,19 @@ if (formHistoriaClinica) {
                 telefono: document.getElementById('telefono').value,
                 fecha_nac: document.getElementById('fecha_nac').value,
                 sexo: document.getElementById('sexo').value,
-                ocupacion: document.getElementById('ocupacion').value
+                ocupacion: document.getElementById('ocupacion').value,
+                medico_cabecera: document.getElementById('medico_cabecera') ? document.getElementById('medico_cabecera').value : ''
             },
             antecedentes: {
-                alergias: document.getElementById('alergias').value,
+                alergias_flags: document.getElementById('alergias').value,
+                tabaquismo: document.getElementById('tabaquismo').value,
+                alcoholismo: document.getElementById('alcoholismo').value,
+                drogadiccion: document.getElementById('drogadiccion').value,
+                cardiovascular_data: document.getElementById('cardiovascular_data').value,
+                endocrino_data: document.getElementById('endocrino_data').value,
+                hematologico_data: document.getElementById('hematologico_data').value,
+                infectocontagiosas_data: document.getElementById('infectocontagiosas_data').value,
                 medicamentos_actuales: document.getElementById('medicamentos_actuales').value,
-                diabetes: document.getElementById('diabetes').value,
-                hipertension: document.getElementById('hipertension').value,
-                cardiacos: document.getElementById('cardiacos').value,
-                embarazo: document.getElementById('embarazo').value,
                 otros_padecimientos: document.getElementById('otros_padecimientos').value
             },
             exploracion: {
