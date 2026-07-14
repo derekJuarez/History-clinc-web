@@ -58,6 +58,7 @@ export const obtenerAlumnosDeMaestro = async (maestroMatricula) => {
             u.ID_MATRICULA AS matricula,
             u.Nombre AS nombre,
             u.Correo AS correo,
+            u.Telefono AS telefono,
             (
                 SELECT c.Nombre 
                 FROM clinicas c
@@ -85,4 +86,12 @@ export const obtenerAlumnosDeMaestro = async (maestroMatricula) => {
         console.error('Error en obtenerAlumnosDeMaestro:', error);
         throw error;
     }
+};
+
+// Actualizar los datos de un alumno
+export const updateAlumno = async (matricula, { nombre, correo, telefono }) => {
+    await db.query(
+        'UPDATE usuarios SET Nombre = ?, Correo = ?, Telefono = ? WHERE ID_MATRICULA = ? AND Id_Rol = 2',
+        [nombre, correo, telefono, matricula]
+    );
 };

@@ -152,6 +152,28 @@
         .btn-cancel:hover {
             background: rgba(203, 178, 106, 0.1);
         }
+        
+        .btn-view {
+            background-color: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-right: 8px;
+        }
+        .btn-view:hover {
+            background-color: #059669;
+            transform: scale(1.02);
+        }
+        .btn-view:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
@@ -187,6 +209,69 @@
             </div>
         </section>
     </main>
+    <!-- Modal de Ver Alumnos -->
+    <div class="modal-overlay" id="modalVerAlumnos">
+        <div class="modal-box" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3>Alumnos a cargo del Docente</h3>
+                <button class="modal-close" onclick="cerrarModalAlumnos()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="glass-table-container" style="background: transparent; border: none; box-shadow: none; padding: 0;">
+                    <table class="pacientes-table">
+                        <thead>
+                            <tr>
+                                <th>Matricula</th>
+                                <th>Nombre Completo</th>
+                                <th>Correo</th>
+                                <th>Pacientes Atendidos</th>
+                                <th style="text-align: center;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="TablaAlumnos">
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: #cbb26a; padding: 20px;">
+                                    Cargando alumnos...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edición de Alumno -->
+    <div class="modal-overlay" id="modalEditarAlumno">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Editar Alumno</h3>
+                <button class="modal-close" onclick="cerrarModalEditarAlumno()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formEditarAlumno">
+                    <input type="hidden" id="edit-alumno-matricula">
+                    <div class="input-box">
+                        <label for="edit-alumno-nombre">Nombre Completo</label>
+                        <input type="text" id="edit-alumno-nombre" placeholder="Nombre Completo" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="edit-alumno-telefono">Teléfono</label>
+                        <input type="tel" id="edit-alumno-telefono" placeholder="Teléfono" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="edit-alumno-correo">Correo Electrónico</label>
+                        <input type="email" id="edit-alumno-correo" placeholder="Correo Electrónico" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-cancel" onclick="cerrarModalEditarAlumno()">Cancelar</button>
+                        <button type="submit" class="btn-submit" style="width: auto; padding: 0 30px; margin-top: 0; height: 40px; border-radius: 20px; background-color: #cbb26a; color: #0b1a30; font-weight: 600; border: none; cursor: pointer;">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de Edición de Docente -->
     <div class="modal-overlay" id="modalEditarDocente">
         <div class="modal-box">
