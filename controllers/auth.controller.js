@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { findUserByMatricula, createUser } from '../models/user.model.js';
+import { findUserByMatricula, createUser, updateUserProfile } from '../models/user.model.js';
 import { successResponse, errorResponse } from '../utils/helpers.util.js';
 
 // Controlador: La lógica real que se ejecuta al llamar al endpoint
@@ -14,14 +14,21 @@ export const login = async (req, res) => {
             return errorResponse(res, 404, 'Usuario no encontrado');
         }
 
-        // 2. Aquí verificarías la contraseña (ej. usando bcrypt, omitido por simplicidad)
-        if (contraseña !== user.Contraseña) { 
+        // 2. Aquí verifico la contraseña
+        const dbContraseña = user.Contrasena || user.Contraseña || user.CONTRASEÑA;
+        if (contraseña !== dbContraseña) {
             return errorResponse(res, 401, 'Contraseña incorrecta');
         }
 
+        const dbMatricula = user.ID_MATRICULA || user.ID_Matricula;
+        const dbRol = user.Id_Rol || user.ID_ROL;
+        const dbNombre = user.Nombre || user.NAME || user.Name;
+        const dbTelefono = user.Telefono || user.TELEFONO;
+        const dbEmail = user.Correo || user.CORREO;
+
         // Generar JWT
         const token = jwt.sign(
-            { matricula: user.ID_MATRICULA, rol: user.Id_Rol },
+            { matricula: dbMatricula, rol: dbRol },
             'TU_SECRETO_AQUI',
             { expiresIn: '24h' }
         );
@@ -29,11 +36,11 @@ export const login = async (req, res) => {
         // 3. Responder exitosamente
         return successResponse(res, 200, 'Inicio de sesión exitoso', {
             token,
-            matricula: user.ID_Matricula,
-            nombre: user.Name,
-            rol: user.Id_Rol,
-            telefono: user.Telefono,
-            email: user.Correo
+            matricula: dbMatricula,
+            nombre: dbNombre,
+            rol: dbRol,
+            telefono: dbTelefono,
+            email: dbEmail
         });
 
     } catch (error) {
@@ -45,6 +52,8 @@ export const login = async (req, res) => {
 // Controlador para registrar un nuevo usuario
 export const register = async (req, res) => {
     const { nombre, apellido, matricula, email, telefono, contraseña, id_rol, id_maestro } = req.body;
+
+    console.log(`[DEBUG REGISTER] Rol: ${id_rol}, id_maestro: "${id_maestro}" (tipo: ${typeof id_maestro})`);
 
     try {
         // 1. Verificar si la matrícula ya está registrada
@@ -67,6 +76,48 @@ export const register = async (req, res) => {
     } catch (error) {
         console.error(error);
         return errorResponse(res, 500, 'Error interno del servidor al registrar');
+    }
+};
+
+// Obtener perfil del usuario autenticado
+export const getProfile = async (req, res) => {
+    try {
+        const { matricula } = req.user;
+        const user = await findUserByMatricula(matricula);
+
+        if (!user) {
+            return errorResponse(res, 404, 'Usuario no encontrado');
+        }
+
+        return successResponse(res, 200, 'Perfil obtenido con éxito', {
+            matricula: user.ID_MATRICULA || user.ID_Matricula,
+            nombre: user.Nombre || user.NAME || user.Name,
+            email: user.Correo || user.CORREO,
+            telefono: user.Telefono || user.TELEFONO,
+            rol: user.Id_Rol
+        });
+    } catch (error) {
+        console.error('Error al obtener perfil:', error);
+        return errorResponse(res, 500, 'Error interno del servidor al obtener perfil');
+    }
+};
+
+// Actualizar perfil del usuario autenticado
+export const updateProfile = async (req, res) => {
+    try {
+        const { matricula } = req.user;
+        const { nombre, email, telefono, contraseña } = req.body;
+
+        if (!nombre || !email || !telefono) {
+            return errorResponse(res, 400, 'El nombre, correo electrónico y teléfono son obligatorios');
+        }
+
+        await updateUserProfile(matricula, { nombre, email, telefono, contraseña });
+
+        return successResponse(res, 200, 'Perfil actualizado con éxito');
+    } catch (error) {
+        console.error('Error al actualizar perfil:', error);
+        return errorResponse(res, 500, 'Error interno del servidor al actualizar perfil');
     }
 };
 
