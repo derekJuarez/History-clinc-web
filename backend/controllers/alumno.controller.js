@@ -4,7 +4,8 @@ import {
     actualizarMaestroDeAlumno,
     getAllAlumnos,
     deleteAlumno,
-    obtenerAlumnosDeMaestro
+    obtenerAlumnosDeMaestro,
+    updateAlumno
 } from '../models/alumno.model.js';
 import { findUserByMatricula } from '../models/user.model.js';
 import { crearSolicitudCambioAsesor } from '../models/solicitud_asesor.model.js';
@@ -135,5 +136,23 @@ export const getAlumnosPorMaestro = async (req, res) => {
     } catch (error) {
         console.error('Error al obtener alumnos del maestro:', error);
         return errorResponse(res, 500, 'Error interno del servidor al obtener alumnos');
+    }
+};
+
+// Actualizar los datos de un alumno
+export const actualizarAlumno = async (req, res) => {
+    const { matricula } = req.params;
+    const { nombre, correo, telefono } = req.body;
+
+    if (!nombre || !correo || !telefono) {
+        return errorResponse(res, 400, 'Nombre, correo y teléfono son obligatorios');
+    }
+
+    try {
+        await updateAlumno(matricula, { nombre, correo, telefono });
+        return successResponse(res, 200, 'Alumno actualizado exitosamente');
+    } catch (error) {
+        console.error('Error al actualizar alumno:', error);
+        return errorResponse(res, 500, 'Error interno del servidor al actualizar alumno');
     }
 };
