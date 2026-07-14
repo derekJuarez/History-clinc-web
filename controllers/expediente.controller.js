@@ -29,13 +29,20 @@ export const guardarExpediente = async (req, res) => {
             fecha_nac_paciente: paciente.fecha_nac,
             sexo_paciente: paciente.sexo,
             ocupacion_paciente: paciente.ocupacion,
-            alergias: antecedentes?.alergias,
+            medico_cabecera: paciente.medico_cabecera,
+            
+            alergias_flags: antecedentes?.alergias_flags,
+            tabaquismo: antecedentes?.tabaquismo || 'No',
+            alcoholismo: antecedentes?.alcoholismo || 'No',
+            drogadiccion: antecedentes?.drogadiccion || 'No',
+            cardiovascular_data: antecedentes?.cardiovascular_data,
+            endocrino_data: antecedentes?.endocrino_data,
+            hematologico_data: antecedentes?.hematologico_data,
+            infectocontagiosas_data: antecedentes?.infectocontagiosas_data,
+            
             medicamentos_actuales: antecedentes?.medicamentos_actuales,
-            diabetes: antecedentes?.diabetes || 'No',
-            hipertension: antecedentes?.hipertension || 'No',
-            problemas_cardiacos: antecedentes?.cardiacos || 'No',
-            embarazo: antecedentes?.embarazo || 'No',
             otros_padecimientos: antecedentes?.otros_padecimientos,
+            
             higiene_oral: exploracion?.higiene,
             habitos: exploracion?.habitos,
             oclusion: exploracion?.oclusion,
@@ -48,7 +55,7 @@ export const guardarExpediente = async (req, res) => {
         return successResponse(res, 201, 'Informe clínico guardado exitosamente', { id });
     } catch (error) {
         console.error('Error al guardar expediente:', error);
-        return errorResponse(res, 500, 'Error interno al guardar el expediente');
+        return errorResponse(res, 500, 'Error interno al guardar el expediente: ' + error.message);
     }
 };
 
@@ -126,8 +133,7 @@ export const buscarPaciente = async (req, res) => {
         const ultimoInforme = informes[0];
         const idPaciente = ultimoInforme.Id_Paciente;
 
-        // Buscar antecedentes, alergias, hábitos del paciente
-        const [alergias] = await db.query('SELECT Alergia FROM alergias_paciente WHERE Id_Paciente = ?', [idPaciente]);
+        // Buscar antecedentes y hábitos del paciente
         const [antecedentes] = await db.query('SELECT Categoria, Detalle FROM antecedentes_paciente WHERE Id_Paciente = ?', [idPaciente]);
         const [habitos] = await db.query('SELECT Habito FROM habitos_paciente WHERE Id_Paciente = ?', [idPaciente]);
 
@@ -149,12 +155,15 @@ export const buscarPaciente = async (req, res) => {
                 id_paciente: ultimoInforme.Id_Informe
             },
             antecedentes: {
-                alergias: alergias.map(a => a.Alergia).join(', ') || 'Ninguna',
+                alergias: ultimoInforme.Alergias_Flags || '',
+                tabaquismo: ultimoInforme.Tabaquismo || 'No',
+                alcoholismo: ultimoInforme.Alcoholismo || 'No',
+                drogadiccion: ultimoInforme.Drogadiccion || 'No',
+                cardiovascular_data: ultimoInforme.Cardiovascular_Data || '',
+                endocrino_data: ultimoInforme.Endocrino_Data || '',
+                hematologico_data: ultimoInforme.Hematologico_Data || '',
+                infectocontagiosas_data: ultimoInforme.Infectocontagiosas_Data || '',
                 medicamentos_actuales: getAnt('Medicamentos'),
-                diabetes: getAnt('Diabetes'),
-                hipertension: getAnt('Hipertension'),
-                problemas_cardiacos: getAnt('Problemas Cardiacos'),
-                embarazo: getAnt('Embarazo'),
                 otros_padecimientos: getAnt('Otros')
             },
             historial_completo: informes.map(i => {

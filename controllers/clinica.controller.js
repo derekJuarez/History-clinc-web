@@ -29,7 +29,9 @@ export const registrarClinica = async (req, res) => {
             return errorResponse(res, 409, 'Ya existe una clínica con ese nombre');
         }
 
-        const newId = await createClinica({ nombre, encargado, ubicacion });
+        const estadoClinica = (req.user?.rol === 3) ? 'APROBADO' : 'PENDIENTE';
+        const newId = await createClinica({ nombre, encargado, ubicacion, estado: estadoClinica });
+        
         return successResponse(res, 201, 'Clínica registrada exitosamente', {
             id: newId,
             nombre,
