@@ -31,10 +31,11 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
         } else if (result.data.rol === 2) {
             window.location.href = 'Alumno/dashboard.html';
         } else if (result.data.rol === 3) {
-            window.location.href = 'Admin/principal_admin.html';
-        } else if (result.data.rol === 4) {
-            // Paciente: no tiene panel, mostrar mensaje
+            // Paciente
             window.location.href = 'Paciente/dashboard_paciente.html';
+        } else if (result.data.rol === 4) {
+            // Administrador
+            window.location.href = 'Admin/principal_admin.html';
         } else {
             errorContainer.textContent = 'Rol desconocido';
             errorContainer.style.display = "block";
