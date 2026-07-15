@@ -25,6 +25,206 @@
             letter-spacing: 1px;
             text-transform: uppercase;
         }
+
+        .btn-receta {
+            background-color: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-receta:hover { background-color: #059669; transform: scale(1.02); }
+        .btn-receta:active { transform: scale(0.98); }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-box {
+            background: rgba(11, 26, 48, 0.95);
+            border: 1px solid rgba(203, 178, 106, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(203, 178, 106, 0.2);
+            padding-bottom: 10px;
+        }
+        .modal-header h3 {
+            color: #cbb26a;
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .modal-close:hover {
+            color: #cbb26a;
+        }
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .modal-body form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn-cancel {
+            background: transparent;
+            color: #fff;
+            border: 1px solid #cbb26a;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-cancel:hover {
+            background: rgba(203, 178, 106, 0.1);
+        }
+
+        @media print {
+            @page {
+                size: letter portrait;
+                margin: 0 !important; /* Esto elimina la fecha y URL por defecto del navegador */
+            }
+            body {
+                margin: 0;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #print-area, #print-area * {
+                visibility: visible;
+                color: #000 !important; /* Forzar el color a negro puro */
+                font-weight: 600 !important; /* Letra más gruesa y negra */
+            }
+            #print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 14cm; /* Mitad superior de la hoja */
+                display: block !important;
+                background: white;
+                font-family: Arial, Helvetica, sans-serif;
+                margin: 0;
+                padding: 1.5cm;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+            .receta-header-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 30px;
+            }
+            .logo-left, .logo-right {
+                width: 100px;
+                height: 100px;
+                object-fit: contain;
+            }
+            .receta-header-center {
+                flex: 1;
+                text-align: center;
+                padding: 0 20px;
+            }
+            .receta-header-center h1 { margin: 0; font-size: 26px; font-weight: bold; }
+            .receta-header-center h2 { margin: 10px 0; font-size: 20px; font-weight: normal; }
+            .header-info-row {
+                display: flex;
+                justify-content: space-between;
+                font-size: 14px;
+                margin-top: 5px;
+            }
+            .receta-body-container {
+                display: flex;
+                margin-top: 20px;
+            }
+            .receta-left-col {
+                width: 30%;
+                padding-right: 20px;
+                font-size: 14px;
+                line-height: 2;
+            }
+            .receta-right-col {
+                width: 70%;
+            }
+            .paciente-info-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                font-size: 14px;
+            }
+            .paciente-info-row span {
+                flex: 1;
+            }
+            .receta-content {
+                margin-top: 30px;
+                min-height: 2cm;
+            }
+            .receta-content h3 { font-size: 20px; font-weight: normal; margin-bottom: 15px; }
+            .receta-content p { font-size: 14px; white-space: pre-wrap; font-family: monospace; }
+            
+            .receta-footer {
+                position: absolute;
+                bottom: 1.5cm;
+                right: 1.5cm;
+                text-align: right;
+                font-size: 12px;
+            }
+            .receta-footer p { margin: 2px 0; color: black; }
+        }
     </style>
 </head>
 <body>
@@ -56,6 +256,7 @@
                             <th>Teléfono</th>
                             <th>Email</th>
                             <th>Radiografia</th>
+                            <th style="text-align: center;">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="TablaPacientes">
@@ -65,6 +266,115 @@
             </div>
         </section>
     </main>
+
+    <!-- Modal de Receta Médica -->
+    <div class="modal-overlay" id="modalReceta">
+        <div class="modal-box" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3>Crear Receta Médica</h3>
+                <button class="modal-close" onclick="cerrarModalReceta()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formReceta">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                        <div class="input-box">
+                            <label>Paciente:</label>
+                            <input type="text" id="receta-paciente" readonly style="background: rgba(255,255,255,0.05);">
+                        </div>
+                        <div class="input-box">
+                            <label>Edad:</label>
+                            <input type="text" id="receta-edad" readonly style="background: rgba(255,255,255,0.05);">
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" id="receta-sexo">
+                    
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
+                        <div class="input-box">
+                            <label>T/A:</label>
+                            <input type="text" id="receta-ta" placeholder="Ej. 120/80">
+                        </div>
+                        <div class="input-box">
+                            <label>F.C:</label>
+                            <input type="text" id="receta-fc" placeholder="Ej. 80 lpm">
+                        </div>
+                        <div class="input-box">
+                            <label>Talla:</label>
+                            <input type="text" id="receta-talla" placeholder="Ej. 1.70 m">
+                        </div>
+                        <div class="input-box">
+                            <label>Peso:</label>
+                            <input type="text" id="receta-peso" placeholder="Ej. 70 kg">
+                        </div>
+                        <div class="input-box">
+                            <label>Glumetria:</label>
+                            <input type="text" id="receta-glumetria" placeholder="Ej. 90 mg/dl">
+                        </div>
+                        <div class="input-box">
+                            <label>Diagnóstico:</label>
+                            <input type="text" id="receta-diagnostico" placeholder="Opcional">
+                        </div>
+                    </div>
+
+                    <div class="input-box">
+                        <label>Tratamiento / Indicaciones:</label>
+                        <textarea id="receta-indicaciones" rows="5" placeholder="Escriba el tratamiento..." required style="width: 100%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: white; padding: 12px; font-family: inherit; font-size: 14px; margin-top: 5px; outline: none;"></textarea>
+                    </div>
+                    <div class="modal-footer" style="margin-top: 20px;">
+                        <button type="button" class="btn-cancel" onclick="cerrarModalReceta()">Cancelar</button>
+                        <button type="button" class="btn-submit" onclick="imprimirReceta()" style="width: auto; padding: 0 30px; margin-top: 0; height: 40px; border-radius: 20px; background-color: #cbb26a; color: #0b1a30; font-weight: 600; border: none; cursor: pointer;">Imprimir Receta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor oculto para la impresión física -->
+    <div id="print-area" style="display: none;">
+        <div class="receta-header-container">
+            <img src="../Image/logo_odontologia.jpg" alt="Logo Odontología" class="logo-left">
+            <div class="receta-header-center">
+                <h1 id="print-maestro">(Doctor encargado)</h1>
+                <div class="header-info-row">
+                    <span>Cirujanos Dentistas</span>
+                    <span>UMSNH</span>
+                    <span>Cedula Profesional: <span id="print-cedula"></span></span>
+                </div>
+                <h2 id="print-alumno">(Nombre del Alumno)</h2>
+            </div>
+            <img src="../Image/logo-umsnh.png" alt="Logo UMSNH" class="logo-right">
+        </div>
+
+        <div class="receta-body-container">
+            <div class="receta-left-col">
+                <div>T/A: <span id="print-ta"></span></div>
+                <div>F.C: <span id="print-fc"></span></div>
+                <div>Talla: <span id="print-talla"></span></div>
+                <div>Peso: <span id="print-peso"></span></div>
+                <div>Glumetria: <span id="print-glumetria"></span></div>
+            </div>
+            <div class="receta-right-col">
+                <div class="paciente-info-row">
+                    <span>Paciente: <span id="print-paciente"></span></span>
+                    <span>Edad: <span id="print-edad"></span></span>
+                    <span>Sexo: <span id="print-sexo"></span></span>
+                </div>
+                <div style="margin-bottom: 5px; font-size: 14px;">Fecha: <span id="print-fecha"></span></div>
+                <div style="margin-bottom: 20px; font-size: 14px;">Diagnóstico: <span id="print-diagnostico"></span></div>
+                
+                <div class="receta-content">
+                    <h3>Tratamiento</h3>
+                    <p id="print-indicaciones"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="receta-footer">
+            <p id="print-clinica"></p>
+            <p>Michoacán</p>
+            <p>Teléfono: <span id="print-telefono"></span></p>
+        </div>
+    </div>
 
     <script src="../script_menu.js"></script>
 </body>

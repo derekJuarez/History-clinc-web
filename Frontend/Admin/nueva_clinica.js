@@ -3,6 +3,7 @@ document.getElementById('registro-clinica-form').addEventListener('submit', asyn
 
     const nombre = document.getElementById('nombre-clinica').value.trim();
     const encargado = document.getElementById('encargado-clinica').value.trim();
+    const cedula = document.getElementById('cedula-clinica').value.trim();
 
     // Combinar los campos de ubicación en un solo string
     const calle = document.getElementById('calle-clinica').value.trim();
@@ -18,7 +19,7 @@ document.getElementById('registro-clinica-form').addEventListener('submit', asyn
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ nombre, encargado, ubicacion })
+            body: JSON.stringify({ nombre, encargado, ubicacion, cedula })
         });
 
         const result = await response.json();

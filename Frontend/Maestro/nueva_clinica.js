@@ -1,3 +1,10 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const encargadoInput = document.getElementById('encargado-clinica');
+    if (encargadoInput) {
+        encargadoInput.value = localStorage.getItem('nombre') || localStorage.getItem('matricula') || '';
+    }
+});
+
 document.getElementById('registro-clinica-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -10,6 +17,7 @@ document.getElementById('registro-clinica-form').addEventListener('submit', asyn
     const calle = document.getElementById('calle-clinica').value.trim();
     const colonia = document.getElementById('colonia-clinica').value.trim();
     const numeroCp = document.getElementById('numero-cp-clinica').value.trim();
+    const cedula = document.getElementById('cedula-clinica').value.trim();
     const ubicacion = `${calle}, Col. ${colonia}, ${numeroCp}`;
 
     try {
@@ -20,7 +28,7 @@ document.getElementById('registro-clinica-form').addEventListener('submit', asyn
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ nombre, encargado, ubicacion })
+            body: JSON.stringify({ nombre, encargado, ubicacion, cedula })
         });
 
         const result = await response.json();

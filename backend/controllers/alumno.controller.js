@@ -5,7 +5,8 @@ import {
     getAllAlumnos,
     deleteAlumno,
     obtenerAlumnosDeMaestro,
-    updateAlumno
+    updateAlumno,
+    getMaestroDeAlumno
 } from '../models/alumno.model.js';
 import { findUserByMatricula } from '../models/user.model.js';
 import { crearSolicitudCambioAsesor } from '../models/solicitud_asesor.model.js';
@@ -154,5 +155,22 @@ export const actualizarAlumno = async (req, res) => {
     } catch (error) {
         console.error('Error al actualizar alumno:', error);
         return errorResponse(res, 500, 'Error interno del servidor al actualizar alumno');
+    }
+};
+
+// Obtener la información del maestro del alumno logueado
+export const getMiMaestroInfo = async (req, res) => {
+    try {
+        const matriculaAlumno = req.user.matricula;
+        const maestro = await getMaestroDeAlumno(matriculaAlumno);
+        
+        if (!maestro) {
+            return errorResponse(res, 404, 'No se encontró maestro asignado para este alumno');
+        }
+
+        return successResponse(res, 200, 'Información del maestro obtenida exitosamente', maestro);
+    } catch (error) {
+        console.error('Error al obtener la info del maestro:', error);
+        return errorResponse(res, 500, 'Error interno del servidor');
     }
 };

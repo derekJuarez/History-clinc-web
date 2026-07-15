@@ -95,3 +95,36 @@ export const updateAlumno = async (matricula, { nombre, correo, telefono }) => {
         [nombre, correo, telefono, matricula]
     );
 };
+
+// Obtener información del maestro asociado al alumno
+export const getMaestroDeAlumno = async (matriculaAlumno) => {
+    const query = `
+        SELECT 
+            m.Nombre AS nombre,
+            m.Telefono AS telefono,
+            (
+                SELECT c.Ubicacion
+                FROM clinicas c
+                WHERE c.Encargado = m.ID_MATRICULA 
+                   OR m.Nombre LIKE CONCAT('%', REPLACE(c.Encargado, ' ', '%'), '%')
+                LIMIT 1
+            ) AS clinica_ubicacion,
+            (
+                SELECT c.Cedula_Profesional
+                FROM clinicas c
+                WHERE c.Encargado = m.ID_MATRICULA 
+                   OR m.Nombre LIKE CONCAT('%', REPLACE(c.Encargado, ' ', '%'), '%')
+                LIMIT 1
+            ) AS clinica_cedula
+        FROM usuarios a
+        INNER JOIN usuarios m ON a.Id_Maestro = m.ID_MATRICULA
+        WHERE a.ID_MATRICULA = ? AND a.Id_Rol = 2
+    `;
+    try {
+        const [rows] = await db.query(query, [matriculaAlumno]);
+        return rows[0];
+    } catch (error) {
+        console.error('Error en getMaestroDeAlumno:', error);
+        throw error;
+    }
+};

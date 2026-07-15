@@ -18,10 +18,10 @@ export const findClinicaByNombre = async (nombre) => {
 };
 
 // Insertar una nueva clínica (con estado opcional)
-export const createClinica = async ({ nombre, encargado, ubicacion, estado = 'PENDIENTE' }) => {
+export const createClinica = async ({ nombre, encargado, ubicacion, cedula, estado = 'PENDIENTE' }) => {
     const [result] = await db.query(
-        'INSERT INTO clinicas (Nombre, Encargado, Ubicacion, Estado) VALUES (?, ?, ?, ?)',
-        [nombre, encargado, ubicacion, estado]
+        'INSERT INTO clinicas (Nombre, Encargado, Ubicacion, Cedula_Profesional, Estado) VALUES (?, ?, ?, ?, ?)',
+        [nombre, encargado, ubicacion, cedula || '', estado]
     );
     return result.insertId;
 };
@@ -37,10 +37,10 @@ export const deleteClinica = async (id) => {
 };
 
 // Actualizar clínica
-export const updateClinica = async (id, { nombre, encargado, ubicacion }) => {
+export const updateClinica = async (id, { nombre, encargado, ubicacion, cedula }) => {
     await db.query(
-        'UPDATE clinicas SET Nombre = ?, Encargado = ?, Ubicacion = ? WHERE ID_CLINICA = ?',
-        [nombre, encargado, ubicacion, id]
+        'UPDATE clinicas SET Nombre = ?, Encargado = ?, Ubicacion = ?, Cedula_Profesional = ? WHERE ID_CLINICA = ?',
+        [nombre, encargado, ubicacion, cedula || '', id]
     );
 };
 
