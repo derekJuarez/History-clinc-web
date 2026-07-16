@@ -26,33 +26,46 @@ export const guardarInforme = async ({
     hematologico_data,
     infectocontagiosas_data,
     alergias_flags,
-    medicamentos_actuales
+    medicamentos_actuales,
+    curp_paciente
 }) => {
     const connection = await db.getConnection();
     try {
         await connection.beginTransaction();
 
-        // 1. Crear un Usuario Fantasma para el Paciente
-        const pseudoCURP = `PAC-${Date.now()}`;
-        const contrasenaPhantom = 'paciente123'; // O generar un hash si usaran bcrypt
-        const [resUser] = await connection.query(
-            `INSERT INTO usuarios (Nombre, Telefono, Contrasena, Correo, Id_Rol)
-             VALUES (?, ?, ?, ?, 3)`,
-            [nombre_paciente, telefono_paciente, contrasenaPhantom, `${pseudoCURP}@paciente.local`]
-        );
-        const idUsuarioNum = resUser.insertId;
-
         // 2. Buscar Id numérico del Alumno que hace el registro
         const [aRows] = await connection.query('SELECT Id_Usuario FROM alumnos WHERE Matricula = ?', [matricula_alumno]);
         const idEstudianteNum = aRows.length > 0 ? aRows[0].Id_Usuario : null;
 
-        // 3. Crear el Paciente
-        const [resPaciente] = await connection.query(
-            `INSERT INTO paciente (Id_Usuario, CURP, FechaNacimiento, Sexo, Ocupacion, TelefonoEmergencia, Id_Estudiante_Registro)
-             VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [idUsuarioNum, pseudoCURP, fecha_nac_paciente || '2000-01-01', sexo_paciente || 'N/E', ocupacion_paciente || '', telefono_paciente || '', idEstudianteNum]
-        );
-        const idPaciente = resPaciente.insertId;
+        let idPaciente = null;
+
+        if (curp_paciente) {
+            // Si viene la CURP, buscar el paciente existente
+            const [pRows] = await connection.query('SELECT Id_Paciente FROM paciente WHERE CURP = ?', [curp_paciente]);
+            if (pRows.length > 0) {
+                idPaciente = pRows[0].Id_Paciente;
+            }
+        }
+
+        if (!idPaciente) {
+            // Si no hay CURP o no se encontró, crear un Usuario Fantasma para el Paciente (Fallback)
+            const pseudoCURP = curp_paciente || `PAC-${Date.now()}`;
+            const contrasenaPhantom = 'paciente123';
+            const [resUser] = await connection.query(
+                `INSERT INTO usuarios (Nombre, Telefono, Contrasena, Correo, Id_Rol)
+                 VALUES (?, ?, ?, ?, 3)`,
+                [nombre_paciente, telefono_paciente, contrasenaPhantom, `${pseudoCURP}@paciente.local`]
+            );
+            const idUsuarioNum = resUser.insertId;
+
+            // Crear el Paciente
+            const [resPaciente] = await connection.query(
+                `INSERT INTO paciente (Id_Usuario, CURP, FechaNacimiento, Sexo, Ocupacion, TelefonoEmergencia, Id_Estudiante_Registro)
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [idUsuarioNum, pseudoCURP, fecha_nac_paciente || '2000-01-01', sexo_paciente || 'N/E', ocupacion_paciente || '', telefono_paciente || '', idEstudianteNum]
+            );
+            idPaciente = resPaciente.insertId;
+        }
 
         // 4. Crear Historial Clínico Base
         const [resHistorial] = await connection.query(
@@ -104,7 +117,7 @@ export const guardarInforme = async ({
         );
         const docente_asesor_num = (maestroRows.length > 0 && maestroRows[0].Id_Maestro) 
             ? maestroRows[0].Id_Maestro 
-            : idEstudianteNum; // Fallback al propio alumno
+            : null; // Fallback to null if no teacher assigned
 
         // 6. Crear una Cita "Completada" (Ya que el informe asume que hubo consulta)
         const [resCita] = await connection.query(

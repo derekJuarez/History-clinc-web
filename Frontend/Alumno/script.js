@@ -200,7 +200,7 @@ async function buscarPaciente() {
             }
         } else {
             contenedor.style.display = 'none';
-            status.innerHTML = '<span class="text-warning fw-bold"><i class="bi bi-exclamation-triangle me-1"></i>Paciente no encontrado. Usa el botón "Nueva" para registrarlo.</span>';
+            status.innerHTML = '<span class="text-warning fw-bold"><i class="bi bi-exclamation-triangle me-1"></i>Paciente no encontrado. Usa la pestaña "Registrar Paciente" del menú lateral.</span>';
         }
     } catch (error) {
         console.error(error);
@@ -281,7 +281,8 @@ if (formHistoriaClinica) {
                 fecha_nac: document.getElementById('fecha_nac').value,
                 sexo: document.getElementById('sexo').value,
                 ocupacion: document.getElementById('ocupacion').value,
-                medico_cabecera: document.getElementById('medico_cabecera') ? document.getElementById('medico_cabecera').value : ''
+                medico_cabecera: document.getElementById('medico_cabecera') ? document.getElementById('medico_cabecera').value : '',
+                curp: window.pacienteCurpPrecargado || null
             },
             antecedentes: {
                 alergias_flags: document.getElementById('alergias').value,
@@ -371,7 +372,51 @@ function verificarHashParaNuevaConsulta() {
 }
 
 // Verificar al cargar la página
-document.addEventListener('DOMContentLoaded', verificarHashParaNuevaConsulta);
+document.addEventListener('DOMContentLoaded', () => {
+    verificarHashParaNuevaConsulta();
+    verificarCurpEnURL();
+});
+
+async function verificarCurpEnURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const curp = urlParams.get('curp');
+    if (curp) {
+        try {
+            const token = localStorage.getItem('token');
+            const respuesta = await fetch(`/api/paciente/curp/${curp}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await respuesta.json();
+            if (respuesta.ok && data.success && data.data) {
+                mostrarFormularioNuevoPaciente();
+                
+                const p = data.data;
+                const nombreInput = document.getElementById('nombre');
+                const telefonoInput = document.getElementById('telefono');
+                const fechaNacInput = document.getElementById('fecha_nac');
+                const sexoInput = document.getElementById('sexo');
+                const ocupacionInput = document.getElementById('ocupacion');
+                
+                if (nombreInput) { nombreInput.value = p.nombre; nombreInput.readOnly = true; }
+                if (telefonoInput) { telefonoInput.value = p.telefono; telefonoInput.readOnly = true; }
+                if (sexoInput) { sexoInput.value = p.sexo; sexoInput.setAttribute('disabled', 'true'); }
+                if (ocupacionInput) { ocupacionInput.value = p.ocupacion; ocupacionInput.readOnly = true; }
+                if (fechaNacInput && p.fecha_nacimiento) {
+                    try {
+                        const f = new Date(p.fecha_nacimiento);
+                        fechaNacInput.value = f.toISOString().split('T')[0];
+                        fechaNacInput.readOnly = true;
+                        fechaNacInput.dispatchEvent(new Event('change'));
+                    } catch(e) {}
+                }
+                
+                window.pacienteCurpPrecargado = curp;
+            }
+        } catch(e) {
+            console.error('Error al cargar paciente por curp', e);
+        }
+    }
+}
 
 // Verificar si el hash cambia mientras ya está en la página
 window.addEventListener('hashchange', verificarHashParaNuevaConsulta);

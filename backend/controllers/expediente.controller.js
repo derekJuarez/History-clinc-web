@@ -29,6 +29,7 @@ export const guardarExpediente = async (req, res) => {
             fecha_nac_paciente: paciente.fecha_nac,
             sexo_paciente: paciente.sexo,
             ocupacion_paciente: paciente.ocupacion,
+            curp_paciente: paciente.curp,
             medico_cabecera: paciente.medico_cabecera,
             
             alergias_flags: antecedentes?.alergias_flags,

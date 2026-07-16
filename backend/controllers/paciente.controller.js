@@ -1,4 +1,4 @@
-import { registrarPaciente, obtenerPacientes, PacienteDuplicadoError, PacienteDeOtroEstudianteError } from '../models/paciente_model.js';
+import { registrarPaciente, obtenerPacientes, obtenerPacientePorCurp, PacienteDuplicadoError, PacienteDeOtroEstudianteError } from '../models/paciente_model.js';
 import { successResponse, errorResponse } from '../utils/helpers.util.js';
 
 export const registrar = async (req, res) => {
@@ -28,5 +28,19 @@ export const obtenerTodos = async (req, res) => {
     } catch (error) {
         console.error('Error al obtener pacientes:', error);
         return errorResponse(res, 500, 'Error al obtener pacientes');
+    }
+};
+
+export const obtenerPorCurp = async (req, res) => {
+    try {
+        const { curp } = req.params;
+        const paciente = await obtenerPacientePorCurp(curp);
+        if (!paciente) {
+            return errorResponse(res, 404, 'Paciente no encontrado');
+        }
+        return successResponse(res, 200, 'Paciente encontrado', paciente);
+    } catch (error) {
+        console.error('Error al obtener paciente por CURP:', error);
+        return errorResponse(res, 500, 'Error al obtener paciente');
     }
 };

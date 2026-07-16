@@ -53,9 +53,6 @@
                         <button class="btn-submit" type="button" onclick="buscarPaciente()" style="width: auto; padding: 0 30px; margin: 0; height: 40px; border-radius: 20px;">
                             Buscar
                         </button>
-                        <button class="btn-submit" type="button" onclick="mostrarFormularioNuevoPaciente()" style="width: auto; padding: 0 20px; margin: 0; height: 40px; border-radius: 20px;">
-                            <i class="bi bi-plus-circle me-1"></i> Nueva
-                        </button>
                     </div>
                     <div id="statusBusqueda" style="margin-top: 15px; text-align: center; font-size: 13px; color: rgba(255, 255, 255, 0.7);">
                         Ingresa los datos para localizar el expediente.
@@ -122,12 +119,8 @@
 
                                         <div class="px-4 pt-3 border-bottom" style="border-color: rgba(203, 178, 106, 0.4) !important;">
                                             <ul class="nav nav-tabs" id="historiaTabs" role="tablist">
-                                                <li class="nav-item"><button class="nav-link active"
-                                                        id="btn-identificacion" data-bs-toggle="tab"
-                                                        data-bs-target="#identificacion" type="button"><i
-                                                            class="bi bi-person-vcard me-1"></i> Identificación</button>
-                                                </li>
-                                                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab"
+                                                <!-- Pestaña de Identificación Oculta -->
+                                                <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab"
                                                         data-bs-target="#antecedentes" type="button"><i
                                                             class="bi bi-clipboard2-pulse me-1"></i>
                                                         Antecedentes</button></li>
@@ -143,38 +136,21 @@
                                         </div>
 
                                         <div class="tab-content p-4">
-                                            <div class="tab-pane fade show active" id="identificacion" role="tabpanel">
-                                                <div class="row g-4">
-                                                    <div class="col-md-8"><label class="form-label">Nombre Completo
-                                                            <span class="text-danger">*</span></label><input type="text"
-                                                            class="form-control" id="nombre" required></div>
-                                                    <div class="col-md-4"><label class="form-label">Teléfono Móvil <span
-                                                                class="text-danger">*</span></label><input type="tel"
-                                                            class="form-control" id="telefono" required></div>
-                                                    <div class="col-md-3"><label class="form-label">Fecha de
-                                                            Nacimiento</label><input type="date" class="form-control"
-                                                            id="fecha_nac"></div>
-                                                    <div class="col-md-2"><label class="form-label">Edad</label><input
-                                                            type="number" class="form-control bg-light" id="edad"
-                                                            readonly>
-                                                    </div>
-                                                    <div class="col-md-3"><label class="form-label">Sexo</label><select
-                                                            class="form-select" id="sexo">
-                                                            <option value="">Seleccione...</option>
-                                                            <option value="M">Masculino</option>
-                                                            <option value="F">Femenino</option>
-                                                        </select></div>
-                                                    <div class="col-md-4"><label
-                                                            class="form-label">Ocupación</label><input type="text"
-                                                            class="form-control" id="ocupacion"></div>
-                                                    <div class="col-md-5"><label
-                                                            class="form-label">Médico de Cabecera</label><input type="text"
-                                                            class="form-control" id="medico_cabecera" placeholder="Nombre del médico"></div>
-                                                </div>
+                                            <!-- Campos ocultos de identificación (ya se llenaron en el registro) -->
+                                            <div class="d-none" id="identificacion">
+                                                <input type="hidden" id="nombre">
+                                                <input type="hidden" id="telefono">
+                                                <input type="hidden" id="fecha_nac">
+                                                <input type="hidden" id="edad">
+                                                <input type="hidden" id="sexo">
+                                                <input type="hidden" id="ocupacion">
                                             </div>
 
-                                            <div class="tab-pane fade" id="antecedentes" role="tabpanel">
+                                            <div class="tab-pane fade show active" id="antecedentes" role="tabpanel">
                                                 <div class="row g-4">
+                                                    <div class="col-md-12"><label
+                                                            class="form-label">Médico de Cabecera</label><input type="text"
+                                                            class="form-control" id="medico_cabecera" placeholder="Nombre del médico (Opcional)"></div>
                                                     <div class="col-md-12"><label class="form-label text-danger"><i
                                                                 class="bi bi-exclamation-triangle-fill me-1"></i>
                                                             Alergias</label><input type="text"
@@ -238,14 +214,14 @@
                                                             Consulta y
                                                             Diagnóstico Definitivo</label><textarea
                                                             class="form-control border-warning-subtle" id="diagnostico"
-                                                            rows="3" required></textarea></div>
+                                                            rows="3"></textarea></div>
                                                     <div class="col-12"><label
                                                             class="form-label text-success-emphasis"><i
                                                                 class="bi bi-check2-square me-1"></i> Plan de
                                                             Tratamiento
                                                             Realizado / A Realizar</label><textarea
                                                             class="form-control border-success-subtle"
-                                                            id="plan_treatment" rows="3" required></textarea></div>
+                                                            id="plan_treatment" rows="3"></textarea></div>
                                                 </div>
                                             </div>
 
@@ -343,65 +319,66 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalDetalleVisita" data-bs-backdrop="true" tabindex="-1"
-                aria-labelledby="modalDetalleVisitaLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content border-0 shadow">
-                        <div class="modal-header text-white" style="background-color: var(--primary-medical);">
-                            <h5 class="modal-title fw-bold" id="modalDetalleVisitaLabel"><i
-                                    class="bi bi-journal-medical me-2"></i>Historial Clínico de Consulta</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body p-4">
-                            <div class="row g-3">
-                                <div class="col-md-6"><span class="text-muted small text-uppercase fw-bold">Fecha de
-                                        Registro</span>
-                                    <div id="detalleFecha" class="fw-bold fs-6 text-primary"></div>
-                                </div>
-                                <div class="col-md-6"><span class="text-muted small text-uppercase fw-bold">Higiene
-                                        Oral</span>
-                                    <div id="detalleHigiene" class="fw-bold"></div>
-                                </div>
-                                <div class="col-md-4"><span
-                                        class="text-muted small text-uppercase fw-bold">Hábitos</span>
-                                    <div id="detalleHabitos" class="fw-bold"></div>
-                                </div>
-                                <div class="col-md-4"><span
-                                        class="text-muted small text-uppercase fw-bold">Oclusión</span>
-                                    <div id="detalleOclusion" class="fw-bold"></div>
-                                </div>
-                                <div class="col-md-4"><span class="text-muted small text-uppercase fw-bold">Estado
-                                        ATM</span>
-                                    <div id="detalleATM" class="fw-bold"></div>
-                                </div>
+        </section>
+    </main>
 
-                                <div class="col-12 mt-4">
-                                    <h6 class="fw-bold text-warning-emphasis border-bottom pb-2"><i
-                                            class="bi bi-exclamation-circle-fill me-1"></i> Motivo de Consulta /
-                                        Diagnóstico
-                                        Definitivo</h6>
-                                    <p id="detalleDiagnostico" class="bg-light p-3 rounded border text-dark"
-                                        style="white-space: pre-wrap;"></p>
-                                </div>
-
-                                <div class="col-12 mt-2">
-                                    <h6 class="fw-bold text-success-emphasis border-bottom pb-2"><i
-                                            class="bi bi-check2-square me-1"></i> Plan de Tratamiento Realizado</h6>
-                                    <p id="detallePlan" class="bg-light p-3 rounded border text-dark"
-                                        style="white-space: pre-wrap;"></p>
-                                </div>
-                            </div>
+    <div class="modal fade" id="modalDetalleVisita" data-bs-backdrop="true" tabindex="-1"
+        aria-labelledby="modalDetalleVisitaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header text-white" style="background-color: var(--primary-medical);">
+                    <h5 class="modal-title fw-bold" id="modalDetalleVisitaLabel"><i
+                            class="bi bi-journal-medical me-2"></i>Historial Clínico de Consulta</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6"><span class="text-muted small text-uppercase fw-bold">Fecha de
+                                Registro</span>
+                            <div id="detalleFecha" class="fw-bold fs-6 text-primary"></div>
                         </div>
-                        <div class="modal-footer bg-light">
-                            <button type="button" class="btn btn-secondary fw-bold px-4"
-                                data-bs-dismiss="modal">Cerrar</button>
+                        <div class="col-md-6"><span class="text-muted small text-uppercase fw-bold">Higiene
+                                Oral</span>
+                            <div id="detalleHigiene" class="fw-bold"></div>
+                        </div>
+                        <div class="col-md-4"><span
+                                class="text-muted small text-uppercase fw-bold">Hábitos</span>
+                            <div id="detalleHabitos" class="fw-bold"></div>
+                        </div>
+                        <div class="col-md-4"><span
+                                class="text-muted small text-uppercase fw-bold">Oclusión</span>
+                            <div id="detalleOclusion" class="fw-bold"></div>
+                        </div>
+                        <div class="col-md-4"><span class="text-muted small text-uppercase fw-bold">Estado
+                                ATM</span>
+                            <div id="detalleATM" class="fw-bold"></div>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <h6 class="fw-bold text-warning-emphasis border-bottom pb-2"><i
+                                    class="bi bi-exclamation-circle-fill me-1"></i> Motivo de Consulta /
+                                Diagnóstico
+                                Definitivo</h6>
+                            <p id="detalleDiagnostico" class="bg-light p-3 rounded border text-dark"
+                                style="white-space: pre-wrap;"></p>
+                        </div>
+
+                        <div class="col-12 mt-2">
+                            <h6 class="fw-bold text-success-emphasis border-bottom pb-2"><i
+                                    class="bi bi-check2-square me-1"></i> Plan de Tratamiento Realizado</h6>
+                            <p id="detallePlan" class="bg-light p-3 rounded border text-dark"
+                                style="white-space: pre-wrap;"></p>
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary fw-bold px-4"
+                        data-bs-dismiss="modal">Cerrar</button>
+                </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -52,11 +52,14 @@ document.getElementById('registroPacienteForm').addEventListener('submit', async
         const result = await response.json();
 
         if (response.ok) {
-            mostrarMensaje('exito', `✅ ${result.message}`);
+            mostrarMensaje('exito', `
+                <div class="mb-2">✅ ${result.message}</div>
+                <button type="button" class="btn btn-light btn-sm fw-bold text-success mt-2" onclick="window.location.href='historias.html?curp=${pacienteData.curp}'">
+                    Continuar a Historia Clínica <i class="ri-arrow-right-line"></i>
+                </button>
+            `);
             document.getElementById('registroPacienteForm').reset();
-            setTimeout(() => {
-                window.location.href = 'Ver_Pacientes.html';
-            }, 2000);
+            document.getElementById('submitRegistro').style.display = 'none'; // Ocultar el botón original
         } else if (response.status === 409) {
             // Paciente ya registrado — no es un error del servidor, sino un duplicado
             mostrarMensaje('advertencia', `⚠️ ${result.message || 'Este paciente ya está registrado en el sistema.'}`);
@@ -100,7 +103,7 @@ function mostrarMensaje(tipo, texto) {
         font-family: 'Poppins', sans-serif;
         text-align: center;
     `;
-    msg.textContent = texto;
+    msg.innerHTML = texto;
 
     const form = document.getElementById('registroPacienteForm');
     form.insertAdjacentElement('afterend', msg);

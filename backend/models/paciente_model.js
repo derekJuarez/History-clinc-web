@@ -90,3 +90,25 @@ export async function obtenerPacientes(id_estudiante_matricula) {
         throw error;
     }
 }
+
+export async function obtenerPacientePorCurp(curp) {
+    try {
+        const [rows] = await db.query(`
+            SELECT 
+                p.Id_Paciente AS id_paciente,
+                p.CURP AS curp,
+                u.Nombre AS nombre,
+                u.Telefono AS telefono,
+                p.FechaNacimiento AS fecha_nacimiento,
+                p.Sexo AS sexo,
+                p.Ocupacion AS ocupacion
+            FROM paciente p
+            INNER JOIN usuarios u ON p.Id_Usuario = u.Id_Usuario
+            WHERE p.CURP = ?
+        `, [curp]);
+        return rows.length > 0 ? rows[0] : null;
+    } catch (error) {
+        console.error('Error al obtener paciente por CURP:', error);
+        throw error;
+    }
+}
