@@ -48,20 +48,8 @@ const menuAlumnoHTML = `
                     <li><a href="ver_citas.html">Calendario de Citas</a></li>
                 </ul>
             </li>
-            <li>
-                <a href="perfil.html">
-                    <i class="ri-user-settings-line"></i>
-                    Mi Perfil
-                </a>
-            </li>
         </ul>
     </nav>
-
-    <div class="sidebar-footer">
-        <a href="#" onclick="logout()" class="logout-btn">
-            <i class="ri-logout-box-r-line"></i> Cerrar Sesión
-        </a>
-    </div>
 </aside>
 `;
 
@@ -117,20 +105,8 @@ const menuMaestroHTML = `
                     Ver historias
                 </a>
             </li>
-            <li>
-                <a href="perfil.html">
-                    <i class="ri-user-settings-line"></i>
-                    Mi Perfil
-                </a>
-            </li>
         </ul>
     </nav>
-
-    <div class="sidebar-footer">
-        <a href="#" onclick="logout()" class="logout-btn">
-            <i class="ri-logout-box-r-line"></i> Cerrar Sesión
-        </a>
-    </div>
 </aside>
 `;
 
@@ -192,20 +168,8 @@ const menuAdminHTML = `
                     Ver clínicas
                 </a>
             </li>
-            <li>
-                <a href="perfil.html">
-                    <i class="ri-user-settings-line"></i>
-                    Mi Perfil
-                </a>
-            </li>
         </ul>
     </nav>
-
-    <div class="sidebar-footer">
-        <a href="#" onclick="logout()" class="logout-btn">
-            <i class="ri-logout-box-r-line"></i> Cerrar Sesión
-        </a>
-    </div>
 </aside>
 `;
 
@@ -272,7 +236,84 @@ document.addEventListener('DOMContentLoaded', function () {
             // ========== RESPONSIVE: Botón hamburguesa y overlay para móvil ==========
             setupMobileToggle(newSidebar);
         }
+        
+        // ========== INYECTAR BOTONES EN TOP HEADER ==========
+        const topHeader = document.querySelector('.top-header');
+        if (topHeader) {
+            topHeader.style.display = 'flex';
+            topHeader.style.justifyContent = 'space-between';
+            topHeader.style.alignItems = 'center';
+            topHeader.style.background = '#0b1a30'; // Solid color same as sidebar
+            topHeader.style.borderBottom = 'none';
+            topHeader.style.position = 'relative';
+
+            // Badge UMSNH para movil
+            const mobileBadge = document.createElement('div');
+            mobileBadge.className = 'mobile-umsnh-badge';
+            mobileBadge.textContent = 'UMSNH';
+            topHeader.appendChild(mobileBadge);
+
+            // Logo central en el header
+            const headerLogo = document.createElement('div');
+            headerLogo.className = 'header-center-logo';
+            headerLogo.innerHTML = '<img src="../Image/logo-umsnh.png" alt="Logo UMSNH">';
+            topHeader.appendChild(headerLogo);
+
+            // Contenedor para las acciones del usuario
+            const userActions = document.createElement('div');
+            userActions.className = 'top-header-actions';
+            userActions.style.display = 'flex';
+            userActions.style.gap = '15px';
+            userActions.style.marginLeft = 'auto'; // Empuja a la derecha si hay otros elementos
+
+            // Botón de perfil
+            const profileBtn = document.createElement('a');
+            profileBtn.href = 'perfil.html';
+            profileBtn.className = 'top-header-btn profile-btn';
+            profileBtn.innerHTML = '<i class="ri-user-settings-line"></i> Mi Perfil';
+            
+            // Botón de cerrar sesión
+            const logoutBtn = document.createElement('a');
+            logoutBtn.href = '#';
+            logoutBtn.className = 'top-header-btn logout-header-btn';
+            logoutBtn.innerHTML = '<i class="ri-logout-box-r-line"></i> Cerrar Sesión';
+            logoutBtn.onclick = function(e) {
+                e.preventDefault();
+                logout();
+            };
+
+            // Botón de ocultar/mostrar dashboard
+            const toggleDashboardBtn = document.createElement('button');
+            toggleDashboardBtn.className = 'top-header-btn toggle-dashboard-btn';
+            toggleDashboardBtn.innerHTML = '<i class="ri-eye-off-line"></i> Ocultar Módulos';
+            toggleDashboardBtn.onclick = function(e) {
+                e.preventDefault();
+                const cardsContainer = document.querySelector('.admin-cards-container');
+                const welcomeSection = document.querySelector('.welcome-section');
+                
+                if (cardsContainer) {
+                    if (cardsContainer.style.display === 'none') {
+                        cardsContainer.style.display = ''; // Restore grid
+                        if (welcomeSection) welcomeSection.style.display = '';
+                        this.innerHTML = '<i class="ri-eye-off-line"></i> Ocultar Módulos';
+                    } else {
+                        cardsContainer.style.display = 'none';
+                        if (welcomeSection) welcomeSection.style.display = 'none';
+                        this.innerHTML = '<i class="ri-eye-line"></i> Mostrar Módulos';
+                    }
+                }
+            };
+
+            userActions.appendChild(toggleDashboardBtn);
+            userActions.appendChild(profileBtn);
+            userActions.appendChild(logoutBtn);
+            
+            topHeader.appendChild(userActions);
+        }
     }
+
+    // ========== FONDO DE LA PÁGINA (ESTABLECIDO EN CSS) ==========
+    // El fondo de la página ahora se maneja desde css/alumno.css en la etiqueta body.
 });
 
 /**

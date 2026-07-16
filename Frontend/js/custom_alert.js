@@ -185,12 +185,12 @@
         let titleText = 'Aviso';
         const lowerMsg = current.message.toLowerCase();
 
-        if (lowerMsg.includes('éxito') || lowerMsg.includes('exitosamente') || lowerMsg.includes('correcto') || lowerMsg.includes('bienvenido') || lowerMsg.includes('guardado')) {
-            iconClass = 'ri-checkbox-circle-line success';
-            titleText = '¡Éxito!';
-        } else if (lowerMsg.includes('error') || lowerMsg.includes('falló') || lowerMsg.includes('incorrecta') || lowerMsg.includes('no coinciden') || lowerMsg.includes('obligatorio') || lowerMsg.includes('inválido') || lowerMsg.includes('no se pudo')) {
+        if (lowerMsg.includes('error') || lowerMsg.includes('falló') || lowerMsg.includes('incorrect') || lowerMsg.includes('no coinciden') || lowerMsg.includes('obligatorio') || lowerMsg.includes('inválido') || lowerMsg.includes('no se pudo')) {
             iconClass = 'ri-error-warning-line error';
             titleText = 'Atención';
+        } else if (lowerMsg.includes('éxito') || lowerMsg.includes('exitosamente') || lowerMsg.includes('correcto') || lowerMsg.includes('bienvenido') || lowerMsg.includes('guardado')) {
+            iconClass = 'ri-checkbox-circle-line success';
+            titleText = '¡Éxito!';
         } else if (lowerMsg.includes('seguro') || lowerMsg.includes('deseas') || lowerMsg.includes('eliminar') || lowerMsg.includes('cancelar')) {
             iconClass = 'ri-question-line warning';
             titleText = 'Confirmar';

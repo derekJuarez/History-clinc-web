@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-    <script src="/js/custom_alert.js"></script>
+    <script src="../js/custom_alert.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0a1628">
@@ -15,13 +15,13 @@
     <link rel='stylesheet'
         href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'>
     <!--Hoja de estilos-->
-    <link rel='stylesheet' href='./css/registro.css'>
+    <link rel='stylesheet' href='../css/registro.css'>
 </head>
 
 <body>
     <div class="register-container">
-        <img src="Image/logo-umsnh.png" alt="Logo UMSNH" class="register-logo">
-        <h2>Registro</h2>
+        <img src="../Image/logo-umsnh.png" alt="Logo UMSNH" class="register-logo">
+        <h2>Registro Administrador</h2>
         <form id="registerForm">
             <!-- Nombre Y Apellido (Fila Doble) -->
             <div class="row-names">
@@ -44,13 +44,7 @@
                 <input type="tel" id="telefono" class="input-field" placeholder="Telefono" required>
             </div>
 
-            <!-- Selector de Maestro (Solo visible para Alumnos) -->
-            <div id="maestro-group" class="input-group" style="display: none;">
-                <i class="ri-user-star-line input-icon"></i>
-                <input type="text" id="maestro-search" class="input-field" placeholder="Escribe el nombre de tu Maestro encargado" list="maestros-list" autocomplete="off">
-                <datalist id="maestros-list"></datalist>
-            </div>
-            <!-- Contraseña -->
+
             <div class="input-group">
                 <i class="ri-lock-line input-icon"></i>
                 <input type="password" id="contraseña" class="input-field" placeholder="Contraseña" required>
@@ -66,9 +60,9 @@
             <div class="submit-container">
                 <button type="submit" class="btn-submit">Confirmar</button>
             </div>
-            <!-- Botón Para redireccionar a Login-->
+            <!-- Botón Para redireccionar a principal -->
             <div class="Login-box">
-                <p>¿Ya tienes una cuenta?<a href="login.html"> Iniciar Sesión</a></p>
+                <p><a href="principal_admin.html"> Volver al Panel</a></p>
             </div>
         </form>
 
@@ -78,6 +72,6 @@
 
 </body>
 <!--Script-->
-<script src="./js/registro.js"></script>
+<script src="js/nuevo_admin.js"></script>
 
 </html>

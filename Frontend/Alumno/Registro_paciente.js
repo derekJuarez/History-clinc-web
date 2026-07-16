@@ -52,11 +52,14 @@ document.getElementById('registroPacienteForm').addEventListener('submit', async
         const result = await response.json();
 
         if (response.ok) {
-            mostrarMensaje('exito', `✅ Paciente "${pacienteData.nombre}" registrado exitosamente.`);
+            mostrarMensaje('exito', `✅ ${result.message}`);
             document.getElementById('registroPacienteForm').reset();
             setTimeout(() => {
                 window.location.href = 'Ver_Pacientes.html';
             }, 2000);
+        } else if (response.status === 409) {
+            // Paciente ya registrado — no es un error del servidor, sino un duplicado
+            mostrarMensaje('advertencia', `⚠️ ${result.message || 'Este paciente ya está registrado en el sistema.'}`);
         } else {
             mostrarMensaje('error', `❌ Error: ${result.message || 'No se pudo registrar al paciente.'}`);
         }
@@ -78,8 +81,9 @@ function mostrarMensaje(tipo, texto) {
     if (anterior) anterior.remove();
 
     const colores = {
-        exito: { bg: '#064e3b', border: '#10b981', color: '#d1fae5' },
-        error: { bg: '#450a0a', border: '#ef4444', color: '#fee2e2' }
+        exito:       { bg: '#064e3b', border: '#10b981', color: '#d1fae5' },
+        error:       { bg: '#450a0a', border: '#ef4444', color: '#fee2e2' },
+        advertencia: { bg: '#451a03', border: '#f59e0b', color: '#fef3c7' }
     };
     const c = colores[tipo] || colores.error;
 

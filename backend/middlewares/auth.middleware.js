@@ -12,7 +12,7 @@ export const verifyToken = (req, res, next) => {
     try {
         // Suponiendo que usas la palabra 'Bearer ' antes del token
         const tokenString = token.split(' ')[1];
-        const decoded = jwt.verify(tokenString, 'TU_SECRETO_AQUI'); // Debería ir en variables de entorno
+        const decoded = jwt.verify(tokenString, process.env.JWT_SECRET || 'fallback_secreto'); 
         
         req.user = decoded; // Guardas la info del usuario en la request
         next(); // Permites que siga a la ruta

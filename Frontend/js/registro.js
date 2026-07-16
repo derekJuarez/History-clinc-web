@@ -1,19 +1,22 @@
 const apiUrl = '/api/auth/register';
 
-const rolSelect = document.getElementById('rol');
+const matriculaInput = document.getElementById('matricula');
 const maestroGroup = document.getElementById('maestro-group');
 const maestroSearchInput = document.getElementById('maestro-search');
 const maestrosListDatalist = document.getElementById('maestros-list');
 
 let maestrosCargados = [];
 
-// Mostrar u ocultar el selector de maestro según el rol elegido
-rolSelect.addEventListener('change', async () => {
-    // Rol 2 = Alumno
-    if (rolSelect.value === '2') {
+// Mostrar u ocultar el selector de maestro según la longitud de la matrícula
+matriculaInput.addEventListener('input', async () => {
+    const val = matriculaInput.value.trim();
+    // 8 caracteres = Alumno -> Mostrar selector de maestro
+    if (val.length === 8) {
         maestroGroup.style.display = 'flex';
         maestroSearchInput.required = true;
-        await cargarMaestros();
+        if (maestrosCargados.length === 0) {
+            await cargarMaestros();
+        }
     } else {
         maestroGroup.style.display = 'none';
         maestroSearchInput.required = false;
@@ -53,9 +56,19 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
     const matricula = document.getElementById('matricula').value.trim();
     const email = document.getElementById('email').value.trim();
     const telefono = document.getElementById('telefono').value.trim();
-    const id_rol = parseInt(rolSelect.value, 10);
     const contraseña = document.getElementById('contraseña').value;
     const confirmarContraseña = document.getElementById('confirmarContraseña').value;
+
+    // Determinar rol basado en la longitud de la matrícula
+    let id_rol;
+    if (matricula.length === 8) {
+        id_rol = 2; // Alumno
+    } else if (matricula.length === 10) {
+        id_rol = 1; // Maestro
+    } else {
+        alert('Formato incorrecto: La matrícula debe tener 8 caracteres (Alumnos) o 10 caracteres (Maestros). Los Administradores no pueden registrarse aquí.');
+        return;
+    }
 
     // Validar contraseñas
     if (contraseña !== confirmarContraseña) {

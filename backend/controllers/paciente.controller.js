@@ -1,12 +1,21 @@
-import {registrarPaciente, obtenerPacientes} from '../models/paciente_model.js';
+import { registrarPaciente, obtenerPacientes, PacienteDuplicadoError, PacienteDeOtroEstudianteError } from '../models/paciente_model.js';
 import { successResponse, errorResponse } from '../utils/helpers.util.js';
 
 export const registrar = async (req, res) => {
     try {
         const pacienteData = req.body;
         const result = await registrarPaciente(pacienteData);
-        successResponse(res, 201, 'Paciente registrado exitosamente',result,);
+
+        const mensaje = result.completado
+            ? 'Paciente vinculado a tu lista exitosamente.'
+            : 'Paciente registrado exitosamente.';
+
+        successResponse(res, 201, mensaje, result);
     } catch (error) {
+        if (error instanceof PacienteDuplicadoError || error instanceof PacienteDeOtroEstudianteError) {
+            return errorResponse(res, 409, error.message);
+        }
+        console.error('Error al registrar paciente:', error);
         errorResponse(res, 500, 'Error al registrar paciente');
     }
 };

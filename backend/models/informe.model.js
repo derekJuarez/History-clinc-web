@@ -34,45 +34,63 @@ export const guardarInforme = async ({
 
         // 1. Crear un Usuario Fantasma para el Paciente
         const pseudoMatricula = `PAC-${Date.now()}`;
-        const contrasenaPhantom = 'paciente123'; // O generar un hash si usaran bcrypt
+        const contrasenaPhantom = 'paciente123';
         await connection.query(
-            `INSERT INTO usuarios (ID_MATRICULA, NAME, TELEFONO, CONTRASEÑA, CORREO, Id_Rol)
+            `INSERT INTO usuarios (ID_MATRICULA, Nombre, Telefono, Contrasena, Correo, Id_Rol)
              VALUES (?, ?, ?, ?, ?, 4)`,
             [pseudoMatricula, nombre_paciente, telefono_paciente, contrasenaPhantom, `${pseudoMatricula}@paciente.local`]
         );
 
         // 2. Crear el Paciente
+        // Columnas reales: Id_Usuario, FechaNacimiento, Sexo, EstadoCivil, Ocupacion,
+        //                  LugarOrigen, TelefonoEmergencia, ContactoFamiliar, Id_Estudiante_Registro
         const [resPaciente] = await connection.query(
-            `INSERT INTO paciente (Id_Usuario, Fecha_Nacimiento, Sexo, Ocupacion, Telefono_Emergencia)
-             VALUES (?, ?, ?, ?, ?)`,
-            [pseudoMatricula, fecha_nac_paciente || '2000-01-01', sexo_paciente, ocupacion_paciente, telefono_paciente]
+            `INSERT INTO paciente (Id_Usuario, FechaNacimiento, Sexo, Ocupacion, TelefonoEmergencia, Id_Estudiante_Registro)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [pseudoMatricula, fecha_nac_paciente || '2000-01-01', sexo_paciente || 'N/E', ocupacion_paciente || '', telefono_paciente || '', matricula_alumno]
         );
         const idPaciente = resPaciente.insertId;
 
         // 3. Crear Historial Clínico Base
+        // Columnas reales: Id_Paciente, MedicoCabecera, HigieneOralBase
         const [resHistorial] = await connection.query(
-            `INSERT INTO historial_clinico (
-                Id_Paciente, Medico_Cabecera, Higiene_Oral_Base, 
-                Tabaquismo, Alcoholismo, Drogadiccion, 
-                Cardiovascular_Data, Endocrino_Data, Hematologico_Data, 
-                Infectocontagiosas_Data, Alergias_Flags
-             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [
-                idPaciente, 
-                medico_cabecera || null, 
-                higiene_oral, 
-                tabaquismo || 'No', 
-                alcoholismo || 'No', 
-                drogadiccion || 'No', 
-                cardiovascular_data || null, 
-                endocrino_data || null, 
-                hematologico_data || null, 
-                infectocontagiosas_data || null, 
-                alergias_flags || null
-            ]
+            `INSERT INTO historial_clinico (Id_Paciente, MedicoCabecera, HigieneOralBase)
+             VALUES (?, ?, ?)`,
+            [idPaciente, medico_cabecera || null, higiene_oral || null]
         );
 
-        // 3.5 Buscar el Maestro asignado al Alumno
+        // 3.5 Guardar antecedentes en tablas especializadas
+        const antecedentes = [
+            tabaquismo && tabaquismo !== 'No' ? ['Tabaquismo', tabaquismo] : null,
+            alcoholismo && alcoholismo !== 'No' ? ['Alcoholismo', alcoholismo] : null,
+            drogadiccion && drogadiccion !== 'No' ? ['Drogadiccion', drogadiccion] : null,
+            cardiovascular_data ? ['Cardiovascular', cardiovascular_data] : null,
+            endocrino_data ? ['Endocrino', endocrino_data] : null,
+            hematologico_data ? ['Hematologico', hematologico_data] : null,
+            infectocontagiosas_data ? ['Infectocontagiosas', infectocontagiosas_data] : null,
+            medicamentos_actuales ? ['Medicamentos', medicamentos_actuales] : null,
+            alergias_flags ? ['Alergias', alergias_flags] : null,
+        ].filter(Boolean);
+
+        for (const [categoria, detalle] of antecedentes) {
+            await connection.query(
+                `INSERT INTO antecedentes_paciente (Id_Paciente, Categoria, Detalle) VALUES (?, ?, ?)`,
+                [idPaciente, categoria, detalle]
+            );
+        }
+
+        // Guardar hábitos
+        if (habitos && habitos.trim()) {
+            const listaHabitos = habitos.split(',').map(h => h.trim()).filter(Boolean);
+            for (const habito of listaHabitos) {
+                await connection.query(
+                    `INSERT INTO habitos_paciente (Id_Paciente, Habito) VALUES (?, ?)`,
+                    [idPaciente, habito]
+                );
+            }
+        }
+
+        // 3.6 Buscar el Maestro asignado al Alumno
         const [maestroRows] = await connection.query(
             "SELECT ID_MAESTRO FROM usuarios WHERE ID_MATRICULA = ?",
             [matricula_alumno]
@@ -81,35 +99,52 @@ export const guardarInforme = async ({
             ? maestroRows[0].ID_MAESTRO 
             : matricula_alumno;
 
-        // 4. Crear una Cita "Completada" (Ya que el informe asume que hubo consulta)
+        // 4. Crear una Cita "Completada"
+        // Columnas reales: Id_Paciente, Id_Clinica, Id_Estudiante, Id_Docente_Asesor, Fecha, Hora, Estado, Motivo
         const [resCita] = await connection.query(
-            `INSERT INTO citas (Id_Paciente, Id_Ubicacion, Id_Estudiante, Id_Docente_Asesor, Fecha, Hora, Estatus)
-             VALUES (?, 1, ?, ?, CURDATE(), CURTIME(), 'Completa')`,
-            [idPaciente, matricula_alumno, docente_asesor]
+            `INSERT INTO citas (Id_Paciente, Id_Clinica, Id_Estudiante, Id_Docente_Asesor, Fecha, Hora, Estado, Motivo)
+             VALUES (?, 1, ?, ?, CURDATE(), CURTIME(), 'Completa', ?)`,
+            [idPaciente, matricula_alumno, docente_asesor, diagnostico || 'Consulta inicial']
         );
         const idCita = resCita.insertId;
 
-        // 5. Crear Consulta Evolución (que ahora funciona como informe clínico)
+        // 5. Crear Consulta de Evolución
+        // Tabla real: consulta_evolucion
+        // Columnas: Id_Cita, MotivoConsulta, FarmacologiaActual, ATM, TejidosBlandos,
+        //           Periodonto, HigieneOral, Odontograma, Diagnostico, PlanTratamiento
+        const odontogramaStr = typeof odontograma_json === 'string'
+            ? odontograma_json
+            : JSON.stringify(odontograma_json);
+
         const [resConsulta] = await connection.query(
-            `INSERT INTO consultas_evolucion (
-                Id_Cita, Motivo_Consulta, Farmacologia_Actual, Atm_Exploracion, 
-                Tejidos_Blandos, Periodonto, Higiene_Oral_Actual, Odontograma_JSON, Diagnostico_Plan_Tratamiento
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO consulta_evolucion
+                (Id_Cita, MotivoConsulta, FarmacologiaActual, ATM, TejidosBlandos,
+                 Periodonto, HigieneOral, Odontograma, Diagnostico, PlanTratamiento)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
-                idCita, 
-                diagnostico, 
-                medicamentos_actuales || null, 
-                estado_atm, 
-                'Normal', 
-                'Normal', 
-                'Buena', 
-                typeof odontograma_json === 'string' ? odontograma_json : JSON.stringify(odontograma_json),
-                plan_tratamiento
+                idCita,
+                diagnostico || null,
+                medicamentos_actuales || null,
+                estado_atm || null,
+                'Normal',
+                'Normal',
+                higiene_oral || null,
+                odontogramaStr,
+                diagnostico || null,
+                plan_tratamiento || null
             ]
+        );
+        const idConsulta = resConsulta.insertId;
+
+        // 6. Crear registro en informes_clinicos
+        // Columnas: Id_Consulta, OdontogramaJSON
+        const [resInforme] = await connection.query(
+            `INSERT INTO informes_clinicos (Id_Consulta, OdontogramaJSON) VALUES (?, ?)`,
+            [idConsulta, odontogramaStr]
         );
 
         await connection.commit();
-        return resConsulta.insertId; // Devolvemos el ID de la consulta_evolucion
+        return resInforme.insertId;
 
     } catch (error) {
         await connection.rollback();
@@ -123,39 +158,38 @@ export const guardarInforme = async ({
 // Consultas comunes reutilizables
 const baseSelect = `
     SELECT 
-        ce.*, ce.ID_Consulta AS Id_Informe, pac.*, hc.*,
-        u.NAME AS NOMBRE_ALUMNO, 
-        p.NAME AS NOMBRE_PACIENTE, 
-        p.TELEFONO AS TELEFONO_PACIENTE, 
+        ic.Id_Informe, ic.FechaRegistro, ic.Estado AS EstadoInforme, ic.OdontogramaJSON,
+        ce.Id_Consulta, ce.MotivoConsulta AS Diagnostico, ce.PlanTratamiento,
+        ce.ATM, ce.HigieneOral, ce.FarmacologiaActual, ce.Odontograma,
+        pac.Id_Paciente, pac.FechaNacimiento, pac.Sexo, pac.Ocupacion,
+        u_pac.Nombre AS NOMBRE_PACIENTE,
+        u_pac.Telefono AS TELEFONO_PACIENTE,
+        u_alu.Nombre AS NOMBRE_ALUMNO,
         c.Id_Estudiante AS MATRICULA_ALUMNO,
-        c.Fecha AS FechaRegistro,
-        ce.Diagnostico_Plan_Tratamiento AS PlanTratamiento,
-        ce.Motivo_Consulta AS Diagnostico,
-        ce.Atm_Exploracion AS ATM,
-        ce.Higiene_Oral_Actual AS HigieneOral,
-        ce.Odontograma_JSON AS OdontogramaJSON,
-        'Normal' AS Oclusion
-    FROM consultas_evolucion ce
+        c.Fecha AS FechaConsulta,
+        hc.MedicoCabecera, hc.HigieneOralBase
+    FROM informes_clinicos ic
+    INNER JOIN consulta_evolucion ce ON ic.Id_Consulta = ce.Id_Consulta
     INNER JOIN citas c ON ce.Id_Cita = c.Id_Cita
     INNER JOIN paciente pac ON c.Id_Paciente = pac.Id_Paciente
-    INNER JOIN usuarios p ON pac.Id_Usuario = p.ID_MATRICULA
-    LEFT JOIN usuarios u ON c.Id_Estudiante = u.ID_MATRICULA
+    INNER JOIN usuarios u_pac ON pac.Id_Usuario = u_pac.ID_MATRICULA
+    LEFT JOIN usuarios u_alu ON c.Id_Estudiante = u_alu.ID_MATRICULA
     LEFT JOIN historial_clinico hc ON pac.Id_Paciente = hc.Id_Paciente
 `;
 
 // Obtener todos los informes de los alumnos a cargo de un maestro
 export const getInformesPorMaestro = async (matricula_maestro) => {
     const [rows] = await db.query(
-        `${baseSelect} WHERE u.ID_MAESTRO = ? OR c.Id_Docente_Asesor = ? ORDER BY c.Fecha DESC`,
+        `${baseSelect} WHERE u_alu.ID_MAESTRO = ? OR c.Id_Docente_Asesor = ? ORDER BY ic.FechaRegistro DESC`,
         [matricula_maestro, matricula_maestro]
     );
     return rows;
 };
 
-// Obtener un informe por su ID (ahora ID_Consulta)
+// Obtener un informe por su ID
 export const getInformeById = async (id) => {
     const [rows] = await db.query(
-        `${baseSelect} WHERE ce.ID_Consulta = ?`,
+        `${baseSelect} WHERE ic.Id_Informe = ?`,
         [id]
     );
     return rows[0];
@@ -164,22 +198,23 @@ export const getInformeById = async (id) => {
 // Obtener informes de un alumno específico
 export const getInformesPorAlumno = async (matricula_alumno) => {
     const [rows] = await db.query(
-        `${baseSelect} WHERE c.Id_Estudiante = ? ORDER BY c.Fecha DESC`,
+        `${baseSelect} WHERE c.Id_Estudiante = ? ORDER BY ic.FechaRegistro DESC`,
         [matricula_alumno]
     );
     return rows;
 };
 
-// Marcar informe como revisado (Ya no existe columna Estado en informes_clinicos, no-op o marcar cita como completa)
+// Marcar informe como revisado
 export const marcarInformeRevisado = async (id) => {
-    // Si la tabla informes_clinicos ya no existe, podemos actualizar la cita o simplemente no hacer nada.
-    // Como Estatus en Citas ya es 'Completa', lo dejamos vacío.
-    return Promise.resolve();
+    await db.query(
+        `UPDATE informes_clinicos SET Estado = 'Revisado' WHERE Id_Informe = ?`,
+        [id]
+    );
 };
 
 // Buscar pacientes por nombre o teléfono
 export const buscarInformesPorPaciente = async (valor) => {
-    const query = `${baseSelect} WHERE p.NAME LIKE ? OR p.TELEFONO = ? ORDER BY c.Fecha DESC`;
+    const query = `${baseSelect} WHERE u_pac.Nombre LIKE ? OR u_pac.Telefono = ? ORDER BY ic.FechaRegistro DESC`;
     const [rows] = await db.query(query, [`%${valor}%`, valor]);
     return rows;
 };
