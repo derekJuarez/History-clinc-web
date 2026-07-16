@@ -63,10 +63,10 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
     let id_rol;
     if (matricula.length === 8) {
         id_rol = 2; // Alumno
-    } else if (matricula.length === 10) {
+    } else if (matricula.length === 7) {
         id_rol = 1; // Maestro
     } else {
-        alert('Formato incorrecto: La matrícula debe tener 8 caracteres (Alumnos) o 10 caracteres (Maestros). Los Administradores no pueden registrarse aquí.');
+        alert('Formato incorrecto: La matrícula debe tener 8 caracteres (Alumnos) o 7 caracteres (Maestros). Los Administradores no pueden registrarse aquí.');
         return;
     }
 
