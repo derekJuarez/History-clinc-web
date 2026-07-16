@@ -31,7 +31,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
         } else if (result.data.rol === 2) {
             window.location.href = 'Alumno/dashboard.html';
         } else if (result.data.rol === 3) {
-            // Paciente: no tiene panel, mostrar mensaje o dashboard
+            // Paciente
             window.location.href = 'Paciente/dashboard_paciente.html';
         } else if (result.data.rol === 4) {
             // Administrador

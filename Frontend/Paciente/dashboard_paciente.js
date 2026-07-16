@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const estatus = cita.Estado.toLowerCase();
 
             if ((estatus === 'confirmada' || estatus === 'pendiente') && fechaCita >= hoy) proximas++;
-            if (estatus === 'completada' || estatus === 'cancelada') completadas++;
+            if (estatus === 'completada' || estatus === 'completa' || estatus === 'cancelada') completadas++;
             if (fechaCita.getMonth() === mesActual && fechaCita.getFullYear() === añoActual) enEsteMes++;
         });
 
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (filtroActual === 'proximas') {
                 return estatus === 'pendiente' || estatus === 'confirmada';
             } else {
-                return estatus === 'completada' || estatus === 'cancelada';
+                return estatus === 'completada' || estatus === 'completa' || estatus === 'cancelada';
             }
         });
 
@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         const est = estado.toLowerCase();
         if (est === 'confirmada') return { clase: 'badge-confirmed', icono: 'ri-check-line', texto: 'Confirmada' };
-        if (est === 'completada') return { clase: 'badge-completed', icono: 'ri-check-double-line', texto: 'Completada' };
+        if (est === 'completada' || est === 'completa') return { clase: 'badge-completed', icono: 'ri-check-double-line', texto: 'Completada' };
         if (est === 'cancelada') return { clase: 'badge-cancelled', icono: 'ri-close-line', texto: 'Cancelada' };
         if (est === 'pendiente') return { clase: 'badge-completed', icono: 'ri-time-line', texto: 'Pendiente' };
         

@@ -23,34 +23,19 @@ export async function registrarPaciente(pacienteData) {
     const passwordGenerada = curp.substring(0, 4) + fecha_nacimiento;
 
     try {
-        // ── CASO 1: ¿Existe ya en la tabla usuarios? ─────────────────────────
-        const [usuarioRows] = await db.query(
-            'SELECT ID_MATRICULA FROM usuarios WHERE ID_MATRICULA = ?',
+        // Buscar el Id_Usuario numérico del estudiante que lo está registrando
+        const [aRows] = await db.query('SELECT Id_Usuario FROM alumnos WHERE Matricula = ?', [id_estudiante]);
+        const id_estudiante_num = aRows.length > 0 ? aRows[0].Id_Usuario : null;
+
+        // ── CASO 1: ¿Existe ya en la tabla paciente? ─────────────────────────
+        const [pacienteRows] = await db.query(
+            'SELECT Id_Paciente, Id_Estudiante_Registro, Id_Usuario FROM paciente WHERE CURP = ?',
             [curp]
         );
 
-        if (usuarioRows.length > 0) {
-            // ── CASO 2: ¿Tiene registro en la tabla paciente? ─────────────────
-            const [pacienteRows] = await db.query(
-                'SELECT Id_Paciente, Id_Estudiante_Registro FROM paciente WHERE Id_Usuario = ?',
-                [curp]
-            );
-
-            if (pacienteRows.length === 0) {
-                // Usuario huérfano: existe en usuarios pero NO en paciente
-                // → Completar el registro insertando solo en paciente
-                const [pacienteResult] = await db.query(
-                    `INSERT INTO paciente 
-                        (Id_Usuario, FechaNacimiento, Sexo, EstadoCivil, Ocupacion, LugarOrigen, TelefonoEmergencia, ContactoFamiliar, Id_Estudiante_Registro)
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                    [curp, fecha_nacimiento, sexo, estado_civil, ocupacion, residencia, tel_emergencia, contacto_familiar, id_estudiante]
-                );
-                return { userId: null, pacienteId: pacienteResult.insertId, completado: true };
-            }
-
+        if (pacienteRows.length > 0) {
             const registroExistente = pacienteRows[0];
-
-            if (registroExistente.Id_Estudiante_Registro === id_estudiante) {
+            if (registroExistente.Id_Estudiante_Registro === id_estudiante_num) {
                 // ── CASO 3: Ya es paciente de ESTE estudiante ─────────────────
                 throw new PacienteDuplicadoError('Este paciente ya está en tu lista.');
             } else {
@@ -61,29 +46,32 @@ export async function registrarPaciente(pacienteData) {
 
         // ── CASO 5: No existe en ninguna tabla → registro completo ────────────
         const [userResult] = await db.query(
-            'INSERT INTO usuarios (ID_MATRICULA, Nombre, Telefono, Correo, Id_Rol, Contrasena) VALUES (?, ?, ?, ?, ?, ?)',
-            [curp, nombre, telefono, email, 4, passwordGenerada]
+            'INSERT INTO usuarios (Nombre, Telefono, Correo, Id_Rol, Contrasena) VALUES (?, ?, ?, 3, ?)',
+            [nombre, telefono, email, passwordGenerada]
         );
-        const [pacienteResult] = await db.query(
-            `INSERT INTO paciente 
-                (Id_Usuario, FechaNacimiento, Sexo, EstadoCivil, Ocupacion, LugarOrigen, TelefonoEmergencia, ContactoFamiliar, Id_Estudiante_Registro)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [curp, fecha_nacimiento, sexo, estado_civil, ocupacion, residencia, tel_emergencia, contacto_familiar, id_estudiante]
-        );
-        return { userId: userResult.insertId, pacienteId: pacienteResult.insertId };
+        const idUsuario = userResult.insertId;
 
+        const [pacienteResult] = await db.query(
+            'INSERT INTO paciente (Id_Usuario, CURP, FechaNacimiento, Sexo, EstadoCivil, Ocupacion, LugarOrigen, TelefonoEmergencia, ContactoFamiliar, Id_Estudiante_Registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [idUsuario, curp, fecha_nacimiento, sexo, estado_civil, ocupacion, residencia, tel_emergencia, contacto_familiar, id_estudiante_num]
+        );
+        return { userId: idUsuario, pacienteId: pacienteResult.insertId };
     } catch (error) {
         console.error('Error al registrar paciente:', error);
         throw error;
     }
 }
 
-export async function obtenerPacientes(id_estudiante) {
+export async function obtenerPacientes(id_estudiante_matricula) {
     try {
+        const [aRows] = await db.query('SELECT Id_Usuario FROM alumnos WHERE Matricula = ?', [id_estudiante_matricula]);
+        if (aRows.length === 0) return [];
+        const id_estudiante_num = aRows[0].Id_Usuario;
+
         const [rows] = await db.query(`
             SELECT
                 p.Id_Paciente AS id_paciente, 
-                u.ID_MATRICULA AS curp, 
+                p.CURP AS curp, 
                 u.Nombre AS nombre, 
                 p.FechaNacimiento AS fecha_nacimiento, 
                 p.Sexo AS sexo, 
@@ -91,11 +79,11 @@ export async function obtenerPacientes(id_estudiante) {
                 u.Correo AS correo,
                 MAX(c.Radio_Bucales) AS radiografia_reciente
             FROM usuarios u
-            INNER JOIN paciente p ON u.ID_MATRICULA = p.Id_Usuario
+            INNER JOIN paciente p ON u.Id_Usuario = p.Id_Usuario
             LEFT JOIN citas c ON p.Id_Paciente = c.Id_Paciente
-            WHERE u.Id_Rol = 4 AND p.Id_Estudiante_Registro = ?
-            GROUP BY p.Id_Paciente, u.ID_MATRICULA, u.Nombre, p.FechaNacimiento, p.Sexo, u.Telefono, u.Correo
-        `, [id_estudiante]);
+            WHERE u.Id_Rol = 3 AND p.Id_Estudiante_Registro = ?
+            GROUP BY p.Id_Paciente, p.CURP, u.Nombre, p.FechaNacimiento, p.Sexo, u.Telefono, u.Correo
+        `, [id_estudiante_num]);
         return rows;
     } catch (error) {
         console.error('Error al obtener pacientes:', error);
