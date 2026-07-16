@@ -14,7 +14,7 @@ export const getClinicas = async (req, res) => {
 
 // Registrar una nueva clínica
 export const registrarClinica = async (req, res) => {
-    const { nombre, ubicacion } = req.body;
+    const { nombre, ubicacion, cedula } = req.body;
     // El encargado es la matrícula del maestro autenticado (del token)
     const encargado = req.user?.matricula || req.body.encargado;
 
@@ -30,13 +30,14 @@ export const registrarClinica = async (req, res) => {
         }
 
         const estadoClinica = (req.user?.rol === 3) ? 'APROBADO' : 'PENDIENTE';
-        const newId = await createClinica({ nombre, encargado, ubicacion, estado: estadoClinica });
+        const newId = await createClinica({ nombre, encargado, ubicacion, cedula, estado: estadoClinica });
         
         return successResponse(res, 201, 'Clínica registrada exitosamente', {
             id: newId,
             nombre,
             encargado,
-            ubicacion
+            ubicacion,
+            cedula
         });
     } catch (error) {
         console.error(error);
@@ -94,14 +95,14 @@ export const actualizarEstado = async (req, res) => {
 // Actualizar clínica
 export const actualizarClinica = async (req, res) => {
     const { id } = req.params;
-    const { nombre, encargado, ubicacion } = req.body;
+    const { nombre, encargado, ubicacion, cedula } = req.body;
 
     if (!nombre || !encargado || !ubicacion) {
         return errorResponse(res, 400, 'Todos los campos son obligatorios');
     }
 
     try {
-        await updateClinica(id, { nombre, encargado, ubicacion });
+        await updateClinica(id, { nombre, encargado, ubicacion, cedula });
         return successResponse(res, 200, 'Clínica actualizada exitosamente');
     } catch (error) {
         console.error(error);

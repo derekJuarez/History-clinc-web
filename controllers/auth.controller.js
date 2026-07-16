@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import { findUserByMatricula, createUser, updateUserProfile } from '../models/user.model.js';
 import { successResponse, errorResponse } from '../utils/helpers.util.js';
 
@@ -16,7 +17,9 @@ export const login = async (req, res) => {
 
         // 2. Aquí verifico la contraseña
         const dbContraseña = user.Contrasena || user.Contraseña || user.CONTRASEÑA;
-        if (contraseña !== dbContraseña) {
+        const isMatch = await bcrypt.compare(contraseña, dbContraseña);
+        
+        if (!isMatch) {
             return errorResponse(res, 401, 'Contraseña incorrecta');
         }
 
@@ -29,7 +32,7 @@ export const login = async (req, res) => {
         // Generar JWT
         const token = jwt.sign(
             { matricula: dbMatricula, rol: dbRol },
-            'TU_SECRETO_AQUI',
+            process.env.JWT_SECRET || 'fallback_secreto',
             { expiresIn: '24h' }
         );
 
@@ -94,7 +97,8 @@ export const getProfile = async (req, res) => {
             nombre: user.Nombre || user.NAME || user.Name,
             email: user.Correo || user.CORREO,
             telefono: user.Telefono || user.TELEFONO,
-            rol: user.Id_Rol
+            rol: user.Id_Rol,
+            maestro: user.Maestro_Asignado
         });
     } catch (error) {
         console.error('Error al obtener perfil:', error);

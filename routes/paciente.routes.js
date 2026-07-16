@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { registrar, obtenerTodos } from '../controllers/paciente.controller.js';
+import { registrar, obtenerTodos, obtenerPorCurp } from '../controllers/paciente.controller.js';
 
 const pacienteRouter = Router();
 
@@ -7,6 +7,7 @@ const pacienteRouter = Router();
 pacienteRouter.post('/registrar', registrar);
 //get para obtener todos los pacientes
 pacienteRouter.get('/todos', obtenerTodos);
+pacienteRouter.get('/curp/:curp', obtenerPorCurp);
 
 
 export default pacienteRouter;
