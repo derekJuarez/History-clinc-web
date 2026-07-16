@@ -4,10 +4,14 @@ import bcrypt from 'bcryptjs';
 // Obtener todos los alumnos desde la tabla usuarios con rol 2
 export const getAllAlumnos = async () => {
     const [rows] = await db.query(
+<<<<<<< Updated upstream
         `SELECT a.Matricula AS ID_MATRICULA, u.Nombre, u.Correo, u.Telefono 
          FROM usuarios u 
          INNER JOIN alumnos a ON u.Id_Usuario = a.Id_Usuario 
          ORDER BY u.Nombre ASC`
+=======
+        `SELECT ID_MATRICULA, Name, Correo, Telefono FROM usuarios WHERE Id_Rol = 2 ORDER BY Nombre ASC`
+>>>>>>> Stashed changes
     );
     return rows;
 };
