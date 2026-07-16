@@ -11,7 +11,8 @@ export const findUserByMatricula = async (identificador) => {
             u.Contrasena,
             u.Correo,
             u.Id_Rol,
-            COALESCE(a.Matricula, m.Matricula, ad.Matricula, p.CURP) AS ID_MATRICULA
+            COALESCE(a.Matricula, m.Matricula, ad.Matricula, p.CURP) AS ID_MATRICULA,
+            (SELECT um.Nombre FROM usuarios um WHERE um.Id_Usuario = a.Id_Maestro) AS Maestro_Asignado
         FROM usuarios u
         LEFT JOIN alumnos a ON u.Id_Usuario = a.Id_Usuario
         LEFT JOIN maestros m ON u.Id_Usuario = m.Id_Usuario
@@ -30,8 +31,8 @@ export const createUser = async ({ nombre, apellido, matricula, email, telefono,
     const hashedPassword = await bcrypt.hash(contraseña, salt);
 
     const [result] = await db.query(
-        'INSERT INTO usuarios (Nombre, Telefono, Contrasena, Correo, Id_Rol) VALUES (?, ?, ?, ?, ?)',
-        [fullName, telefono, hashedPassword, email, id_rol]
+        'INSERT INTO usuarios (Nombre, Telefono, Contrasena, Correo, Id_Rol, ID_MATRICULA) VALUES (?, ?, ?, ?, ?, ?)',
+        [fullName, telefono, hashedPassword, email, id_rol, matricula]
     );
     const newUserId = result.insertId;
 

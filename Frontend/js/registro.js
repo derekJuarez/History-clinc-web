@@ -10,8 +10,8 @@ let maestrosCargados = [];
 // Mostrar u ocultar el selector de maestro según la longitud de la matrícula
 matriculaInput.addEventListener('input', async () => {
     const val = matriculaInput.value.trim();
-    // 8 caracteres = Alumno -> Mostrar selector de maestro
-    if (val.length === 8) {
+    // 8 caracteres y termina en letra = Alumno -> Mostrar selector de maestro
+    if (val.length === 8 && /[a-zA-Z]/.test(val.charAt(7))) {
         maestroGroup.style.display = 'flex';
         maestroSearchInput.required = true;
         if (maestrosCargados.length === 0) {
@@ -59,14 +59,23 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
     const contraseña = document.getElementById('contraseña').value;
     const confirmarContraseña = document.getElementById('confirmarContraseña').value;
 
-    // Determinar rol basado en la longitud de la matrícula
+    // Determinar rol basado en el formato de la matrícula (ambas de 8 caracteres)
     let id_rol;
     if (matricula.length === 8) {
-        id_rol = 2; // Alumno
-    } else if (matricula.length === 7) {
-        id_rol = 1; // Maestro
+        const lastChar = matricula.charAt(7);
+        // Si el último caracter es una letra, es Alumno
+        if (/[a-zA-Z]/.test(lastChar)) {
+            id_rol = 2; // Alumno
+        } 
+        // Si todos los caracteres son números, es Maestro
+        else if (/^\d{8}$/.test(matricula)) {
+            id_rol = 1; // Maestro
+        } else {
+            alert('Formato incorrecto: La matrícula de alumno debe terminar con una letra. La de maestro debe contener solo números.');
+            return;
+        }
     } else {
-        alert('Formato incorrecto: La matrícula debe tener 8 caracteres (Alumnos) o 7 caracteres (Maestros). Los Administradores no pueden registrarse aquí.');
+        alert('Formato incorrecto: La matrícula debe tener exactamente 8 caracteres.');
         return;
     }
 

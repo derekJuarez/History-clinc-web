@@ -1,4 +1,5 @@
 import db from '../config/db.js';
+import bcrypt from 'bcryptjs';
 
 // Obtener todos los alumnos desde la tabla usuarios con rol 2
 export const getAllAlumnos = async () => {
@@ -39,9 +40,12 @@ export const findAlumnoEnUsuariosByMatricula = async (matricula) => {
 // Crear alumno en la tabla usuarios con maestro asignado
 export const crearAlumnoEnUsuarios = async ({ nombre, matricula, contraseña, id_maestro }) => {
     const correo = `${matricula.toLowerCase()}@umich.mx`;
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(contraseña, salt);
+    
     const [uResult] = await db.query(
-        'INSERT INTO usuarios (Nombre, Contrasena, Correo, Id_Rol) VALUES (?, ?, ?, 2)',
-        [nombre, contraseña, correo]
+        'INSERT INTO usuarios (Nombre, Contrasena, Correo, Id_Rol, ID_MATRICULA) VALUES (?, ?, ?, 2, ?)',
+        [nombre, hashedPassword, correo, matricula]
     );
     const idUsuario = uResult.insertId;
     

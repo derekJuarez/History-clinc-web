@@ -97,7 +97,8 @@ export const getProfile = async (req, res) => {
             nombre: user.Nombre || user.NAME || user.Name,
             email: user.Correo || user.CORREO,
             telefono: user.Telefono || user.TELEFONO,
-            rol: user.Id_Rol
+            rol: user.Id_Rol,
+            maestro: user.Maestro_Asignado
         });
     } catch (error) {
         console.error('Error al obtener perfil:', error);

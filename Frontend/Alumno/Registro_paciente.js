@@ -54,7 +54,7 @@ document.getElementById('registroPacienteForm').addEventListener('submit', async
         if (response.ok) {
             mostrarMensaje('exito', `
                 <div class="mb-2">✅ ${result.message}</div>
-                <button type="button" class="btn btn-light btn-sm fw-bold text-success mt-2" onclick="window.location.href='historias.html?curp=${pacienteData.curp}'">
+                <button type="button" class="btn-submit" style="width: auto; padding: 0 20px; margin-top: 15px; height: 40px; border-radius: 20px;" onclick="window.location.href='historias.html?curp=${pacienteData.curp}'">
                     Continuar a Historia Clínica <i class="ri-arrow-right-line"></i>
                 </button>
             `);

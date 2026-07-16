@@ -240,7 +240,20 @@ body {
 
 /* ===== Botones del Top Header ===== */
 .mobile-umsnh-badge {
-    display: none;
+    display: inline-flex;
+    align-items: center;
+    background: rgba(11, 26, 48, 0.85);
+    color: #cbb26a;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(203, 178, 106, 0.4);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 20px;
 }
 
 .top-header-btn {

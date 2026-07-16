@@ -1,4 +1,5 @@
 import db from '../config/db.js';
+import bcrypt from 'bcryptjs';
 
 // Obtener todos los docentes (usuarios con Id_Rol = 1)
 export const getAllDocentes = async () => {
@@ -27,9 +28,12 @@ export const findDocenteByMatricula = async (matricula) => {
 // Crear un nuevo docente (insertar en usuarios y luego en maestros)
 export const createDocente = async ({ nombre, apellido, matricula, email, telefono, contraseña }) => {
     const fullName = `${nombre} ${apellido}`.trim();
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(contraseña, salt);
+    
     const [uResult] = await db.query(
-        'INSERT INTO usuarios (Nombre, Telefono, Contrasena, Correo, Id_Rol) VALUES (?, ?, ?, ?, 1)',
-        [fullName, telefono, contraseña, email]
+        'INSERT INTO usuarios (Nombre, Telefono, Contrasena, Correo, Id_Rol, ID_MATRICULA) VALUES (?, ?, ?, ?, 1, ?)',
+        [fullName, telefono, hashedPassword, email, matricula]
     );
     const newUserId = uResult.insertId;
     
@@ -52,9 +56,11 @@ export const updateDocenteByMatricula = async (matricula, { nombre, email, telef
     const idUsuario = mRows[0].Id_Usuario;
 
     if (contraseña) {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(contraseña, salt);
         await db.query(
             'UPDATE usuarios SET Nombre = ?, Correo = ?, Telefono = ?, Contrasena = ? WHERE Id_Usuario = ?',
-            [nombre, email, telefono, contraseña, idUsuario]
+            [nombre, email, telefono, hashedPassword, idUsuario]
         );
     } else {
         await db.query(

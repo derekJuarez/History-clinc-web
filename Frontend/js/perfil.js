@@ -30,6 +30,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             inputNombre.value = user.nombre;
             inputEmail.value = user.email || '';
             inputTelefono.value = user.telefono || '';
+            
+            if (user.maestro) {
+                const cajaMaestro = document.getElementById('caja-maestro');
+                const inputMaestro = document.getElementById('profile-maestro');
+                if (cajaMaestro && inputMaestro) {
+                    cajaMaestro.style.display = 'block';
+                    inputMaestro.value = user.maestro;
+                }
+            }
         } else {
             await alert('No se pudo cargar la información del perfil. Inicie sesión de nuevo.');
             localStorage.clear();
